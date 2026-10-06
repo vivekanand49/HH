@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Home dashboard</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&amp;family=Figtree:wght@400;500;600;700&amp;family=Noto+Sans+Devanagari:wght@400;600&amp;family=Noto+Sans+Telugu:wght@400;600&amp;display=swap">
+<style>
+body{margin:0;background:#F3F5F8;color:#0E1726;font-family:'Figtree','Noto Sans Telugu','Noto Sans Devanagari',system-ui,sans-serif}
+h1,h2,h3{font-family:'Bricolage Grotesque','Noto Sans Telugu','Noto Sans Devanagari',sans-serif}
+a{color:#0B4B7C}a:hover{color:#083A61}
+button,input{font-family:inherit}
+:focus-visible{outline:3px solid #2F7CC0;outline-offset:2px}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 1180px; box-sizing: border-box; background: #F3F5F8; overflow: hidden">
+  <div style="display: flex; flex-direction: column; gap: 20px; padding: 16px 20px 110px">
+
+    <div style="display: flex; align-items: center; justify-content: space-between">
+      <div style="display: flex; align-items: center; gap: 10px">
+        <div style="width: 36px; height: 36px; border-radius: 10px; background: #FFFFFF; border: 1px solid #D9DFE7; box-sizing: border-box; display: flex; align-items: center; justify-content: center">
+          <svg width="27" height="27" viewBox="0 0 36 36" fill="none" stroke-width="2.6" stroke-linejoin="round" aria-hidden="true"><path d="M10.5 4H19.5V10.5H26V19.5H19.5V26H10.5V19.5H4V10.5H10.5Z" stroke="#0B4B7C"></path><path d="M16.5 10H25.5V16.5H32V25.5H25.5V32H16.5V25.5H10V16.5H16.5Z" stroke="#6DB33F"></path></svg>
+        </div>
+        <span style="font-size: 17px; font-weight: 700">Swasthya Setu</span>
+      </div>
+      <div style="display: flex; gap: 8px">
+        <button type="button" onClick="{{nextLang}}" aria-label="Change language" style="height: 44px; padding: 0 14px; border-radius: 22px; border: 1px solid #D9DFE7; background: #FFFFFF; display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: #0E1726; cursor: pointer">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"></path></svg>
+          {{t.langName}}
+        </button>
+        <button type="button" aria-label="Notifications, 2 new" style="position: relative; width: 44px; height: 44px; border-radius: 22px; border: 1px solid #D9DFE7; background: #FFFFFF; display: flex; align-items: center; justify-content: center; color: #0E1726; cursor: pointer">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"></path></svg>
+          <span style="position: absolute; top: 9px; right: 10px; width: 9px; height: 9px; border-radius: 50%; background: #B42318; border: 2px solid #FFFFFF"></span>
+        </button>
+      </div>
+    </div>
+
+    <sc-if value="{{offline}}" hint-placeholder-val="{{false}}">
+      <div role="status" style="display: flex; gap: 10px; align-items: flex-start; padding: 12px 14px; border-radius: 12px; background: #FFF4E0; color: #8A4A0B; font-size: 14px; line-height: 1.45">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0"><path d="M2 2l20 20"></path><path d="M8.5 16.5a5 5 0 0 1 7 0"></path><path d="M5 12.9a10 10 0 0 1 5.2-2.8"></path><path d="M2 8.8a15 15 0 0 1 4.2-2.6"></path><path d="M22 8.8A15 15 0 0 0 10.7 5"></path><circle cx="12" cy="20" r="1"></circle></svg>
+        <span>{{t.offline}}</span>
+      </div>
+    </sc-if>
+
+    <div style="display: flex; flex-direction: column; gap: 4px">
+      <h1 style="margin: 0; font-size: 27px; line-height: 1.25">{{t.greet}}</h1>
+      <p style="margin: 0; font-size: 14px; color: #566273">Gajuwaka, Visakhapatnam · Health ID ••••4821</p>
+    </div>
+
+    <a href="Emergency.dc.html" style="display: flex; align-items: center; gap: 16px; padding: 18px; border-radius: 20px; background: #B42318; color: #FFFFFF; text-decoration: none">
+      <span style="width: 56px; height: 56px; border-radius: 28px; background: #FFFFFF; color: #B42318; display: flex; align-items: center; justify-content: center; flex-shrink: 0">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"></path></svg>
+      </span>
+      <span style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1">
+        <span style="font-size: 22px; font-weight: 700">{{t.sos}}</span>
+        <span style="font-size: 15px">{{t.sosSub}}</span>
+      </span>
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+    </a>
+
+    <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px">
+      <a href="Book.dc.html" style="display: flex; flex-direction: column; gap: 12px; padding: 16px; min-height: 108px; box-sizing: border-box; border-radius: 18px; background: #FFFFFF; border: 1px solid #D9DFE7; color: #0E1726; text-decoration: none">
+        <span style="width: 44px; height: 44px; border-radius: 12px; background: #E7F0F8; color: #0B4B7C; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg></span>
+        <span style="font-size: 16px; font-weight: 600; line-height: 1.3">{{t.book}}</span>
+      </a>
+      <a href="VideoCall.dc.html" style="display: flex; flex-direction: column; gap: 12px; padding: 16px; min-height: 108px; box-sizing: border-box; border-radius: 18px; background: #FFFFFF; border: 1px solid #D9DFE7; color: #0E1726; text-decoration: none">
+        <span style="width: 44px; height: 44px; border-radius: 12px; background: #E7F0F8; color: #0B4B7C; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 8-6 4 6 4V8z"></path><rect x="2" y="6" width="14" height="12" rx="2"></rect></svg></span>
+        <span style="font-size: 16px; font-weight: 600; line-height: 1.3">{{t.video}}</span>
+      </a>
+      <a href="Records.dc.html" style="display: flex; flex-direction: column; gap: 12px; padding: 16px; min-height: 108px; box-sizing: border-box; border-radius: 18px; background: #FFFFFF; border: 1px solid #D9DFE7; color: #0E1726; text-decoration: none">
+        <span style="width: 44px; height: 44px; border-radius: 12px; background: #FFF4E0; color: #8A4A0B; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6M8 13h8M8 17h5"></path></svg></span>
+        <span style="font-size: 16px; font-weight: 600; line-height: 1.3">{{t.records}}</span>
+      </a>
+      <a href="Assistant.dc.html" style="display: flex; flex-direction: column; gap: 12px; padding: 16px; min-height: 108px; box-sizing: border-box; border-radius: 18px; background: #FFFFFF; border: 1px solid #D9DFE7; color: #0E1726; text-decoration: none">
+        <span style="width: 44px; height: 44px; border-radius: 12px; background: #EFEBFA; color: #5B45A8; display: flex; align-items: center; justify-content: center"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path><path d="M8 9h8M8 13h5"></path></svg></span>
+        <span style="font-size: 16px; font-weight: 600; line-height: 1.3">{{t.assistant}}</span>
+      </a>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; align-items: baseline; justify-content: space-between">
+        <h2 style="margin: 0; font-size: 19px">{{t.next}}</h2>
+        <a href="Book.dc.html" style="font-size: 14px; font-weight: 600">See all</a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 14px; padding: 16px; border-radius: 18px; background: #FFFFFF; border: 1px solid #D9DFE7">
+        <div style="display: flex; gap: 14px">
+          <div style="width: 60px; flex-shrink: 0; padding: 8px 0; border-radius: 12px; background: #E7F0F8; color: #0B4B7C; display: flex; flex-direction: column; align-items: center">
+            <span style="font-size: 12px; font-weight: 700">SAT</span>
+            <span style="font-size: 24px; font-weight: 700; line-height: 1.1">26</span>
+            <span style="font-size: 12px; font-weight: 700">SEP</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 3px">
+            <span style="font-size: 17px; font-weight: 600">Dr. Ramesh Varma</span>
+            <span style="font-size: 14px; color: #566273">General Medicine · King George Hospital</span>
+            <span style="font-size: 14px">10:00 AM · OPD Block B, Room 202</span>
+            <span style="font-size: 14px; font-weight: 600; color: #0B4B7C">Token B-14 · Free (Government)</span>
+          </div>
+        </div>
+        <div style="display: flex; gap: 10px">
+          <a href="#directions" style="flex: 1; height: 44px; border-radius: 12px; border: 1px solid #C5CED9; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 15px; font-weight: 600; color: #0E1726; text-decoration: none">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+            Directions
+          </a>
+          <a href="Book.dc.html" style="flex: 1; height: 44px; border-radius: 12px; border: 1px solid #C5CED9; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; color: #0E1726; text-decoration: none">Reschedule</a>
+        </div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; align-items: baseline; justify-content: space-between">
+        <h2 style="margin: 0; font-size: 19px">{{t.meds}}</h2>
+        <span style="font-size: 14px; color: #566273">{{medsLeft}} left</span>
+      </div>
+      <div style="display: flex; flex-direction: column; border-radius: 18px; background: #FFFFFF; border: 1px solid #D9DFE7; overflow: hidden">
+        <sc-for list="{{meds}}" as="m" hint-placeholder-count="3">
+          <div style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-bottom: 1px solid #EDF1F5">
+            <span style="width: 40px; height: 40px; border-radius: 10px; background: #FFF4E0; color: #8A4A0B; display: flex; align-items: center; justify-content: center; flex-shrink: 0"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m10.5 20.5 10-10a4.95 4.95 0 1 0-7-7l-10 10a4.95 4.95 0 1 0 7 7z"></path><path d="m8.5 8.5 7 7"></path></svg></span>
+            <span style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1">
+              <span style="font-size: 16px; font-weight: 600">{{m.name}}</span>
+              <span style="font-size: 13px; color: #566273">{{m.when}}</span>
+            </span>
+            <button type="button" onClick="{{m.toggle}}" aria-pressed="{{m.taken}}" style="{{m.btnStyle}}">{{m.btnLabel}}</button>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 10px">
+      <h2 style="margin: 0; font-size: 19px">{{t.cond}}</h2>
+      <div style="display: flex; flex-wrap: wrap; gap: 8px">
+        <span style="padding: 8px 12px; border-radius: 999px; background: #FFFFFF; border: 1px solid #D9DFE7; font-size: 14px">Hypertension · ongoing</span>
+        <span style="padding: 8px 12px; border-radius: 999px; background: #FFFFFF; border: 1px solid #D9DFE7; font-size: 14px">Type 2 diabetes · ongoing</span>
+        <span style="display: flex; align-items: center; gap: 6px; padding: 8px 12px; border-radius: 999px; background: #FEECEB; color: #912018; font-size: 14px; font-weight: 600">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path><path d="M12 9v4M12 17h.01"></path></svg>
+          Allergy: Penicillin
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 80px; padding-bottom: 8px; box-sizing: border-box; background: #FFFFFF; border-top: 1px solid #D9DFE7; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr))">
+    <a href="Home.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; font-weight: 700; color: #0B4B7C; text-decoration: none">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"></path></svg>{{t.navHome}}
+    </a>
+    <a href="Book.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; font-weight: 600; color: #566273; text-decoration: none">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg>{{t.navBook}}
+    </a>
+    <a href="Records.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; font-weight: 600; color: #566273; text-decoration: none">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path></svg>{{t.navRecords}}
+    </a>
+    <a href="Assistant.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; font-weight: 600; color: #566273; text-decoration: none">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>{{t.navAssist}}
+    </a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"network":{"editor":"enum","options":["online","offline"],"default":"online"},"$preview":{"width":390,"height":1180}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { lang: 0, taken: [true, false, false] };
+  }
+  renderVals() {
+    var self = this;
+    var L = [
+      { langName: 'English', greet: 'Good morning, Lakshmi', sos: 'Emergency', sosSub: 'Tap to get help now', book: 'Book a visit', video: 'Video consult', records: 'My records', assistant: 'Ask health assistant', next: 'Next appointment', meds: 'Today’s medicines', cond: 'Health conditions', offline: 'You are offline. Showing saved data. Emergency help still works.', navHome: 'Home', navBook: 'Book', navRecords: 'Records', navAssist: 'Assistant', taken: 'Taken', mark: 'Mark taken' },
+      { langName: 'తెలుగు', greet: 'శుభోదయం, లక్ష్మి', sos: 'అత్యవసరం', sosSub: 'వెంటనే సహాయం కోసం నొక్కండి', book: 'అపాయింట్‌మెంట్', video: 'వీడియో సంప్రదింపు', records: 'నా రికార్డులు', assistant: 'ఆరోగ్య సహాయకుడు', next: 'తదుపరి అపాయింట్‌మెంట్', meds: 'ఈరోజు మందులు', cond: 'ఆరోగ్య సమస్యలు', offline: 'మీరు ఆఫ్‌లైన్‌లో ఉన్నారు. సేవ్ చేసిన సమాచారం చూపబడుతోంది. అత్యవసర సహాయం పనిచేస్తుంది.', navHome: 'హోమ్', navBook: 'బుకింగ్', navRecords: 'రికార్డులు', navAssist: 'సహాయకుడు', taken: 'వేసుకున్నాను', mark: 'వేసుకున్నాను?' },
+      { langName: 'हिन्दी', greet: 'सुप्रभात, लक्ष्मी', sos: 'आपातकाल', sosSub: 'तुरंत मदद के लिए दबाएँ', book: 'अपॉइंटमेंट बुक करें', video: 'वीडियो परामर्श', records: 'मेरे रिकॉर्ड', assistant: 'स्वास्थ्य सहायक', next: 'अगली अपॉइंटमेंट', meds: 'आज की दवाइयाँ', cond: 'स्वास्थ्य स्थितियाँ', offline: 'आप ऑफ़लाइन हैं। सहेजी गई जानकारी दिख रही है। आपातकालीन मदद चालू है।', navHome: 'होम', navBook: 'बुकिंग', navRecords: 'रिकॉर्ड', navAssist: 'सहायक', taken: 'ले ली', mark: 'ले ली?' },
+      { langName: 'मराठी', greet: 'सुप्रभात, लक्ष्मी', sos: 'आणीबाणी', sosSub: 'त्वरित मदतीसाठी दाबा', book: 'भेट बुक करा', video: 'व्हिडिओ सल्ला', records: 'माझे रेकॉर्ड', assistant: 'आरोग्य सहाय्यक', next: 'पुढील भेट', meds: 'आजची औषधे', cond: 'आरोग्य स्थिती', offline: 'तुम्ही ऑफलाइन आहात. जतन केलेली माहिती दाखवत आहे. आपत्कालीन मदत सुरू आहे.', navHome: 'होम', navBook: 'बुकिंग', navRecords: 'रेकॉर्ड', navAssist: 'सहाय्यक', taken: 'घेतले', mark: 'घेतले?' }
+    ];
+    var t = L[this.state.lang];
+    var medList = [
+      { name: 'Metformin 500 mg', when: '8:00 AM · after breakfast' },
+      { name: 'Amlodipine 5 mg', when: '9:00 AM · once a day' },
+      { name: 'Metformin 500 mg', when: '8:00 PM · after dinner' }
+    ];
+    var taken = this.state.taken;
+    var btnBase = 'min-width:96px;height:40px;padding:0 12px;border-radius:10px;font-size:14px;font-weight:600;cursor:pointer;';
+    return {
+      t: t,
+      offline: (this.props.network ?? 'online') === 'offline',
+      nextLang: function () { self.setState({ lang: (self.state.lang + 1) % 4 }); },
+      medsLeft: taken.filter(function (x) { return !x; }).length,
+      meds: medList.map(function (m, i) {
+        var on = taken[i];
+        return {
+          name: m.name,
+          when: m.when,
+          taken: on,
+          btnLabel: on ? '✓ ' + t.taken : t.mark,
+          btnStyle: btnBase + (on ? 'border:none;background:#EBF6E4;color:#2B6A12;' : 'border:1px solid #C5CED9;background:#FFFFFF;color:#0E1726;'),
+          toggle: function () {
+            var next = taken.slice();
+            next[i] = !next[i];
+            self.setState({ taken: next });
+          }
+        };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,207 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Emergency help</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&amp;family=Figtree:wght@400;500;600;700&amp;family=Noto+Sans+Devanagari:wght@400;600&amp;family=Noto+Sans+Telugu:wght@400;600&amp;display=swap">
+<style>
+body{margin:0;background:#FFF7F6;color:#0E1726;font-family:'Figtree','Noto Sans Telugu','Noto Sans Devanagari',system-ui,sans-serif}
+h1,h2,h3{font-family:'Bricolage Grotesque','Noto Sans Telugu','Noto Sans Devanagari',sans-serif}
+a{color:#912018}a:hover{color:#7A1A14}
+button{font-family:inherit}
+:focus-visible{outline:3px solid #2F7CC0;outline-offset:2px}
+</style>
+</helmet>
+<div style="width: 390px; height: 1040px; box-sizing: border-box; padding: 16px 20px 24px; display: flex; flex-direction: column; gap: 16px; background: #FFF7F6">
+
+  <div style="display: flex; align-items: center; justify-content: space-between">
+    <h1 style="margin: 0; font-size: 28px; color: #912018">Emergency</h1>
+    <a href="Home.dc.html" aria-label="Close emergency" style="width: 44px; height: 44px; border-radius: 22px; background: #FFFFFF; border: 1px solid #F2D4D0; display: flex; align-items: center; justify-content: center; color: #0E1726">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"></path></svg>
+    </a>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 8px; padding: 10px; border-radius: 14px; border: 1.5px dashed #8E99A8; background: #FFFFFF">
+    <span style="font-size: 12px; font-weight: 700; letter-spacing: .6px; color: #566273">PROTOTYPE · SIMULATE NETWORK</span>
+    <div style="display: flex; gap: 4px; padding: 3px; border-radius: 10px; background: #E6EBF1">
+      <sc-for list="{{nets}}" as="n" hint-placeholder-count="3">
+        <button type="button" onClick="{{n.pick}}" aria-pressed="{{n.on}}" style="{{n.style}}">{{n.label}}</button>
+      </sc-for>
+    </div>
+  </div>
+
+  <div role="status" style="{{statusStyle}}">
+    <span style="font-size: 16px; font-weight: 700">{{statusTitle}}</span>
+    <span style="font-size: 14px; line-height: 1.5">{{statusText}}</span>
+  </div>
+
+  <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+    <a href="tel:108" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; height: 92px; border-radius: 18px; background: #B42318; color: #FFFFFF; text-decoration: none">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 17V7a1 1 0 0 1 1-1h10v11"></path><path d="M14 10h4l3 4v3h-7"></path><circle cx="7" cy="17.5" r="2"></circle><circle cx="17" cy="17.5" r="2"></circle><path d="M8 9v4M6 11h4"></path></svg>
+      <span style="font-size: 20px; font-weight: 700">Call 108</span>
+      <span style="font-size: 12px">Ambulance</span>
+    </a>
+    <a href="tel:112" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; height: 92px; border-radius: 18px; background: #FFFFFF; border: 2px solid #B42318; color: #912018; text-decoration: none">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"></path></svg>
+      <span style="font-size: 20px; font-weight: 700">Call 112</span>
+      <span style="font-size: 12px">All emergencies</span>
+    </a>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 8px">
+    <span style="font-size: 15px; font-weight: 700">What is happening? <span style="font-weight: 400; color: #566273">Tap all that apply</span></span>
+    <div style="display: flex; flex-wrap: wrap; gap: 8px">
+      <sc-for list="{{symptoms}}" as="sy" hint-placeholder-count="8">
+        <button type="button" onClick="{{sy.pick}}" aria-pressed="{{sy.on}}" style="{{sy.style}}">{{sy.label}}</button>
+      </sc-for>
+    </div>
+  </div>
+
+  <div style="display: flex; gap: 12px; align-items: center; padding: 12px 14px; border-radius: 14px; background: #FFFFFF; border: 1px solid #F2D4D0">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#B42318" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0"><path d="M12 22s7-6.2 7-12a7 7 0 0 0-14 0c0 5.8 7 12 7 12z"></path><circle cx="12" cy="10" r="2.5"></circle></svg>
+    <span style="display: flex; flex-direction: column; gap: 2px">
+      <span style="font-size: 15px; font-weight: 600">17.6912° N, 83.2178° E · accurate to 12 m</span>
+      <span style="font-size: 13px; color: #566273">Gajuwaka, near bus depot · GPS works without internet</span>
+    </span>
+  </div>
+
+  <sc-if value="{{isOnline}}" hint-placeholder-val="{{true}}">
+    <div style="display: flex; flex-direction: column; gap: 12px">
+      <sc-if value="{{notSent}}" hint-placeholder-val="{{true}}">
+        <button type="button" onClick="{{send}}" style="height: 64px; border-radius: 18px; border: none; background: #B42318; color: #FFFFFF; font-size: 20px; font-weight: 700; cursor: pointer">Send alert now</button>
+        <span style="font-size: 13px; line-height: 1.5; color: #566273; text-align: center">Goes to 108, the nearest emergency hospital and your family (Ravi, son). Sends less than 1 KB, so it works on slow 2G.</span>
+      </sc-if>
+      <sc-if value="{{sent}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; flex-direction: column; gap: 0; padding: 14px 16px; border-radius: 16px; background: #FFFFFF; border: 1px solid #F2D4D0">
+          <sc-for list="{{timeline}}" as="ev" hint-placeholder-count="4">
+            <div style="display: flex; gap: 12px; padding: 8px 0">
+              <span style="{{ev.dot}}"></span>
+              <span style="display: flex; flex-direction: column; gap: 2px">
+                <span style="font-size: 15px; font-weight: 600">{{ev.title}}</span>
+                <span style="font-size: 13px; color: #566273">{{ev.time}}</span>
+              </span>
+            </div>
+          </sc-for>
+        </div>
+        <button type="button" onClick="{{reset}}" style="height: 48px; border-radius: 14px; border: 1px solid #C5CED9; background: #FFFFFF; font-size: 15px; font-weight: 600; cursor: pointer">Cancel alert (I am safe)</button>
+      </sc-if>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isSms}}" hint-placeholder-val="{{false}}">
+    <div style="display: flex; flex-direction: column; gap: 10px">
+      <a href="sms:+910000000000?body=SOS%20P4821%20LOC17.6912,83.2178%20CHEST,BREATH%20SEV4" style="display: flex; align-items: center; justify-content: center; gap: 10px; height: 64px; border-radius: 18px; background: #B42318; color: #FFFFFF; font-size: 20px; font-weight: 700; text-decoration: none">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"></rect><path d="m3 7 9 6 9-6"></path></svg>
+        Send SMS alert
+      </a>
+      <span style="font-size: 13px; line-height: 1.5; color: #566273">Opens your SMS app with this message ready. Just press <strong>Send</strong>:</span>
+      <div style="padding: 12px 14px; border-radius: 14px; background: #FFFFFF; border: 1px solid #F2D4D0; font-family: ui-monospace, Menlo, monospace; font-size: 13px; line-height: 1.55">To: [GATEWAY NUMBER]<br>SOS P4821 LOC17.6912,83.2178 CHEST,BREATH SEV4</div>
+      <a href="tel:+910000000001" style="display: flex; align-items: center; justify-content: center; gap: 8px; height: 52px; border-radius: 14px; border: 2px solid #B42318; background: #FFFFFF; color: #912018; font-size: 16px; font-weight: 700; text-decoration: none">Give a missed call instead</a>
+      <span style="font-size: 13px; line-height: 1.5; color: #566273; text-align: center">We know your number and last location, and call you back within 60 seconds.</span>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isNone}}" hint-placeholder-val="{{false}}">
+    <div style="display: flex; flex-direction: column; gap: 10px">
+      <div style="display: flex; gap: 12px; align-items: center; padding: 14px 16px; border-radius: 16px; background: #FFFFFF; border: 1px solid #F2D4D0">
+        <span style="width: 12px; height: 12px; border-radius: 6px; background: #B54708; flex-shrink: 0"></span>
+        <span style="font-size: 14px; line-height: 1.5"><strong>Alert saved on your phone.</strong> It sends by itself as soon as any signal comes back.</span>
+      </div>
+      <span style="font-size: 15px; font-weight: 700">While you wait · works offline</span>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px">
+        <a href="#cpr" style="padding: 14px; border-radius: 14px; background: #FFFFFF; border: 1px solid #F2D4D0; color: #0E1726; text-decoration: none; font-size: 15px; font-weight: 600">CPR steps</a>
+        <a href="#bleeding" style="padding: 14px; border-radius: 14px; background: #FFFFFF; border: 1px solid #F2D4D0; color: #0E1726; text-decoration: none; font-size: 15px; font-weight: 600">Heavy bleeding</a>
+        <a href="#snake" style="padding: 14px; border-radius: 14px; background: #FFFFFF; border: 1px solid #F2D4D0; color: #0E1726; text-decoration: none; font-size: 15px; font-weight: 600">Snake bite</a>
+        <a href="#burns" style="padding: 14px; border-radius: 14px; background: #FFFFFF; border: 1px solid #F2D4D0; color: #0E1726; text-decoration: none; font-size: 15px; font-weight: 600">Burns</a>
+      </div>
+      <a href="#voice" style="display: flex; align-items: center; justify-content: center; gap: 8px; height: 52px; border-radius: 14px; border: 1px solid #C5CED9; background: #FFFFFF; color: #0E1726; font-size: 16px; font-weight: 600; text-decoration: none">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"></rect><path d="M5 10a7 7 0 0 0 14 0M12 17v5"></path></svg>
+        Record a voice message
+      </a>
+    </div>
+  </sc-if>
+
+  <div style="display: flex; flex-direction: column; gap: 8px">
+    <span style="font-size: 15px; font-weight: 700">Nearest emergency hospitals <span style="font-weight: 400; color: #566273">· saved offline</span></span>
+    <div style="display: flex; flex-direction: column; border-radius: 16px; background: #FFFFFF; border: 1px solid #F2D4D0; overflow: hidden">
+      <div style="display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-bottom: 1px solid #F7E1DE">
+        <span style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1">
+          <span style="font-size: 15px; font-weight: 600">Seaview Multispeciality</span>
+          <span style="font-size: 13px; color: #566273">1.8 km · Private · ER 24×7</span>
+        </span>
+        <a href="tel:+910000000002" aria-label="Call Seaview Multispeciality" style="width: 44px; height: 44px; border-radius: 12px; background: #FEECEB; color: #912018; display: flex; align-items: center; justify-content: center">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"></path></svg>
+        </a>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px; padding: 12px 14px">
+        <span style="display: flex; flex-direction: column; gap: 2px; flex-grow: 1">
+          <span style="font-size: 15px; font-weight: 600">King George Hospital (KGH)</span>
+          <span style="font-size: 13px; color: #566273">9.8 km · Government · ER 24×7 · Free</span>
+        </span>
+        <a href="tel:+910000000003" aria-label="Call King George Hospital" style="width: 44px; height: 44px; border-radius: 12px; background: #FEECEB; color: #912018; display: flex; align-items: center; justify-content: center">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"></path></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1040}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { net: 'online', sent: false, sym: { chest: true, breath: true } };
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state;
+    var info = {
+      online: { label: 'Internet', title: 'Connected (slow 2G is enough)', text: 'Your alert reaches 108 and the hospital in seconds.', bg: '#EBF6E4', fg: '#2B6A12' },
+      sms: { label: 'SMS only', title: 'No internet, but phone signal', text: 'SMS and calls still work. One tap sends a ready-made SMS.', bg: '#FFF4E0', fg: '#8A4A0B' },
+      none: { label: 'No signal', title: 'No signal right now', text: 'Try Call 112. Emergency calls can use any operator’s tower, even without balance.', bg: '#FEECEB', fg: '#912018' }
+    };
+    var cur = info[s.net];
+    var seg = 'flex:1;height:40px;border-radius:8px;border:none;font-size:14px;font-weight:600;cursor:pointer;';
+    var symList = [['chest', 'Chest pain'], ['breath', 'Can’t breathe'], ['uncon', 'Unconscious'], ['bleed', 'Bleeding'], ['accident', 'Accident'], ['preg', 'Pregnancy'], ['snake', 'Snake bite'], ['burn', 'Burns']];
+    var chip = 'height:44px;padding:0 14px;border-radius:999px;font-size:15px;font-weight:600;cursor:pointer;';
+    var dot = function (c) { return 'width:14px;height:14px;border-radius:7px;margin-top:4px;flex-shrink:0;background:' + c + ';'; };
+    return {
+      nets: ['online', 'sms', 'none'].map(function (k) {
+        var on = s.net === k;
+        return { label: info[k].label, on: on, style: seg + (on ? 'background:#0E1726;color:#FFFFFF;' : 'background:transparent;color:#3B4757;'), pick: function () { self.setState({ net: k, sent: false }); } };
+      }),
+      statusTitle: cur.title,
+      statusText: cur.text,
+      statusStyle: 'display:flex;flex-direction:column;gap:4px;padding:14px 16px;border-radius:16px;background:' + cur.bg + ';color:' + cur.fg + ';',
+      isOnline: s.net === 'online',
+      isSms: s.net === 'sms',
+      isNone: s.net === 'none',
+      sent: s.sent,
+      notSent: !s.sent,
+      send: function () { self.setState({ sent: true }); },
+      reset: function () { self.setState({ sent: false }); },
+      symptoms: symList.map(function (p) {
+        var on = !!s.sym[p[0]];
+        return {
+          label: p[1], on: on,
+          style: chip + (on ? 'border:2px solid #B42318;background:#B42318;color:#FFFFFF;' : 'border:1px solid #F2D4D0;background:#FFFFFF;color:#0E1726;'),
+          pick: function () { var n = Object.assign({}, s.sym); n[p[0]] = !n[p[0]]; self.setState({ sym: n }); }
+        };
+      }),
+      timeline: [
+        { title: 'Alert received by 108', time: '10:42:05 · 3 seconds', dot: dot('#2B6A12') },
+        { title: 'Ambulance AP 31 TA 1082 on the way', time: 'Arrives in about 9 min · driver Suresh', dot: dot('#2B6A12') },
+        { title: 'Seaview ER is preparing for you', time: 'Your allergies and medicines were shared', dot: dot('#2B6A12') },
+        { title: 'Ravi (son) informed by SMS', time: '10:42:07', dot: dot('#A3AEBB') }
+      ]
+    };
+  }
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Video consultation</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&amp;family=Figtree:wght@400;500;600;700&amp;family=Noto+Sans+Devanagari:wght@400;600&amp;family=Noto+Sans+Telugu:wght@400;600&amp;display=swap">
+<style>
+body{margin:0;background:#0B131D;color:#FFFFFF;font-family:'Figtree','Noto Sans Telugu','Noto Sans Devanagari',system-ui,sans-serif}
+a{color:#9CC3F5}a:hover{color:#C4DAF7}
+button{font-family:inherit}
+:focus-visible{outline:3px solid #9CC3F5;outline-offset:2px}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 844px; box-sizing: border-box; background: #111C28; overflow: hidden">
+
+  <div style="position: absolute; left: 0; right: 0; top: 0; bottom: 0; display: flex; align-items: center; justify-content: center">
+    <div style="width: 150px; height: 150px; border-radius: 75px; background: #22303F; color: #DCE4EE; display: flex; align-items: center; justify-content: center; font-size: 52px; font-weight: 700; font-family: 'Bricolage Grotesque', sans-serif">RV</div>
+  </div>
+
+  <div style="position: absolute; left: 16px; right: 16px; top: 16px; display: flex; justify-content: space-between; align-items: flex-start">
+    <div style="display: flex; flex-direction: column; gap: 4px; padding: 10px 12px; border-radius: 14px; background: rgba(11,19,29,.72)">
+      <span style="font-size: 16px; font-weight: 700">Dr. Ramesh Varma</span>
+      <span style="font-size: 13px; color: #C8D3DF">General Medicine · KGH · 08:42</span>
+      <span style="display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 600; color: #A6DC8A">
+        <span style="width: 8px; height: 8px; border-radius: 4px; background: #5FA83A"></span>Good connection · encrypted
+      </span>
+    </div>
+    <div style="width: 96px; height: 128px; border-radius: 14px; background: #2A394A; border: 2px solid #FFFFFF; display: flex; align-items: flex-end; justify-content: center; padding-bottom: 8px; box-sizing: border-box; font-size: 12px; font-weight: 600">You</div>
+  </div>
+
+  <div style="position: absolute; left: 16px; right: 16px; bottom: 132px; display: flex; flex-direction: column; gap: 8px; padding: 14px 16px; border-radius: 18px; background: rgba(11,19,29,.86)">
+    <span style="display: flex; align-items: center; gap: 6px; font-size: 12px; font-weight: 700; letter-spacing: .5px; color: #9CC3F5">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"></path></svg>
+      LIVE TRANSLATION · ENGLISH → తెలుగు
+    </span>
+    <span style="font-size: 13px; line-height: 1.45; color: #B5C1CE">“You have high blood pressure. Take the medicine twice a day after food.”</span>
+    <span lang="te" style="font-size: 19px; line-height: 1.55; font-weight: 600">మీకు రక్తపోటు ఎక్కువగా ఉంది. ఆహారం తర్వాత రోజుకు రెండుసార్లు మందు వేసుకోండి.</span>
+  </div>
+
+  <div style="position: absolute; left: 0; right: 0; bottom: 0; height: 116px; padding: 0 20px 16px; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; background: #0B131D">
+    <button type="button" aria-label="Mute microphone" style="width: 56px; height: 56px; border-radius: 28px; border: none; background: #22303F; color: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"></rect><path d="M5 10a7 7 0 0 0 14 0M12 17v5"></path></svg>
+    </button>
+    <button type="button" aria-label="Turn camera off" style="width: 56px; height: 56px; border-radius: 28px; border: none; background: #22303F; color: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 8-6 4 6 4V8z"></path><rect x="2" y="6" width="14" height="12" rx="2"></rect></svg>
+    </button>
+    <a href="Home.dc.html" aria-label="End call" style="width: 72px; height: 56px; border-radius: 28px; background: #D92D20; color: #FFFFFF; display: flex; align-items: center; justify-content: center">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="transform: rotate(135deg)"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"></path></svg>
+    </a>
+    <button type="button" aria-label="Subtitles on" aria-pressed="true" style="width: 56px; height: 56px; border-radius: 28px; border: none; background: #E7F0F8; color: #083A61; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 800; cursor: pointer">CC</button>
+    <button type="button" aria-label="Switch to audio only" style="width: 56px; height: 56px; border-radius: 28px; border: none; background: #22303F; color: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 14v-2a9 9 0 0 1 18 0v2"></path><rect x="3" y="14" width="5" height="7" rx="2"></rect><rect x="16" y="14" width="5" height="7" rx="2"></rect></svg>
+    </button>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>

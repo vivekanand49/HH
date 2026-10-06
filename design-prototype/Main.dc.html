@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Choose language</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&amp;family=Figtree:wght@400;500;600;700&amp;family=Noto+Sans+Devanagari:wght@400;600&amp;family=Noto+Sans+Telugu:wght@400;600&amp;display=swap">
+<style>
+body{margin:0;background:#F3F5F8;color:#0E1726;font-family:'Figtree','Noto Sans Telugu','Noto Sans Devanagari',system-ui,sans-serif}
+h1,h2,h3{font-family:'Bricolage Grotesque','Noto Sans Telugu','Noto Sans Devanagari',sans-serif}
+a{color:#0B4B7C}a:hover{color:#083A61}
+button,input{font-family:inherit}
+:focus-visible{outline:3px solid #2F7CC0;outline-offset:2px}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; padding: 48px 24px 28px; display: flex; flex-direction: column; gap: 28px; background: #F3F5F8">
+  <div style="width: 44px; height: 44px; border-radius: 12px; background: #FFFFFF; border: 1px solid #D9DFE7; box-sizing: border-box; display: flex; align-items: center; justify-content: center">
+      <svg width="32" height="32" viewBox="0 0 36 36" fill="none" stroke-width="2.6" stroke-linejoin="round" aria-hidden="true"><path d="M10.5 4H19.5V10.5H26V19.5H19.5V26H10.5V19.5H4V10.5H10.5Z" stroke="#0B4B7C"></path><path d="M16.5 10H25.5V16.5H32V25.5H25.5V32H16.5V25.5H10V16.5H16.5Z" stroke="#6DB33F"></path></svg>
+    </div><div style="display: flex; align-items: center; gap: 12px">
+    
+    <div style="display: flex; flex-direction: column">
+      <span style="font-size: 18px; font-weight: 700">Swasthya Setu</span>
+      <span style="font-size: 13px; color: #566273">Healthcare for every village</span>
+    </div>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 10px">
+    <h1 style="margin: 0; font-size: 32px; line-height: 1.2">{{heading}}</h1>
+    <p style="margin: 0; font-size: 16px; line-height: 1.5; color: #566273">{{sub}}</p>
+  </div>
+  <div style="display: flex; flex-direction: column; gap: 12px">
+    <sc-for list="{{langs}}" as="l" hint-placeholder-count="4">
+      <button type="button" onClick="{{l.pick}}" aria-pressed="{{l.selected}}" style="{{l.cardStyle}}">
+        <span style="display: flex; flex-direction: column; align-items: flex-start; gap: 2px">
+          <span style="font-size: 22px; font-weight: 600; line-height: 1.35">{{l.native}}</span>
+          <span style="font-size: 14px; color: #566273">{{l.english}}</span>
+        </span>
+        <span style="{{l.dotStyle}}">
+          <sc-if value="{{l.selected}}" hint-placeholder-val="{{false}}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#FFFFFF" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+          </sc-if>
+        </span>
+      </button>
+    </sc-for>
+  </div>
+  <div style="flex-grow: 1"></div>
+  <a href="Login.dc.html" style="display: flex; align-items: center; justify-content: center; gap: 8px; height: 56px; border-radius: 14px; background: #0B4B7C; color: #FFFFFF; font-size: 18px; font-weight: 600; text-decoration: none">{{cta}}
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+  </a>
+  <p style="margin: 0; text-align: center; font-size: 13px; line-height: 1.5; color: #566273">Works offline after the first visit · No app store needed</p>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { lang: 'en' };
+  }
+  renderVals() {
+    var cur = this.state.lang;
+    var copy = {
+      en: { heading: 'Choose your language', sub: 'Used for the app, SMS alerts and the health assistant. You can change it any time.', cta: 'Continue' },
+      te: { heading: 'మీ భాషను ఎంచుకోండి', sub: 'యాప్, SMS హెచ్చరికలు మరియు ఆరోగ్య సహాయకుడి కోసం. ఎప్పుడైనా మార్చుకోవచ్చు.', cta: 'కొనసాగించండి' },
+      hi: { heading: 'अपनी भाषा चुनें', sub: 'ऐप, SMS अलर्ट और स्वास्थ्य सहायक के लिए। आप इसे कभी भी बदल सकते हैं।', cta: 'आगे बढ़ें' },
+      mr: { heading: 'तुमची भाषा निवडा', sub: 'ॲप, SMS सूचना आणि आरोग्य सहाय्यकासाठी. तुम्ही ती कधीही बदलू शकता.', cta: 'पुढे चला' }
+    };
+    var list = [
+      { id: 'en', native: 'English', english: 'English' },
+      { id: 'te', native: 'తెలుగు', english: 'Telugu' },
+      { id: 'hi', native: 'हिन्दी', english: 'Hindi' },
+      { id: 'mr', native: 'मराठी', english: 'Marathi' }
+    ];
+    var self = this;
+    var base = 'display:flex;align-items:center;justify-content:space-between;width:100%;min-height:72px;padding:12px 18px;box-sizing:border-box;border-radius:16px;color:#0E1726;cursor:pointer;text-align:left;';
+    var dot = 'width:26px;height:26px;border-radius:50%;box-sizing:border-box;display:flex;align-items:center;justify-content:center;flex-shrink:0;';
+    return {
+      heading: copy[cur].heading,
+      sub: copy[cur].sub,
+      cta: copy[cur].cta,
+      langs: list.map(function (l) {
+        var on = l.id === cur;
+        return {
+          native: l.native,
+          english: l.english,
+          selected: on,
+          cardStyle: base + (on ? 'border:2px solid #0B4B7C;background:#E7F0F8;' : 'border:2px solid #D9DFE7;background:#FFFFFF;'),
+          dotStyle: dot + (on ? 'background:#0B4B7C;' : 'border:2px solid #A3AEBB;background:#FFFFFF;'),
+          pick: function () { self.setState({ lang: l.id }); }
+        };
+      })
+    };
+  }
+}
+</script>
+</body>
+</html>

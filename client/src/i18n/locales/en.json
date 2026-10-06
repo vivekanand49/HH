@@ -1,0 +1,16 @@
+{
+  "severity_critical": "Critical",
+  "severity_high": "High",
+  "severity_medium": "Medium",
+  "severity_low": "Low",
+  "severity_unknown": "Unknown",
+  "status_new": "New",
+  "status_acknowledged": "Acknowledged",
+  "status_dispatched": "Ambulance sent",
+  "status_resolved": "Resolved",
+  "status_cancelled": "Cancelled",
+  "loc_gps": "GPS location",
+  "loc_sms": "Location from SMS",
+  "loc_last_known": "Last known location",
+  "loc_none": "No location"
+}

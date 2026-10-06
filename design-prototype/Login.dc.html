@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Sign in</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&amp;family=Figtree:wght@400;500;600;700&amp;family=Noto+Sans+Devanagari:wght@400;600&amp;family=Noto+Sans+Telugu:wght@400;600&amp;display=swap">
+<style>
+body{margin:0;background:#F3F5F8;color:#0E1726;font-family:'Figtree','Noto Sans Telugu','Noto Sans Devanagari',system-ui,sans-serif}
+h1,h2,h3{font-family:'Bricolage Grotesque','Noto Sans Telugu','Noto Sans Devanagari',sans-serif}
+a{color:#0B4B7C}a:hover{color:#083A61}
+button,input{font-family:inherit}
+input::placeholder{color:#8A94A3}
+:focus-visible{outline:3px solid #2F7CC0;outline-offset:2px}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; padding: 20px 24px 28px; display: flex; flex-direction: column; gap: 24px; background: #F3F5F8">
+  <div style="display: flex; align-items: center; justify-content: space-between">
+    <a href="Main.dc.html" aria-label="Back to language" style="width: 44px; height: 44px; border-radius: 22px; background: #FFFFFF; border: 1px solid #D9DFE7; display: flex; align-items: center; justify-content: center; color: #0E1726">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"></path></svg>
+    </a>
+    <a href="Main.dc.html" style="height: 36px; padding: 0 14px; border-radius: 18px; background: #FFFFFF; border: 1px solid #D9DFE7; display: flex; align-items: center; gap: 6px; font-size: 14px; font-weight: 600; color: #0E1726; text-decoration: none">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"></path></svg>
+      English
+    </a>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 8px">
+    <h1 style="margin: 0; font-size: 30px; line-height: 1.2">Sign in</h1>
+    <p style="margin: 0; font-size: 16px; line-height: 1.5; color: #566273">One ID for all your records — government and private hospitals.</p>
+  </div>
+
+  <sc-if value="{{isId}}" hint-placeholder-val="{{true}}">
+    <div style="display: flex; flex-direction: column; gap: 20px">
+      <div style="display: flex; gap: 4px; padding: 4px; border-radius: 14px; background: #E6EBF1">
+        <sc-for list="{{types}}" as="t" hint-placeholder-count="3">
+          <button type="button" onClick="{{t.pick}}" aria-pressed="{{t.on}}" style="{{t.style}}">{{t.label}}</button>
+        </sc-for>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px">
+        <label for="idnum" style="font-size: 15px; font-weight: 600">{{idLabel}}</label>
+        <input id="idnum" type="text" inputmode="numeric" autocomplete="off" placeholder="{{placeholder}}" style="height: 58px; padding: 0 16px; border-radius: 14px; border: 2px solid #C5CED9; background: #FFFFFF; font-size: 22px; letter-spacing: 2px; color: #0E1726; box-sizing: border-box; width: 100%">
+        <span style="font-size: 13px; line-height: 1.5; color: #566273">{{idHelp}}</span>
+      </div>
+      <label style="display: flex; gap: 12px; align-items: flex-start; padding: 14px; border-radius: 14px; background: #FFFFFF; border: 1px solid #D9DFE7; cursor: pointer">
+        <input type="checkbox" checked="{{consent}}" onChange="{{toggleConsent}}" style="width: 22px; height: 22px; margin: 2px 0 0; accent-color: #0B4B7C; flex-shrink: 0">
+        <span style="font-size: 14px; line-height: 1.5">I allow hospitals I visit to see my health records for my care. I can withdraw this any time in Profile. <a href="#privacy">Privacy notice</a></span>
+      </label>
+    </div>
+  </sc-if>
+
+  <sc-if value="{{isOtp}}" hint-placeholder-val="{{false}}">
+    <div style="display: flex; flex-direction: column; gap: 18px">
+      <p style="margin: 0; font-size: 16px; line-height: 1.5">Enter the 6-digit code sent to <strong>+91 ••••• •3210</strong></p>
+      <div style="display: flex; gap: 8px">
+        <input aria-label="Digit 1" inputmode="numeric" maxlength="1" autocomplete="one-time-code" style="width: 48px; height: 58px; border-radius: 12px; border: 2px solid #0B4B7C; background: #FFFFFF; font-size: 24px; text-align: center; box-sizing: border-box">
+        <input aria-label="Digit 2" inputmode="numeric" maxlength="1" style="width: 48px; height: 58px; border-radius: 12px; border: 2px solid #C5CED9; background: #FFFFFF; font-size: 24px; text-align: center; box-sizing: border-box">
+        <input aria-label="Digit 3" inputmode="numeric" maxlength="1" style="width: 48px; height: 58px; border-radius: 12px; border: 2px solid #C5CED9; background: #FFFFFF; font-size: 24px; text-align: center; box-sizing: border-box">
+        <input aria-label="Digit 4" inputmode="numeric" maxlength="1" style="width: 48px; height: 58px; border-radius: 12px; border: 2px solid #C5CED9; background: #FFFFFF; font-size: 24px; text-align: center; box-sizing: border-box">
+        <input aria-label="Digit 5" inputmode="numeric" maxlength="1" style="width: 48px; height: 58px; border-radius: 12px; border: 2px solid #C5CED9; background: #FFFFFF; font-size: 24px; text-align: center; box-sizing: border-box">
+        <input aria-label="Digit 6" inputmode="numeric" maxlength="1" style="width: 48px; height: 58px; border-radius: 12px; border: 2px solid #C5CED9; background: #FFFFFF; font-size: 24px; text-align: center; box-sizing: border-box">
+      </div>
+      <div style="display: flex; align-items: center; gap: 8px; font-size: 14px; color: #566273">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"></circle><path d="M12 7v5l3 2"></path></svg>
+        Code expires in 4:52 · 3 attempts left
+      </div>
+      <div style="display: flex; gap: 20px">
+        <button type="button" onClick="{{back}}" style="height: 44px; padding: 0; border: none; background: none; font-size: 15px; font-weight: 600; color: #0B4B7C; text-decoration: underline; cursor: pointer">Change number</button>
+        <button type="button" disabled="{{true}}" style="height: 44px; padding: 0; border: none; background: none; font-size: 15px; color: #687485">Resend code in 0:42</button>
+      </div>
+    </div>
+  </sc-if>
+
+  <div style="flex-grow: 1"></div>
+
+  <sc-if value="{{isId}}" hint-placeholder-val="{{true}}">
+    <button type="button" onClick="{{sendOtp}}" style="height: 56px; border-radius: 14px; border: none; background: #0B4B7C; color: #FFFFFF; font-size: 18px; font-weight: 600; cursor: pointer">Send OTP</button>
+  </sc-if>
+  <sc-if value="{{isOtp}}" hint-placeholder-val="{{false}}">
+    <a href="Home.dc.html" style="display: flex; align-items: center; justify-content: center; height: 56px; border-radius: 14px; background: #0B4B7C; color: #FFFFFF; font-size: 18px; font-weight: 600; text-decoration: none">Verify and continue</a>
+  </sc-if>
+
+  <div style="display: flex; gap: 10px; align-items: flex-start; font-size: 13px; line-height: 1.5; color: #566273">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0B4B7C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0; margin-top: 1px"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path><path d="m9 12 2 2 4-4"></path></svg>
+    <span>Your ID is encrypted. We never show or store it in full.</span>
+  </div>
+  <p style="margin: 0; font-size: 14px; text-align: center; color: #566273">Doctor, health worker or hospital staff? <a href="HospitalConsole.dc.html" style="font-weight: 600">Staff sign-in</a></p>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { idType: 'aadhaar', step: 'id', consent: true };
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state;
+    var info = {
+      aadhaar: { label: 'Aadhaar', idLabel: 'Aadhaar number', placeholder: '0000 0000 0000', help: '12 digits. The OTP goes to the mobile linked with your Aadhaar.' },
+      abha: { label: 'ABHA', idLabel: 'ABHA number (Health ID)', placeholder: '00-0000-0000-0000', help: '14-digit Ayushman Bharat Health Account number. Links records from any hospital in India.' },
+      mobile: { label: 'Mobile', idLabel: 'Mobile number', placeholder: '+91 00000 00000', help: 'For first-time users without Aadhaar or ABHA. You can link one later.' }
+    };
+    var btn = 'flex:1;height:44px;border-radius:10px;border:none;font-size:15px;font-weight:600;cursor:pointer;';
+    return {
+      isId: s.step === 'id',
+      isOtp: s.step === 'otp',
+      consent: s.consent,
+      idLabel: info[s.idType].idLabel,
+      placeholder: info[s.idType].placeholder,
+      idHelp: info[s.idType].help,
+      types: ['aadhaar', 'abha', 'mobile'].map(function (k) {
+        var on = k === s.idType;
+        return {
+          label: info[k].label,
+          on: on,
+          style: btn + (on ? 'background:#FFFFFF;color:#0E1726;box-shadow:0 1px 2px rgba(14,23,38,.12);' : 'background:transparent;color:#4A5666;'),
+          pick: function () { self.setState({ idType: k }); }
+        };
+      }),
+      toggleConsent: function () { self.setState({ consent: !s.consent }); },
+      sendOtp: function () { self.setState({ step: 'otp' }); },
+      back: function () { self.setState({ step: 'id' }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

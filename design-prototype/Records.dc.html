@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>My health records</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&amp;family=Figtree:wght@400;500;600;700&amp;family=Noto+Sans+Devanagari:wght@400;600&amp;family=Noto+Sans+Telugu:wght@400;600&amp;display=swap">
+<style>
+body{margin:0;background:#F3F5F8;color:#0E1726;font-family:'Figtree','Noto Sans Telugu','Noto Sans Devanagari',system-ui,sans-serif}
+h1,h2,h3{font-family:'Bricolage Grotesque','Noto Sans Telugu','Noto Sans Devanagari',sans-serif}
+a{color:#0B4B7C}a:hover{color:#083A61}
+button{font-family:inherit}
+:focus-visible{outline:3px solid #2F7CC0;outline-offset:2px}
+</style>
+</helmet>
+<div style="position: relative; width: 390px; height: 1100px; box-sizing: border-box; background: #F3F5F8; overflow: hidden">
+  <div style="display: flex; flex-direction: column; gap: 16px; padding: 20px 20px 110px">
+    <div style="display: flex; flex-direction: column; gap: 4px">
+      <h1 style="margin: 0; font-size: 28px">My health records</h1>
+      <p style="margin: 0; font-size: 14px; color: #566273">7 records from 4 hospitals · updated 2 hours ago</p>
+    </div>
+
+    <div style="display: flex; gap: 10px; align-items: center; padding: 12px 14px; border-radius: 14px; background: #FEECEB; color: #912018">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0"><path d="M10.3 3.9 1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"></path><path d="M12 9v4M12 17h.01"></path></svg>
+      <span style="font-size: 15px; line-height: 1.4"><strong>Allergy: Penicillin.</strong> Every doctor sees this first.</span>
+    </div>
+
+    <div style="display: flex; gap: 10px">
+      <a href="#upload" style="flex: 1; height: 48px; border-radius: 12px; background: #0B4B7C; color: #FFFFFF; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 15px; font-weight: 600; text-decoration: none">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 7h3l2-3h8l2 3h3v13H3z"></path><circle cx="12" cy="13" r="4"></circle></svg>
+        Photo of a report
+      </a>
+      <a href="#share" style="flex: 1; height: 48px; border-radius: 12px; border: 1px solid #C5CED9; background: #FFFFFF; color: #0E1726; display: flex; align-items: center; justify-content: center; gap: 8px; font-size: 15px; font-weight: 600; text-decoration: none">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><path d="m8.6 13.5 6.8 4M15.4 6.5l-6.8 4"></path></svg>
+        Share with doctor
+      </a>
+    </div>
+
+    <div style="display: flex; gap: 8px; flex-wrap: wrap" aria-label="Filter records">
+      <sc-for list="{{filters}}" as="f" hint-placeholder-count="5">
+        <button type="button" onClick="{{f.pick}}" aria-pressed="{{f.on}}" style="{{f.style}}">{{f.label}}</button>
+      </sc-for>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 10px">
+      <sc-for list="{{items}}" as="r" hint-placeholder-count="5">
+        <div style="display: flex; gap: 12px; align-items: center; padding: 14px; border-radius: 16px; background: #FFFFFF; border: 1px solid #D9DFE7">
+          <span style="{{r.iconStyle}}">{{r.abbr}}</span>
+          <span style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1; min-width: 0">
+            <span style="font-size: 16px; font-weight: 600; line-height: 1.3">{{r.title}}</span>
+            <span style="font-size: 13px; color: #566273">{{r.hospital}} · {{r.date}}</span>
+            <span style="font-size: 13px; font-weight: 600; color: #3B4757">{{r.note}}</span>
+          </span>
+          <button type="button" aria-label="{{r.dl}}" style="width: 44px; height: 44px; border-radius: 12px; border: 1px solid #D9DFE7; background: #FFFFFF; color: #0E1726; display: flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: pointer">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M4 21h16"></path></svg>
+          </button>
+        </div>
+      </sc-for>
+      <sc-if value="{{empty}}" hint-placeholder-val="{{false}}">
+        <p style="margin: 0; padding: 20px; text-align: center; color: #566273">No records of this type yet.</p>
+      </sc-if>
+    </div>
+
+    <div style="display: flex; gap: 10px; align-items: flex-start; font-size: 13px; line-height: 1.5; color: #566273">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0B4B7C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path></svg>
+      <span>Saved on this phone, so records open without internet. Only doctors you allow can see them, and every view is logged.</span>
+    </div>
+  </div>
+
+  <nav aria-label="Main" style="position: absolute; left: 0; right: 0; bottom: 0; height: 80px; padding-bottom: 8px; box-sizing: border-box; background: #FFFFFF; border-top: 1px solid #D9DFE7; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr))">
+    <a href="Home.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; font-weight: 600; color: #566273; text-decoration: none">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"></path></svg>Home
+    </a>
+    <a href="Book.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; font-weight: 600; color: #566273; text-decoration: none">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg>Book
+    </a>
+    <a href="Records.dc.html" aria-current="page" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; font-weight: 700; color: #0B4B7C; text-decoration: none">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path></svg>Records
+    </a>
+    <a href="Assistant.dc.html" style="display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; font-weight: 600; color: #566273; text-decoration: none">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>Assistant
+    </a>
+  </nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":1100}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { filter: 'all' };
+  }
+  renderVals() {
+    var self = this;
+    var f = this.state.filter;
+    var kinds = {
+      lab: { abbr: 'LAB', bg: '#E7F0F8', fg: '#0B4B7C' },
+      rx: { abbr: 'Rx', bg: '#FFF4E0', fg: '#8A4A0B' },
+      img: { abbr: 'IMG', bg: '#EFEBFA', fg: '#5B45A8' },
+      other: { abbr: 'DOC', bg: '#EBF6E4', fg: '#2B6A12' }
+    };
+    var all = [
+      { title: 'Blood sugar (HbA1c)', hospital: 'King George Hospital', date: '22 Sep 2026', kind: 'lab', note: '7.4% · a little high' },
+      { title: 'Prescription · Dr. Ramesh Varma', hospital: 'King George Hospital', date: '22 Sep 2026', kind: 'rx', note: '2 medicines · 30 days' },
+      { title: 'Chest X-ray', hospital: 'Seaview Multispeciality', date: '18 Sep 2026', kind: 'img', note: 'Normal' },
+      { title: 'Cholesterol (lipid profile)', hospital: 'Urban PHC, Gajuwaka', date: '10 Sep 2026', kind: 'lab', note: 'LDL 128 mg/dL · borderline' },
+      { title: 'ECG', hospital: 'Seaview Multispeciality', date: '5 Sep 2026', kind: 'img', note: 'Normal rhythm' },
+      { title: 'Discharge summary · viral fever', hospital: 'Govt Victoria Hospital', date: '12 Jul 2026', kind: 'other', note: '3 days admitted' },
+      { title: 'Tetanus vaccine', hospital: 'Urban PHC, Gajuwaka', date: '3 Mar 2026', kind: 'other', note: 'Next dose: 2036' }
+    ];
+    var list = all.filter(function (r) { return f === 'all' || r.kind === f; });
+    var chip = 'height:40px;padding:0 14px;border-radius:999px;font-size:14px;font-weight:600;cursor:pointer;';
+    return {
+      filters: [['all', 'All'], ['lab', 'Lab tests'], ['rx', 'Prescriptions'], ['img', 'Scans'], ['other', 'Other']].map(function (p) {
+        var on = f === p[0];
+        return { label: p[1], on: on, style: chip + (on ? 'border:none;background:#0E1726;color:#FFFFFF;' : 'border:1px solid #C5CED9;background:#FFFFFF;color:#0E1726;'), pick: function () { self.setState({ filter: p[0] }); } };
+      }),
+      items: list.map(function (r) {
+        var k = kinds[r.kind];
+        return {
+          title: r.title, hospital: r.hospital, date: r.date, note: r.note, abbr: k.abbr,
+          dl: 'Download ' + r.title,
+          iconStyle: 'width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:12px;font-weight:800;letter-spacing:.5px;background:' + k.bg + ';color:' + k.fg + ';'
+        };
+      }),
+      empty: list.length === 0
+    };
+  }
+}
+</script>
+</body>
+</html>

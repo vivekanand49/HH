@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Health assistant</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&amp;family=Figtree:wght@400;500;600;700&amp;family=Noto+Sans+Devanagari:wght@400;600&amp;family=Noto+Sans+Telugu:wght@400;600&amp;display=swap">
+<style>
+body{margin:0;background:#F3F5F8;color:#0E1726;font-family:'Figtree','Noto Sans Telugu','Noto Sans Devanagari',system-ui,sans-serif}
+h1,h2,h3{font-family:'Bricolage Grotesque','Noto Sans Telugu','Noto Sans Devanagari',sans-serif}
+a{color:#0B4B7C}a:hover{color:#083A61}
+button,input{font-family:inherit}
+:focus-visible{outline:3px solid #2F7CC0;outline-offset:2px}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; background: #F3F5F8">
+
+  <div style="display: flex; flex-direction: column; gap: 10px; padding: 14px 16px 12px; background: #FFFFFF; border-bottom: 1px solid #D9DFE7">
+    <div style="display: flex; align-items: center; gap: 12px">
+      <a href="Home.dc.html" aria-label="Back to home" style="width: 44px; height: 44px; border-radius: 22px; border: 1px solid #D9DFE7; display: flex; align-items: center; justify-content: center; color: #0E1726; flex-shrink: 0">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"></path></svg>
+      </a>
+      <div style="display: flex; flex-direction: column; flex-grow: 1">
+        <h1 style="margin: 0; font-size: 20px">Health assistant</h1>
+        <span style="{{modeStyle}}">{{modeLabel}}</span>
+      </div>
+      <span style="padding: 6px 10px; border-radius: 999px; background: #EDF1F5; font-size: 13px; font-weight: 600">Replies in తెలుగు</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 8px">
+      <span style="font-size: 12px; font-weight: 700; letter-spacing: .6px; color: #566273">PROTOTYPE:</span>
+      <button type="button" onClick="{{toggle}}" style="height: 32px; padding: 0 12px; border-radius: 8px; border: 1.5px dashed #8E99A8; background: #FFFFFF; font-size: 13px; font-weight: 600; cursor: pointer">{{toggleLabel}}</button>
+    </div>
+  </div>
+
+  <sc-if value="{{offline}}" hint-placeholder-val="{{false}}">
+    <div role="status" style="margin: 12px 16px 0; padding: 10px 12px; border-radius: 12px; background: #FFF4E0; color: #8A4A0B; font-size: 13px; line-height: 1.45">Offline. The checker on your phone is answering. This chat will sync and a doctor-grade AI will review it when you are back online.</div>
+  </sc-if>
+
+  <div style="flex-grow: 1; overflow: hidden; padding: 14px 16px; display: flex; flex-direction: column; gap: 12px">
+    <sc-if value="{{online}}" hint-placeholder-val="{{true}}">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <div style="align-self: flex-end; max-width: 80%; padding: 10px 14px; border-radius: 18px 18px 4px 18px; background: #0B4B7C; color: #FFFFFF; font-size: 15px; line-height: 1.45">నాకు రెండు రోజులుగా జ్వరం, తలనొప్పి ఉంది<span style="display: block; margin-top: 4px; font-size: 12px; opacity: .85">I have had fever and headache for 2 days · voice</span></div>
+        <div style="align-self: flex-start; max-width: 85%; padding: 10px 14px; border-radius: 18px 18px 18px 4px; background: #FFFFFF; border: 1px solid #D9DFE7; font-size: 15px; line-height: 1.5">Sorry you are unwell. Is your temperature above 102°F? Any stiff neck, rash or trouble breathing?</div>
+        <div style="align-self: flex-end; max-width: 80%; padding: 10px 14px; border-radius: 18px 18px 4px 18px; background: #0B4B7C; color: #FFFFFF; font-size: 15px; line-height: 1.45">101°F. No rash.</div>
+        <div style="align-self: flex-start; max-width: 90%; display: flex; flex-direction: column; gap: 10px; padding: 14px; border-radius: 18px 18px 18px 4px; background: #FFFFFF; border: 1px solid #D9DFE7">
+          <span style="align-self: flex-start; padding: 4px 10px; border-radius: 999px; background: #EBF6E4; color: #2B6A12; font-size: 12px; font-weight: 700">LOW URGENCY</span>
+          <span style="font-size: 15px; line-height: 1.5">Probably a viral fever. Rest, drink plenty of water, and paracetamol 500 mg if needed (max 4 a day). You are diabetic, so check your sugar today.</span>
+          <span style="font-size: 15px; line-height: 1.5">See a doctor if it lasts beyond 3 days or gets worse.</span>
+          <div style="display: flex; gap: 8px">
+            <a href="Book.dc.html" style="flex: 1; height: 44px; border-radius: 12px; background: #0B4B7C; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; text-decoration: none">Book doctor</a>
+            <a href="VideoCall.dc.html" style="flex: 1; height: 44px; border-radius: 12px; border: 1px solid #C5CED9; color: #0E1726; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 600; text-decoration: none">Video consult</a>
+          </div>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{offline}}" hint-placeholder-val="{{false}}">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <div style="align-self: flex-end; max-width: 80%; padding: 10px 14px; border-radius: 18px 18px 4px 18px; background: #0B4B7C; color: #FFFFFF; font-size: 15px; line-height: 1.45">chest pain, hard to breathe</div>
+        <div style="align-self: flex-start; max-width: 92%; display: flex; flex-direction: column; gap: 10px; padding: 14px; border-radius: 18px 18px 18px 4px; background: #FFFFFF; border: 2px solid #B42318">
+          <span style="align-self: flex-start; padding: 4px 10px; border-radius: 999px; background: #B42318; color: #FFFFFF; font-size: 12px; font-weight: 700">CRITICAL · GET HELP NOW</span>
+          <span style="font-size: 15px; line-height: 1.5">These signs can mean a heart problem. Do not wait.</span>
+          <a href="Emergency.dc.html" style="height: 52px; border-radius: 14px; background: #B42318; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 17px; font-weight: 700; text-decoration: none">Open emergency help</a>
+          <span style="font-size: 14px; line-height: 1.5; color: #3B4757">While waiting: sit upright, loosen tight clothes, stay still, keep the phone near you.</span>
+        </div>
+        <span style="font-size: 12px; color: #566273; text-align: center">Matched offline: “chest pain” + “breathe” → critical</span>
+      </div>
+    </sc-if>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 10px; padding: 12px 16px 20px; background: #FFFFFF; border-top: 1px solid #D9DFE7">
+    <div style="display: flex; gap: 8px; overflow: hidden">
+      <button type="button" style="height: 36px; padding: 0 12px; border-radius: 999px; border: 1px solid #C5CED9; background: #FFFFFF; font-size: 14px; white-space: nowrap; cursor: pointer">Fever</button>
+      <button type="button" style="height: 36px; padding: 0 12px; border-radius: 999px; border: 1px solid #C5CED9; background: #FFFFFF; font-size: 14px; white-space: nowrap; cursor: pointer">Sugar is high</button>
+      <button type="button" style="height: 36px; padding: 0 12px; border-radius: 999px; border: 1px solid #C5CED9; background: #FFFFFF; font-size: 14px; white-space: nowrap; cursor: pointer">About my medicine</button>
+    </div>
+    <div style="display: flex; gap: 8px; align-items: center">
+      <label for="msg" style="position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0)">Type your message</label>
+      <input id="msg" placeholder="Type or hold the mic to speak" style="flex-grow: 1; height: 52px; padding: 0 14px; border-radius: 14px; border: 1px solid #C5CED9; background: #F3F5F8; font-size: 16px; box-sizing: border-box; min-width: 0">
+      <button type="button" aria-label="Hold to speak" style="width: 52px; height: 52px; border-radius: 26px; border: none; background: #0B4B7C; color: #FFFFFF; display: flex; align-items: center; justify-content: center; flex-shrink: 0; cursor: pointer">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3"></rect><path d="M5 10a7 7 0 0 0 14 0M12 17v5"></path></svg>
+      </button>
+    </div>
+    <span style="font-size: 12px; color: #566273; text-align: center">Not a diagnosis. In an emergency call 108.</span>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { offline: false };
+  }
+  renderVals() {
+    var self = this;
+    var off = this.state.offline;
+    return {
+      online: !off,
+      offline: off,
+      modeLabel: off ? '● Offline · on-phone checker' : '● Online · full AI',
+      modeStyle: 'font-size:13px;font-weight:600;color:' + (off ? '#8A4A0B' : '#2B6A12') + ';',
+      toggleLabel: off ? 'Switch to online' : 'Switch to offline',
+      toggle: function () { self.setState({ offline: !off }); }
+    };
+  }
+}
+</script>
+</body>
+</html>

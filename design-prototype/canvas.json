@@ -1,0 +1,34 @@
+{
+  "v": 3,
+  "createdOnFiles": {"v": 1, "at": "2026-09-25T21:20:00+05:30"},
+  "title": "Swasthya Setu — UI/UX Prototype",
+  "launch": {"view": "canvas"},
+  "pages": [],
+  "boards": {
+    "Main.dc.html": {"x": 0, "y": 0, "w": 390, "h": 844, "title": "1 · Choose language", "is_interactive": true, "radius": 28},
+    "Login.dc.html": {"x": 470, "y": 0, "w": 390, "h": 844, "title": "2 · Sign in (Aadhaar / ABHA / mobile)", "is_interactive": true, "radius": 28},
+    "Home.dc.html": {"x": 940, "y": 0, "w": 390, "h": 1180, "title": "3 · Home dashboard", "is_interactive": true, "radius": 28},
+    "Book.dc.html": {"x": 1410, "y": 0, "w": 390, "h": 844, "title": "4 · Book appointment (5 steps)", "is_interactive": true, "radius": 28},
+    "Confirm.dc.html": {"x": 1880, "y": 0, "w": 390, "h": 844, "title": "5 · Booking confirmed", "is_interactive": true, "radius": 28},
+    "Records.dc.html": {"x": 2350, "y": 0, "w": 390, "h": 1100, "title": "6 · Unified health records", "is_interactive": true, "radius": 28},
+    "Emergency.dc.html": {"x": 0, "y": 1560, "w": 390, "h": 1040, "title": "7 · Emergency (3 network levels)", "is_interactive": true, "radius": 28},
+    "Assistant.dc.html": {"x": 470, "y": 1560, "w": 390, "h": 844, "title": "8 · AI assistant (online / offline)", "is_interactive": true, "radius": 28},
+    "VideoCall.dc.html": {"x": 940, "y": 1560, "w": 390, "h": 844, "title": "9 · Video consult + live translation", "is_interactive": true, "radius": 28},
+    "TabletBook.dc.html": {"x": 0, "y": 3140, "w": 1194, "h": 834, "title": "Tablet · Booking split view", "radius": 20},
+    "DesktopHome.dc.html": {"x": 1274, "y": 3140, "w": 1440, "h": 960, "title": "Laptop / PC · Home dashboard", "radius": 12},
+    "HospitalConsole.dc.html": {"x": 2794, "y": 3140, "w": 1440, "h": 960, "title": "Hospital / 108 desk · Incoming emergencies", "is_interactive": true, "radius": 12}
+  },
+  "order": [
+    "Main.dc.html", "Login.dc.html", "Home.dc.html", "Book.dc.html", "Confirm.dc.html", "Records.dc.html",
+    "Emergency.dc.html", "Assistant.dc.html", "VideoCall.dc.html",
+    "TabletBook.dc.html", "DesktopHome.dc.html", "HospitalConsole.dc.html"
+  ],
+  "notes": {
+    "row1": {"x": 0, "y": -300, "text": "Patient app · phone (Android & iPhone)", "kind": "title1", "maxW": 2740},
+    "row2": {"x": 0, "y": 1260, "text": "Emergency, AI assistant & video · phone", "kind": "title1", "maxW": 1330},
+    "row3": {"x": 0, "y": 2840, "text": "Same app on tablet, laptop / PC — and the hospital side", "kind": "title1", "maxW": 4234},
+    "sosNote": {"x": 1420, "y": 1560, "w": 440, "maxH": 700, "fill": "orange", "size": "m", "text": "Emergency works in 3 levels — the app picks automatically:\n\n1. Internet (even slow 2G): tiny alert → server → 108 + nearest hospital + family, instantly.\n\n2. No internet, phone signal: one tap opens a ready-made SMS to our gateway number (code + GPS + symptoms), or gives a missed call — caller ID finds the patient.\n\n3. No signal: big Call 112 / 108 (works on any operator's tower). Alert is saved and auto-sends when signal returns. Offline first aid + cached hospital map.\n\nGPS works without network. A web app always needs one tap from the user to send SMS or call.\n\nUse the 'simulate network' switch on screen 7 to see each level."},
+    "rwdNote": {"x": 1420, "y": 2320, "w": 440, "maxH": 360, "fill": "teal", "size": "m", "text": "One codebase, 3 layouts:\n• Phone < 640px: bottom tab bar, big SOS card\n• Tablet 640–1024px: side rail + split list / detail\n• Laptop / PC > 1024px: full sidebar, 3-column dashboard\nSOS is always one tap away on every size."}
+  },
+  "designSystems": []
+}

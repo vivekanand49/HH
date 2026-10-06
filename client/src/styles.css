@@ -1,0 +1,92 @@
+@import 'tailwindcss';
+
+/* Bright healthcare blue on light sky backgrounds (Vizag Health Connect look), green for success. */
+@theme {
+  --font-sans: 'Figtree', 'Noto Sans Telugu', 'Noto Sans Devanagari', system-ui, sans-serif;
+  --font-display: 'Bricolage Grotesque', 'Noto Sans Telugu', 'Noto Sans Devanagari', sans-serif;
+
+  /* Neutrals: cool slate greys for a calm, clinical look */
+  --color-bg: #f1f6fd;
+  --color-surface: #ffffff;
+  --color-ink: #0b1a33;
+  --color-muted: #52617a;
+  --color-line: #d5e1f0;
+  --color-line-soft: #eaf1fa;
+
+  /* Brand: bright blue (primary actions; 5.4:1 with white text) and green (success only) */
+  --color-brand: #1565d8;
+  --color-brand-dark: #0d4fb0;
+  --color-brand-soft: #e6f0fe;
+  --color-leaf: #5fa83a;
+  --color-leaf-dark: #2b6a12;
+  --color-leaf-soft: #ebf6e4;
+
+  /* Supporting accent for the assistant and imaging */
+  --color-accent: #5b45a8;
+  --color-accent-dark: #3e2e7a;
+  --color-accent-soft: #efebfa;
+
+  /* Emergency red is reserved for emergencies */
+  --color-sos: #b42318;
+  --color-sos-dark: #912018;
+  --color-sos-soft: #feeceb;
+  --color-sos-bg: #fff7f6;
+  --color-sos-line: #f2d4d0;
+  --color-urgent: #b54708;
+  --color-warn: #8a4a0b;
+  --color-warn-soft: #fff4e0;
+
+  --shadow-card: 0 1px 2px rgb(21 101 216 / 0.06), 0 4px 14px rgb(21 101 216 / 0.06);
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+body {
+  @apply bg-bg text-ink font-sans antialiased;
+  /* Soft sky-blue wash behind every page, like the Vizag Health Connect poster. */
+  background-image:
+    radial-gradient(60rem 30rem at 100% -10%, rgb(59 143 240 / 0.14), transparent 70%),
+    radial-gradient(50rem 28rem at -10% 110%, rgb(95 168 58 / 0.08), transparent 70%);
+  background-attachment: fixed;
+}
+h1,
+h2,
+h3 {
+  @apply font-display;
+}
+:focus-visible {
+  outline: 3px solid #1565d8;
+  outline-offset: 2px;
+}
+
+@utility btn {
+  @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl px-5 text-base font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+}
+@utility btn-primary {
+  @apply btn bg-brand text-white hover:bg-brand-dark;
+}
+@utility btn-outline {
+  @apply btn border border-line bg-surface text-ink hover:bg-bg;
+}
+@utility btn-sos {
+  @apply btn bg-sos text-white hover:bg-sos-dark;
+}
+@utility card {
+  @apply rounded-3xl border border-line bg-surface shadow-card;
+}
+@utility chip {
+  @apply inline-flex min-h-11 items-center rounded-full border border-line bg-surface px-4 text-sm font-semibold;
+}
+@utility input {
+  @apply min-h-14 w-full rounded-2xl border-2 border-line bg-surface px-4 text-lg outline-none focus:border-brand;
+}
+@utility label {
+  @apply text-[15px] font-semibold;
+}
+
+/* Blue hero panel used on Welcome, Home and Login. */
+@utility hero {
+  background: linear-gradient(135deg, #0d4fb0 0%, #1565d8 55%, #3b8ff0 100%);
+  @apply text-white;
+}

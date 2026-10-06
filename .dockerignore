@@ -1,0 +1,7 @@
+**/node_modules
+**/.env
+**/.data
+client/dist
+design-prototype
+.DS_Store
+*.log

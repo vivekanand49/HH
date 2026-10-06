@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Book an appointment</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&amp;family=Figtree:wght@400;500;600;700&amp;family=Noto+Sans+Devanagari:wght@400;600&amp;family=Noto+Sans+Telugu:wght@400;600&amp;display=swap">
+<style>
+body{margin:0;background:#F3F5F8;color:#0E1726;font-family:'Figtree','Noto Sans Telugu','Noto Sans Devanagari',system-ui,sans-serif}
+h1,h2,h3{font-family:'Bricolage Grotesque','Noto Sans Telugu','Noto Sans Devanagari',sans-serif}
+a{color:#0B4B7C}a:hover{color:#083A61}
+button,input{font-family:inherit}
+button:disabled{cursor:not-allowed}
+:focus-visible{outline:3px solid #2F7CC0;outline-offset:2px}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; display: flex; flex-direction: column; background: #F3F5F8">
+
+  <div style="display: flex; flex-direction: column; gap: 14px; padding: 16px 20px 14px; background: #FFFFFF; border-bottom: 1px solid #D9DFE7">
+    <div style="display: flex; align-items: center; gap: 12px">
+      <sc-if value="{{isFirst}}" hint-placeholder-val="{{true}}">
+        <a href="Home.dc.html" aria-label="Back to home" style="width: 44px; height: 44px; border-radius: 22px; border: 1px solid #D9DFE7; display: flex; align-items: center; justify-content: center; color: #0E1726; flex-shrink: 0">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"></path></svg>
+        </a>
+      </sc-if>
+      <sc-if value="{{notFirst}}" hint-placeholder-val="{{false}}">
+        <button type="button" onClick="{{back}}" aria-label="Previous step" style="width: 44px; height: 44px; border-radius: 22px; border: 1px solid #D9DFE7; background: #FFFFFF; display: flex; align-items: center; justify-content: center; color: #0E1726; flex-shrink: 0; cursor: pointer">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 6-6 6 6 6"></path></svg>
+        </button>
+      </sc-if>
+      <div style="display: flex; flex-direction: column">
+        <h1 style="margin: 0; font-size: 20px">Book an appointment</h1>
+        <span style="font-size: 14px; color: #566273">Step {{stepNum}} of 5 · {{stepTitle}}</span>
+      </div>
+    </div>
+    <div role="progressbar" aria-valuemin="1" aria-valuemax="5" aria-valuenow="{{stepNum}}" aria-label="Booking progress" style="height: 6px; border-radius: 3px; background: #E6EBF1; overflow: hidden">
+      <div style="{{barStyle}}"></div>
+    </div>
+  </div>
+
+  <div style="flex-grow: 1; overflow: hidden; padding: 20px; display: flex; flex-direction: column; gap: 14px">
+
+    <sc-if value="{{s0}}" hint-placeholder-val="{{true}}">
+      <div style="display: flex; flex-direction: column; gap: 14px">
+        <h2 style="margin: 0; font-size: 22px">Where would you like to go?</h2>
+        <sc-for list="{{types}}" as="o" hint-placeholder-count="2">
+          <button type="button" onClick="{{o.pick}}" aria-pressed="{{o.on}}" style="{{o.style}}">
+            <span style="display: flex; align-items: center; justify-content: space-between">
+              <span style="font-size: 19px; font-weight: 700">{{o.title}}</span>
+              <span style="{{o.tagStyle}}">{{o.tag}}</span>
+            </span>
+            <span style="font-size: 15px; line-height: 1.5; color: #4A5666">{{o.desc}}</span>
+          </button>
+        </sc-for>
+        <a href="Assistant.dc.html" style="display: flex; align-items: center; gap: 12px; padding: 14px 16px; border-radius: 16px; background: #EFEBFA; color: #3E2E7A; text-decoration: none">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="flex-shrink: 0"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
+          <span style="font-size: 15px; line-height: 1.45">Not sure? Tell the assistant, e.g. <em>“sugar checkup near Gajuwaka”</em></span>
+        </a>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{s1}}" hint-placeholder-val="{{false}}">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <div style="display: flex; align-items: center; gap: 10px; height: 48px; padding: 0 14px; border-radius: 14px; background: #FFFFFF; border: 1px solid #C5CED9">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#566273" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg>
+          <input aria-label="Search hospitals" placeholder="Search hospital or area" style="border: none; outline: none; flex-grow: 1; font-size: 16px; background: transparent">
+        </div>
+        <span style="font-size: 14px; color: #566273">{{typeLabel}} hospitals · nearest first · from Gajuwaka</span>
+        <sc-for list="{{hospitals}}" as="h" hint-placeholder-count="3">
+          <button type="button" onClick="{{h.pick}}" aria-pressed="{{h.on}}" style="{{h.style}}">
+            <span style="display: flex; justify-content: space-between; gap: 8px">
+              <span style="font-size: 17px; font-weight: 600; line-height: 1.3">{{h.name}}</span>
+              <span style="font-size: 15px; font-weight: 700; color: #0B4B7C; white-space: nowrap">{{h.km}}</span>
+            </span>
+            <span style="font-size: 14px; color: #566273">{{h.area}}</span>
+            <span style="display: flex; flex-wrap: wrap; gap: 6px">
+              <span style="padding: 4px 8px; border-radius: 6px; background: #EBF6E4; color: #2B6A12; font-size: 13px; font-weight: 600">{{h.beds}}</span>
+              <span style="padding: 4px 8px; border-radius: 6px; background: #EDF1F5; color: #3B4757; font-size: 13px">{{h.meta}}</span>
+            </span>
+          </button>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{s2}}" hint-placeholder-val="{{false}}">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <h2 style="margin: 0; font-size: 22px">Which department?</h2>
+        <span style="font-size: 14px; color: #566273">{{hospitalName}}</span>
+        <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+          <sc-for list="{{specs}}" as="sp" hint-placeholder-count="8">
+            <button type="button" onClick="{{sp.pick}}" aria-pressed="{{sp.on}}" style="{{sp.style}}">
+              <span style="font-size: 15px; font-weight: 600; line-height: 1.3">{{sp.name}}</span>
+              <span style="font-size: 12px; color: #566273">{{sp.hint}}</span>
+            </button>
+          </sc-for>
+        </div>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{s3}}" hint-placeholder-val="{{false}}">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <h2 style="margin: 0; font-size: 22px">Choose a doctor</h2>
+        <span style="font-size: 14px; color: #566273">{{specName}} · {{hospitalName}}</span>
+        <sc-for list="{{doctors}}" as="d" hint-placeholder-count="3">
+          <button type="button" onClick="{{d.pick}}" aria-pressed="{{d.on}}" style="{{d.style}}">
+            <span style="width: 48px; height: 48px; border-radius: 24px; background: #E7F0F8; color: #0B4B7C; display: flex; align-items: center; justify-content: center; font-size: 16px; font-weight: 700; flex-shrink: 0">{{d.initials}}</span>
+            <span style="display: flex; flex-direction: column; gap: 3px; flex-grow: 1; text-align: left">
+              <span style="font-size: 16px; font-weight: 600">{{d.name}}</span>
+              <span style="font-size: 13px; color: #566273">{{d.years}} · ★ {{d.rating}} · {{d.langs}}</span>
+              <span style="font-size: 13px; font-weight: 600; color: #0B4B7C">Next: {{d.next}} · {{fee}}</span>
+            </span>
+          </button>
+        </sc-for>
+      </div>
+    </sc-if>
+
+    <sc-if value="{{s4}}" hint-placeholder-val="{{false}}">
+      <div style="display: flex; flex-direction: column; gap: 14px">
+        <h2 style="margin: 0; font-size: 22px">Pick date and time</h2>
+        <div style="display: flex; gap: 8px; overflow: hidden">
+          <sc-for list="{{days}}" as="dy" hint-placeholder-count="5">
+            <button type="button" onClick="{{dy.pick}}" aria-pressed="{{dy.on}}" style="{{dy.style}}">
+              <span style="font-size: 12px; font-weight: 600">{{dy.dow}}</span>
+              <span style="font-size: 20px; font-weight: 700">{{dy.num}}</span>
+            </button>
+          </sc-for>
+        </div>
+        <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px">
+          <sc-for list="{{times}}" as="tm" hint-placeholder-count="9">
+            <button type="button" onClick="{{tm.pick}}" disabled="{{tm.full}}" aria-pressed="{{tm.on}}" style="{{tm.style}}">{{tm.label}}</button>
+          </sc-for>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; border-radius: 14px; background: #FFFFFF; border: 1px solid #D9DFE7; font-size: 14px; line-height: 1.5">
+          <span style="font-weight: 700; font-size: 15px">Summary</span>
+          <span>{{hospitalName}}</span>
+          <span>{{specName}} · {{doctorName}}</span>
+          <span>{{dayLabel}} · {{timeLabel}}</span>
+          <span style="font-weight: 600; color: #0B4B7C">{{feeNote}}</span>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+
+  <div style="padding: 14px 20px 22px; background: #FFFFFF; border-top: 1px solid #D9DFE7">
+    <sc-if value="{{showNext}}" hint-placeholder-val="{{true}}">
+      <button type="button" onClick="{{next}}" disabled="{{nextDisabled}}" style="{{nextStyle}}">Continue</button>
+    </sc-if>
+    <sc-if value="{{showConfirm}}" hint-placeholder-val="{{false}}">
+      <a href="Confirm.dc.html" style="display: flex; align-items: center; justify-content: center; width: 100%; height: 56px; border-radius: 14px; background: #0B4B7C; color: #FFFFFF; font-size: 18px; font-weight: 600; text-decoration: none">{{confirmLabel}}</a>
+    </sc-if>
+    <sc-if value="{{showConfirmOff}}" hint-placeholder-val="{{false}}">
+      <button type="button" disabled="{{true}}" style="width: 100%; height: 56px; border-radius: 14px; border: none; background: #D5DCE5; color: #5B6676; font-size: 18px; font-weight: 600">Choose a time</button>
+    </sc-if>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { step: 0, type: null, hospital: null, spec: null, doctor: null, day: 0, time: null };
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state;
+    var set = function (o) { return function () { self.setState(o); }; };
+    var card = function (on, extra) {
+      return 'display:flex;flex-direction:column;gap:6px;width:100%;padding:14px 16px;box-sizing:border-box;border-radius:16px;text-align:left;color:#0E1726;cursor:pointer;' +
+        (on ? 'border:2px solid #0B4B7C;background:#E7F0F8;' : 'border:2px solid #D9DFE7;background:#FFFFFF;') + (extra || '');
+    };
+    var titles = ['Hospital type', 'Choose hospital', 'Department', 'Choose doctor', 'Date and time'];
+    var isGov = s.type !== 'private';
+    var hospitalsByType = {
+      government: [
+        { id: 'phc', name: 'Urban PHC, Gajuwaka', km: '1.2 km', area: 'Gajuwaka main road', beds: 'OPD open now', meta: 'General care · Lab' },
+        { id: 'kgh', name: 'King George Hospital (KGH)', km: '9.8 km', area: 'Maharanipeta', beds: '38 beds free', meta: 'Emergency 24×7 · All departments' },
+        { id: 'vic', name: 'Govt Victoria Hospital', km: '10.4 km', area: 'Near RK Beach', beds: '12 beds free', meta: 'Women & children' }
+      ],
+      private: [
+        { id: 'sea', name: 'Seaview Multispeciality', km: '1.8 km', area: 'Gajuwaka', beds: '9 beds free', meta: 'Emergency 24×7 · Cardiology' },
+        { id: 'hhi', name: 'Harbour Heart Institute', km: '6.3 km', area: 'Dwaraka Nagar', beds: '4 beds free', meta: 'Heart care · ICU' },
+        { id: 'lot', name: 'Lotus Children’s Clinic', km: '7.0 km', area: 'MVP Colony', beds: 'OPD open now', meta: 'Children only' }
+      ]
+    };
+    var hospitals = hospitalsByType[isGov ? 'government' : 'private'];
+    var hosp = hospitals.filter(function (h) { return h.id === s.hospital; })[0];
+    var specList = [
+      { name: 'General Medicine', hint: 'Fever, BP, general' },
+      { name: 'Diabetes & Hormones', hint: 'Sugar, thyroid' },
+      { name: 'Heart (Cardiology)', hint: 'Chest pain, BP' },
+      { name: 'Children (Pediatrics)', hint: 'Under 14 years' },
+      { name: 'Women (Gynecology)', hint: 'Pregnancy care' },
+      { name: 'Bones (Orthopedics)', hint: 'Joint, back pain' },
+      { name: 'Eye', hint: 'Vision, cataract' },
+      { name: 'Brain & Nerves', hint: 'Fits, stroke' }
+    ];
+    var docList = isGov ? [
+      { id: 'd1', name: 'Dr. Ramesh Varma', initials: 'RV', years: '15 yrs', rating: '4.8', langs: 'Telugu, English, Hindi', next: 'Sat 10:00 AM' },
+      { id: 'd2', name: 'Dr. Sujatha Rao', initials: 'SR', years: '9 yrs', rating: '4.6', langs: 'Telugu, English', next: 'Sat 11:30 AM' },
+      { id: 'd3', name: 'Dr. Imran Shaik', initials: 'IS', years: '6 yrs', rating: '4.5', langs: 'Telugu, Hindi, Urdu', next: 'Mon 9:00 AM' }
+    ] : [
+      { id: 'd4', name: 'Dr. Kavya Reddy', initials: 'KR', years: '12 yrs', rating: '4.9', langs: 'Telugu, English', next: 'Today 6:00 PM' },
+      { id: 'd5', name: 'Dr. Arjun Naidu', initials: 'AN', years: '8 yrs', rating: '4.7', langs: 'Telugu, English, Hindi', next: 'Sat 9:30 AM' },
+      { id: 'd6', name: 'Dr. Meera Kulkarni', initials: 'MK', years: '20 yrs', rating: '4.8', langs: 'Marathi, Hindi, English', next: 'Sat 4:00 PM' }
+    ];
+    var doc = docList.filter(function (d) { return d.id === s.doctor; })[0];
+    var dayList = [['SAT', '26'], ['MON', '28'], ['TUE', '29'], ['WED', '30'], ['THU', '1']];
+    var timeList = ['9:00 AM', '9:30 AM', '10:00 AM', '10:30 AM', '11:30 AM', '12:00 PM', '2:00 PM', '3:30 PM', '4:30 PM'];
+    var fullSet = { '9:30 AM': true, '12:00 PM': true };
+    var ready = [!!s.type, !!s.hospital, !!s.spec, !!s.doctor, !!s.time][s.step];
+    var fee = isGov ? 'Free' : '₹500';
+    return {
+      stepNum: s.step + 1,
+      stepTitle: titles[s.step],
+      barStyle: 'height:100%;border-radius:3px;background:#0B4B7C;width:' + ((s.step + 1) * 20) + '%',
+      isFirst: s.step === 0,
+      notFirst: s.step > 0,
+      s0: s.step === 0, s1: s.step === 1, s2: s.step === 2, s3: s.step === 3, s4: s.step === 4,
+      back: function () { self.setState({ step: Math.max(0, s.step - 1) }); },
+      next: function () { if (ready) self.setState({ step: s.step + 1 }); },
+      showNext: s.step < 4,
+      showConfirm: s.step === 4 && !!s.time,
+      showConfirmOff: s.step === 4 && !s.time,
+      nextDisabled: !ready,
+      nextStyle: 'width:100%;height:56px;border-radius:14px;border:none;font-size:18px;font-weight:600;' + (ready ? 'background:#0B4B7C;color:#FFFFFF;cursor:pointer;' : 'background:#D5DCE5;color:#5B6676;'),
+      confirmLabel: isGov ? 'Confirm booking' : 'Pay ₹500 by UPI and confirm',
+      types: [
+        { id: 'government', title: 'Government', tag: 'Free', desc: '12 hospitals and health centres. Free or very low fee. Longer waiting time.' },
+        { id: 'private', title: 'Private', tag: 'Paid', desc: '8 hospitals. Consultation from ₹300–₹800. Shorter waiting time.' }
+      ].map(function (o) {
+        var on = s.type === o.id;
+        return {
+          title: o.title, tag: o.tag, desc: o.desc, on: on,
+          style: card(on, 'gap:8px;padding:18px;'),
+          tagStyle: 'padding:4px 10px;border-radius:999px;font-size:13px;font-weight:700;' + (o.id === 'government' ? 'background:#EBF6E4;color:#2B6A12;' : 'background:#E7F0F8;color:#0B4B7C;'),
+          pick: set({ type: o.id, hospital: null, doctor: null })
+        };
+      }),
+      typeLabel: isGov ? 'Government' : 'Private',
+      hospitals: hospitals.map(function (h) {
+        var on = s.hospital === h.id;
+        return { name: h.name, km: h.km, area: h.area, beds: h.beds, meta: h.meta, on: on, style: card(on), pick: set({ hospital: h.id }) };
+      }),
+      hospitalName: hosp ? hosp.name : '',
+      specs: specList.map(function (sp) {
+        var on = s.spec === sp.name;
+        return { name: sp.name, hint: sp.hint, on: on, style: card(on, 'gap:4px;min-height:76px;padding:12px;'), pick: set({ spec: sp.name }) };
+      }),
+      specName: s.spec || '',
+      fee: fee,
+      doctors: docList.map(function (d) {
+        var on = s.doctor === d.id;
+        return { name: d.name, initials: d.initials, years: d.years, rating: d.rating, langs: d.langs, next: d.next, on: on, style: card(on, 'flex-direction:row;align-items:center;gap:12px;'), pick: set({ doctor: d.id }) };
+      }),
+      doctorName: doc ? doc.name : '',
+      days: dayList.map(function (d, i) {
+        var on = s.day === i;
+        return { dow: d[0], num: d[1], on: on, style: 'flex:1;height:64px;border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;' + (on ? 'border:2px solid #0B4B7C;background:#0B4B7C;color:#FFFFFF;' : 'border:1px solid #D9DFE7;background:#FFFFFF;color:#0E1726;'), pick: set({ day: i, time: null }) };
+      }),
+      times: timeList.map(function (t) {
+        var full = !!fullSet[t];
+        var on = s.time === t;
+        return { label: full ? 'Full' : t, full: full, on: on, style: 'height:48px;border-radius:12px;font-size:15px;font-weight:600;' + (full ? 'border:1px dashed #C5CED9;background:#EDF1F5;color:#687485;text-decoration:line-through;' : on ? 'border:2px solid #0B4B7C;background:#E7F0F8;color:#083A61;cursor:pointer;' : 'border:1px solid #D9DFE7;background:#FFFFFF;color:#0E1726;cursor:pointer;'), pick: set({ time: t }) };
+      }),
+      dayLabel: dayList[s.day][0] + ' ' + dayList[s.day][1] + (s.day === 4 ? ' Oct' : ' Sep'),
+      timeLabel: s.time || 'Pick a time',
+      feeNote: isGov ? 'Fee: Free · Room is assigned on confirmation' : 'Fee: ₹500 · Pay by UPI, card or net banking'
+    };
+  }
+}
+</script>
+</body>
+</html>

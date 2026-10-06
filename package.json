@@ -1,0 +1,20 @@
+{
+  "name": "swasthya-setu",
+  "private": true,
+  "description": "Multilingual, offline-first healthcare PWA: booking, unified records, AI assistant and emergency alerts that work on weak networks.",
+  "workspaces": ["shared", "server", "client"],
+  "scripts": {
+    "setup": "node scripts/setup.mjs && npm run db:reset",
+    "dev": "node scripts/dev.mjs",
+    "dev:server": "npm run dev -w server",
+    "dev:client": "npm run dev -w client",
+    "build": "npm run build -w client",
+    "start": "npm run start -w server",
+    "db:reset": "npm run db:reset -w server",
+    "test": "node scripts/check-i18n.mjs && npm test -w shared && npm test -w server",
+    "loadtest": "node scripts/loadtest.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

@@ -1,0 +1,159 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Hospital emergency desk</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&amp;family=Figtree:wght@400;500;600;700&amp;family=Noto+Sans+Devanagari:wght@400;600&amp;family=Noto+Sans+Telugu:wght@400;600&amp;display=swap">
+<style>
+body{margin:0;background:#F3F5F8;color:#0E1726;font-family:'Figtree','Noto Sans Telugu','Noto Sans Devanagari',system-ui,sans-serif}
+h1,h2,h3{font-family:'Bricolage Grotesque','Noto Sans Telugu','Noto Sans Devanagari',sans-serif}
+a{color:#0B4B7C}a:hover{color:#083A61}
+button,select{font-family:inherit}
+:focus-visible{outline:3px solid #2F7CC0;outline-offset:2px}
+</style>
+</helmet>
+<div style="width: 1440px; height: 960px; box-sizing: border-box; display: flex; flex-direction: column; background: #F3F5F8">
+
+  <header style="height: 68px; flex-shrink: 0; box-sizing: border-box; padding: 0 28px; display: flex; align-items: center; justify-content: space-between; background: #083A61; color: #FFFFFF">
+    <div style="display: flex; align-items: center; gap: 14px">
+      <span style="font-size: 20px; font-weight: 700; font-family: 'Bricolage Grotesque', sans-serif">KGH Emergency Desk</span>
+      <span style="display: flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; background: rgba(255,255,255,.12); font-size: 13px; font-weight: 600"><span style="width: 8px; height: 8px; border-radius: 4px; background: #A6DC8A"></span>Live</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 28px; font-size: 14px">
+      <span><strong style="font-size: 18px">4</strong> open alerts</span>
+      <span><strong style="font-size: 18px">3</strong> ambulances free</span>
+      <span><strong style="font-size: 18px">6</strong> ER beds free</span>
+      <a href="Login.dc.html" style="color: #CFE0F0">Dr. P. Anitha · Duty doctor</a>
+    </div>
+  </header>
+
+  <div style="flex-grow: 1; display: flex; min-height: 0">
+    <section aria-label="Incoming alerts" style="width: 470px; flex-shrink: 0; box-sizing: border-box; padding: 20px; display: flex; flex-direction: column; gap: 12px; border-right: 1px solid #D9DFE7">
+      <div style="display: flex; justify-content: space-between; align-items: baseline">
+        <h1 style="margin: 0; font-size: 22px">Incoming</h1>
+        <span style="font-size: 13px; color: #566273">Most urgent first</span>
+      </div>
+      <sc-for list="{{alerts}}" as="a" hint-placeholder-count="4">
+        <button type="button" onClick="{{a.pick}}" aria-pressed="{{a.on}}" style="{{a.cardStyle}}">
+          <span style="{{a.barStyle}}"></span>
+          <span style="display: flex; flex-direction: column; gap: 6px; flex-grow: 1; text-align: left">
+            <span style="display: flex; justify-content: space-between; align-items: center; gap: 8px">
+              <span style="font-size: 16px; font-weight: 700">{{a.name}}</span>
+              <span style="font-size: 13px; color: #566273">{{a.ago}}</span>
+            </span>
+            <span style="font-size: 14px; line-height: 1.4">{{a.summary}}</span>
+            <span style="display: flex; gap: 6px; align-items: center">
+              <span style="{{a.sevStyle}}">{{a.sev}}</span>
+              <span style="padding: 3px 8px; border-radius: 6px; background: #EDF1F5; font-size: 12px; font-weight: 700; color: #3B4757">{{a.channel}}</span>
+              <span style="font-size: 13px; color: #566273">{{a.km}}</span>
+            </span>
+          </span>
+        </button>
+      </sc-for>
+    </section>
+
+    <section aria-label="Alert details" style="flex-grow: 1; box-sizing: border-box; padding: 24px 28px; display: flex; flex-direction: column; gap: 18px; min-width: 0">
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 20px">
+        <div style="display: flex; flex-direction: column; gap: 6px">
+          <h2 style="margin: 0; font-size: 28px">{{sel.name}}</h2>
+          <span style="font-size: 15px; color: #566273">{{sel.person}} · Health ID {{sel.hid}} · Phone {{sel.phone}}</span>
+        </div>
+        <span style="{{sel.sevBig}}">{{sel.sev}}</span>
+      </div>
+
+      <div style="display: flex; gap: 10px; align-items: center; padding: 12px 16px; border-radius: 14px; background: #FFFFFF; border: 1px solid #D9DFE7; font-size: 14px">
+        <span style="font-weight: 700">Received via {{sel.channel}}</span>
+        <span style="color: #566273">· {{sel.received}}</span>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px">
+        <div style="display: flex; flex-direction: column; gap: 10px; padding: 18px; border-radius: 16px; background: #FFFFFF; border: 1px solid #D9DFE7">
+          <span style="font-size: 13px; font-weight: 700; letter-spacing: .5px; color: #566273">WHAT THE PATIENT SENT</span>
+          <span style="font-size: 16px; line-height: 1.5">{{sel.message}}</span>
+          <span style="padding: 10px 12px; border-radius: 10px; background: #F3F5F8; font-family: ui-monospace, Menlo, monospace; font-size: 13px; line-height: 1.5; color: #3B4757">{{sel.raw}}</span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 10px; padding: 18px; border-radius: 16px; background: #FFFFFF; border: 1px solid #D9DFE7">
+          <span style="font-size: 13px; font-weight: 700; letter-spacing: .5px; color: #566273">MEDICAL SUMMARY · EMERGENCY ACCESS</span>
+          <span style="display: flex; justify-content: space-between; font-size: 15px"><span style="color: #566273">Blood group</span><strong>{{sel.blood}}</strong></span>
+          <span style="display: flex; justify-content: space-between; font-size: 15px"><span style="color: #566273">Allergies</span><strong style="color: #912018">{{sel.allergy}}</strong></span>
+          <span style="display: flex; justify-content: space-between; gap: 12px; font-size: 15px"><span style="color: #566273">Conditions</span><strong style="text-align: right">{{sel.conditions}}</strong></span>
+          <span style="display: flex; justify-content: space-between; gap: 12px; font-size: 15px"><span style="color: #566273">Medicines</span><strong style="text-align: right">{{sel.meds}}</strong></span>
+          <span style="font-size: 12px; color: #566273">Access is logged and the patient is notified.</span>
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 16px; padding: 18px; border-radius: 16px; background: #FFFFFF; border: 1px solid #D9DFE7; align-items: center">
+        <svg width="180" height="110" viewBox="0 0 180 110" role="img" aria-label="Patient location on map" style="flex-shrink: 0; border-radius: 10px; background: #E9EEF3">
+          <path d="M0 0h180v22c-30 8-60 2-90 10S30 40 0 36z" fill="#CFE0E6"></path>
+          <path d="M0 86 C50 80 100 70 180 60" stroke="#FFFFFF" stroke-width="6" fill="none"></path>
+          <path d="M60 110 C70 90 90 70 140 50" stroke="#FFFFFF" stroke-width="4" fill="none"></path>
+          <circle cx="96" cy="70" r="9" fill="#B42318" stroke="#FFFFFF" stroke-width="3"></circle>
+        </svg>
+        <div style="display: flex; flex-direction: column; gap: 6px; flex-grow: 1">
+          <span style="font-size: 16px; font-weight: 700">{{sel.place}}</span>
+          <span style="font-size: 14px; color: #566273">{{sel.coords}}</span>
+          <span style="font-size: 14px">Nearest free ambulance: <strong>AP 31 TA 1082</strong> · 9 min away</span>
+        </div>
+      </div>
+
+      <div style="flex-grow: 1"></div>
+
+      <div style="display: flex; gap: 12px; flex-wrap: wrap">
+        <button type="button" onClick="{{ack}}" style="{{ackStyle}}">{{ackLabel}}</button>
+        <button type="button" style="height: 52px; padding: 0 22px; border-radius: 14px; border: 2px solid #0B4B7C; background: #FFFFFF; color: #083A61; font-size: 16px; font-weight: 700; cursor: pointer">Send ambulance</button>
+        <a href="tel:+910000000000" style="height: 52px; padding: 0 22px; box-sizing: border-box; border-radius: 14px; border: 1px solid #C5CED9; background: #FFFFFF; color: #0E1726; display: flex; align-items: center; font-size: 16px; font-weight: 600; text-decoration: none">Call patient</a>
+        <button type="button" style="height: 52px; padding: 0 22px; border-radius: 14px; border: 1px solid #C5CED9; background: #FFFFFF; font-size: 16px; font-weight: 600; cursor: pointer">Prepare ER bed</button>
+      </div>
+      <span style="font-size: 13px; color: #566273">Acknowledging sends the patient an SMS in their language: “KGH received your alert. Help is coming.”</span>
+    </section>
+  </div>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = { sel: 0, acked: {} };
+  }
+  renderVals() {
+    var self = this;
+    var s = this.state;
+    var sevColor = { CRITICAL: ['#B42318', '#FFFFFF'], HIGH: ['#B54708', '#FFFFFF'], UNKNOWN: ['#3B4757', '#FFFFFF'], MEDIUM: ['#FFF4E0', '#8A4A0B'] };
+    var data = [
+      { name: 'Lakshmi Devi', person: 'Female, 62', hid: '••••4821', phone: '+91 ••••• •3210', sev: 'CRITICAL', channel: 'App', ago: '1 min ago', km: '9.8 km', summary: 'Chest pain, can’t breathe', received: 'App alert over 2G at 10:42:05 · 108 also notified', message: 'Chest pain and trouble breathing. Patient reported by tapping symptom buttons.', raw: '{ sev: 4, sym: [chest_pain, breathing], acc: 12m }', blood: 'B+', allergy: 'Penicillin', conditions: 'Hypertension, Type 2 diabetes', meds: 'Metformin, Amlodipine', place: 'Gajuwaka, near bus depot', coords: '17.6912° N, 83.2178° E · GPS, accurate to 12 m' },
+      { name: 'Padma K.', person: 'Female, 28', hid: '••••7719', phone: '+91 ••••• •0457', sev: 'HIGH', channel: 'SMS', ago: '4 min ago', km: '14 km', summary: 'Pregnant, bleeding', received: 'SMS gateway at 10:39:12 · read automatically', message: 'Pregnancy with bleeding. Sent by SMS because there was no internet.', raw: 'SOS P7719 LOC17.8105,83.2051 PREG,BLEED SEV3', blood: 'O+', allergy: 'None known', conditions: '32 weeks pregnant', meds: 'Iron, folic acid', place: 'Pendurthi', coords: '17.8105° N, 83.2051° E · from SMS' },
+      { name: 'Venkata Rao', person: 'Male, 45', hid: '••••3302', phone: '+91 ••••• •8812', sev: 'UNKNOWN', channel: 'Missed call', ago: '6 min ago', km: '~11 km', summary: 'Missed call only. Call back now', received: 'Missed call at 10:37:40 · number matched to registered user', message: 'No details yet. Registered patient gave a missed call to the emergency line.', raw: 'CLI +91•••••8812 → user 3302 · last location 38 min ago', blood: 'A+', allergy: 'None known', conditions: 'Asthma', meds: 'Salbutamol inhaler', place: 'Last known: Simhachalam', coords: '17.7669° N, 83.2505° E · last known, 38 min old' },
+      { name: 'Suresh B.', person: 'Male, 34', hid: '••••5120', phone: '+91 ••••• •2204', sev: 'MEDIUM', channel: 'Voice message', ago: '9 min ago', km: '7 km', summary: 'Road accident, leg injury', received: 'Voice message synced at 10:34:02 · recorded offline at 10:21', message: 'Bike fell on the highway, left leg hurts a lot, can’t walk. (Translated from Telugu.)', raw: 'Transcript (te): “బైక్ పడిపోయింది, ఎడమ కాలు బాగా నొప్పిగా ఉంది…”', blood: 'Unknown', allergy: 'None known', conditions: 'None', meds: 'None', place: 'NH16 near Lankelapalem', coords: '17.6608° N, 83.0822° E · GPS at recording time' }
+    ];
+    var sel = data[s.sel];
+    var isAcked = !!s.acked[s.sel];
+    var pill = function (sev, big) {
+      var c = sevColor[sev];
+      return (big ? 'padding:8px 16px;font-size:15px;' : 'padding:3px 8px;font-size:12px;') + 'border-radius:6px;font-weight:800;letter-spacing:.4px;background:' + c[0] + ';color:' + c[1] + ';';
+    };
+    return {
+      alerts: data.map(function (a, i) {
+        var on = i === s.sel;
+        return {
+          name: a.name, ago: a.ago, summary: a.summary, sev: a.sev, channel: a.channel, km: a.km, on: on,
+          sevStyle: pill(a.sev, false),
+          barStyle: 'width:6px;align-self:stretch;border-radius:3px;flex-shrink:0;background:' + sevColor[a.sev][0] + ';',
+          cardStyle: 'display:flex;gap:12px;width:100%;padding:14px;box-sizing:border-box;border-radius:14px;cursor:pointer;color:#0E1726;' + (on ? 'border:2px solid #0B4B7C;background:#FFFFFF;' : 'border:1px solid #D9DFE7;background:#FFFFFF;') + (s.acked[i] ? 'opacity:.6;' : ''),
+          pick: function () { self.setState({ sel: i }); }
+        };
+      }),
+      sel: Object.assign({}, sel, { sevBig: pill(sel.sev, true) }),
+      ack: function () { var n = Object.assign({}, s.acked); n[s.sel] = true; self.setState({ acked: n }); },
+      ackLabel: isAcked ? '✓ Acknowledged · SMS sent' : 'Acknowledge',
+      ackStyle: 'height:52px;padding:0 22px;border-radius:14px;border:none;font-size:16px;font-weight:700;cursor:pointer;' + (isAcked ? 'background:#EBF6E4;color:#2B6A12;' : 'background:#0B4B7C;color:#FFFFFF;')
+    };
+  }
+}
+</script>
+</body>
+</html>

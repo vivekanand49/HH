@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Desktop dashboard</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700&amp;family=Figtree:wght@400;500;600;700&amp;family=Noto+Sans+Devanagari:wght@400;600&amp;family=Noto+Sans+Telugu:wght@400;600&amp;display=swap">
+<style>
+body{margin:0;background:#F3F5F8;color:#0E1726;font-family:'Figtree','Noto Sans Telugu','Noto Sans Devanagari',system-ui,sans-serif}
+h1,h2,h3{font-family:'Bricolage Grotesque','Noto Sans Telugu','Noto Sans Devanagari',sans-serif}
+a{color:#0B4B7C}a:hover{color:#083A61}
+button,input,select{font-family:inherit}
+:focus-visible{outline:3px solid #2F7CC0;outline-offset:2px}
+</style>
+</helmet>
+<div style="width: 1440px; height: 960px; box-sizing: border-box; display: flex; background: #F3F5F8">
+
+  <aside style="width: 264px; flex-shrink: 0; box-sizing: border-box; padding: 24px 18px; display: flex; flex-direction: column; gap: 6px; background: #FFFFFF; border-right: 1px solid #D9DFE7">
+    <div style="display: flex; align-items: center; gap: 10px; padding: 0 8px 22px">
+      <div style="width: 40px; height: 40px; border-radius: 11px; background: #FFFFFF; border: 1px solid #D9DFE7; box-sizing: border-box; display: flex; align-items: center; justify-content: center">
+        <svg width="30" height="30" viewBox="0 0 36 36" fill="none" stroke-width="2.6" stroke-linejoin="round" aria-hidden="true"><path d="M10.5 4H19.5V10.5H26V19.5H19.5V26H10.5V19.5H4V10.5H10.5Z" stroke="#0B4B7C"></path><path d="M16.5 10H25.5V16.5H32V25.5H25.5V32H16.5V25.5H10V16.5H16.5Z" stroke="#6DB33F"></path></svg>
+      </div>
+      <span style="font-size: 19px; font-weight: 700">Swasthya Setu</span>
+    </div>
+    <nav aria-label="Main" style="display: flex; flex-direction: column; gap: 4px">
+      <a href="#home" aria-current="page" style="height: 46px; padding: 0 12px; border-radius: 12px; background: #E7F0F8; color: #083A61; display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 700; text-decoration: none">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 10.5 12 3l9 7.5V20a1 1 0 0 1-1 1h-5v-6h-6v6H4a1 1 0 0 1-1-1z"></path></svg>Home
+      </a>
+      <a href="#book" style="height: 46px; padding: 0 12px; border-radius: 12px; color: #3B4757; display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 600; text-decoration: none">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg>Book appointment
+      </a>
+      <a href="#video" style="height: 46px; padding: 0 12px; border-radius: 12px; color: #3B4757; display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 600; text-decoration: none">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 8-6 4 6 4V8z"></path><rect x="2" y="6" width="14" height="12" rx="2"></rect></svg>Video consults
+      </a>
+      <a href="#records" style="height: 46px; padding: 0 12px; border-radius: 12px; color: #3B4757; display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 600; text-decoration: none">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><path d="M14 2v6h6"></path></svg>Health records
+      </a>
+      <a href="#assistant" style="height: 46px; padding: 0 12px; border-radius: 12px; color: #3B4757; display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 600; text-decoration: none">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>Health assistant
+      </a>
+      <a href="#family" style="height: 46px; padding: 0 12px; border-radius: 12px; color: #3B4757; display: flex; align-items: center; gap: 12px; font-size: 15px; font-weight: 600; text-decoration: none">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="8" r="3.5"></circle><path d="M2.5 20a6.5 6.5 0 0 1 13 0"></path><circle cx="17" cy="9" r="2.5"></circle><path d="M16 14.2a5 5 0 0 1 5.5 4.8"></path></svg>Family
+      </a>
+    </nav>
+    <div style="flex-grow: 1"></div>
+    <label for="lang" style="padding: 0 8px; font-size: 13px; font-weight: 600; color: #566273">Language</label>
+    <select id="lang" style="height: 44px; margin-bottom: 12px; padding: 0 10px; border-radius: 12px; border: 1px solid #C5CED9; background: #FFFFFF; font-size: 15px">
+      <option>English</option><option>తెలుగు</option><option>हिन्दी</option><option>मराठी</option>
+    </select>
+    <a href="#sos" style="height: 56px; border-radius: 14px; background: #B42318; color: #FFFFFF; display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 17px; font-weight: 700; text-decoration: none">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.3a2 2 0 0 1 2.1-.4c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.7 2z"></path></svg>
+      Emergency
+    </a>
+  </aside>
+
+  <main style="flex-grow: 1; box-sizing: border-box; padding: 28px 36px; display: flex; flex-direction: column; gap: 24px; min-width: 0">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px">
+      <div style="display: flex; flex-direction: column; gap: 4px">
+        <h1 style="margin: 0; font-size: 32px">Good morning, Lakshmi</h1>
+        <span style="font-size: 15px; color: #566273">Friday 25 September · Gajuwaka, Visakhapatnam · Health ID ••••4821</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px">
+        <div style="display: flex; align-items: center; gap: 10px; width: 320px; height: 46px; padding: 0 14px; box-sizing: border-box; border-radius: 12px; background: #FFFFFF; border: 1px solid #C5CED9">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#566273" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m21 21-4.3-4.3"></path></svg>
+          <input aria-label="Search" placeholder="Search doctors, hospitals, records" style="border: none; outline: none; flex-grow: 1; font-size: 15px; background: transparent">
+        </div>
+        <button type="button" aria-label="Notifications" style="width: 46px; height: 46px; border-radius: 23px; border: 1px solid #D9DFE7; background: #FFFFFF; display: flex; align-items: center; justify-content: center; cursor: pointer">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"></path><path d="M10.3 21a1.9 1.9 0 0 0 3.4 0"></path></svg>
+        </button>
+        <span aria-label="Profile" style="width: 46px; height: 46px; border-radius: 23px; background: #0B4B7C; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-weight: 700">LD</span>
+      </div>
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px">
+      <section style="grid-column: span 2; display: flex; flex-direction: column; gap: 16px; padding: 22px; border-radius: 20px; background: #FFFFFF; border: 1px solid #D9DFE7">
+        <div style="display: flex; justify-content: space-between; align-items: baseline"><h2 style="margin: 0; font-size: 20px">Next appointment</h2><a href="#all" style="font-size: 14px; font-weight: 600">All appointments</a></div>
+        <div style="display: flex; gap: 20px; align-items: center">
+          <div style="width: 84px; padding: 12px 0; border-radius: 14px; background: #E7F0F8; color: #0B4B7C; display: flex; flex-direction: column; align-items: center; flex-shrink: 0">
+            <span style="font-size: 13px; font-weight: 700">SAT</span><span style="font-size: 32px; font-weight: 700; line-height: 1.1">26</span><span style="font-size: 13px; font-weight: 700">SEP</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 4px; flex-grow: 1">
+            <span style="font-size: 20px; font-weight: 600">Dr. Ramesh Varma · General Medicine</span>
+            <span style="font-size: 15px; color: #566273">King George Hospital · OPD Block B, Room 202 · 10:00 AM</span>
+            <span style="font-size: 15px; font-weight: 600; color: #0B4B7C">Token B-14 · Free (Government)</span>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <a href="#directions" style="height: 44px; padding: 0 18px; border-radius: 12px; background: #0B4B7C; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; text-decoration: none">Directions</a>
+            <a href="#reschedule" style="height: 44px; padding: 0 18px; border-radius: 12px; border: 1px solid #C5CED9; color: #0E1726; display: flex; align-items: center; justify-content: center; font-size: 15px; font-weight: 600; text-decoration: none">Reschedule</a>
+          </div>
+        </div>
+      </section>
+
+      <section style="display: flex; flex-direction: column; gap: 10px">
+        <a href="#book" style="flex: 1; display: flex; align-items: center; gap: 14px; padding: 0 18px; border-radius: 16px; background: #FFFFFF; border: 1px solid #D9DFE7; color: #0E1726; text-decoration: none; font-size: 16px; font-weight: 600">
+          <span style="width: 42px; height: 42px; border-radius: 11px; background: #E7F0F8; color: #0B4B7C; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="18" rx="2"></rect><path d="M16 2v4M8 2v4M3 10h18"></path></svg></span>Book a visit
+        </a>
+        <a href="#video" style="flex: 1; display: flex; align-items: center; gap: 14px; padding: 0 18px; border-radius: 16px; background: #FFFFFF; border: 1px solid #D9DFE7; color: #0E1726; text-decoration: none; font-size: 16px; font-weight: 600">
+          <span style="width: 42px; height: 42px; border-radius: 11px; background: #E7F0F8; color: #0B4B7C; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 8-6 4 6 4V8z"></path><rect x="2" y="6" width="14" height="12" rx="2"></rect></svg></span>Video consult
+        </a>
+        <a href="#assistant" style="flex: 1; display: flex; align-items: center; gap: 14px; padding: 0 18px; border-radius: 16px; background: #FFFFFF; border: 1px solid #D9DFE7; color: #0E1726; text-decoration: none; font-size: 16px; font-weight: 600">
+          <span style="width: 42px; height: 42px; border-radius: 11px; background: #EFEBFA; color: #5B45A8; display: flex; align-items: center; justify-content: center"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg></span>Ask health assistant
+        </a>
+      </section>
+
+      <section style="grid-column: span 2; display: flex; flex-direction: column; gap: 12px; padding: 22px; border-radius: 20px; background: #FFFFFF; border: 1px solid #D9DFE7">
+        <div style="display: flex; justify-content: space-between; align-items: baseline"><h2 style="margin: 0; font-size: 20px">Recent records</h2><a href="#records" style="font-size: 14px; font-weight: 600">All 7 records</a></div>
+        <table style="width: 100%; border-collapse: collapse; font-size: 15px">
+          <thead>
+            <tr style="text-align: left; color: #566273; font-size: 13px">
+              <th style="padding: 8px 0; font-weight: 600; border-bottom: 1px solid #D9DFE7">Record</th>
+              <th style="padding: 8px 0; font-weight: 600; border-bottom: 1px solid #D9DFE7">Hospital</th>
+              <th style="padding: 8px 0; font-weight: 600; border-bottom: 1px solid #D9DFE7">Date</th>
+              <th style="padding: 8px 0; font-weight: 600; border-bottom: 1px solid #D9DFE7">Result</th>
+              <th style="padding: 8px 0; font-weight: 600; border-bottom: 1px solid #D9DFE7; text-align: right">File</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td style="padding: 12px 0; border-bottom: 1px solid #EDF1F5; font-weight: 600">Blood sugar (HbA1c)</td><td style="padding: 12px 0; border-bottom: 1px solid #EDF1F5">King George Hospital</td><td style="padding: 12px 0; border-bottom: 1px solid #EDF1F5">22 Sep</td><td style="padding: 12px 0; border-bottom: 1px solid #EDF1F5; color: #8A4A0B; font-weight: 600">7.4% · a little high</td><td style="padding: 12px 0; border-bottom: 1px solid #EDF1F5; text-align: right"><a href="#dl1">Download</a></td></tr>
+            <tr><td style="padding: 12px 0; border-bottom: 1px solid #EDF1F5; font-weight: 600">Prescription</td><td style="padding: 12px 0; border-bottom: 1px solid #EDF1F5">King George Hospital</td><td style="padding: 12px 0; border-bottom: 1px solid #EDF1F5">22 Sep</td><td style="padding: 12px 0; border-bottom: 1px solid #EDF1F5">2 medicines · 30 days</td><td style="padding: 12px 0; border-bottom: 1px solid #EDF1F5; text-align: right"><a href="#dl2">Download</a></td></tr>
+            <tr><td style="padding: 12px 0; border-bottom: 1px solid #EDF1F5; font-weight: 600">Chest X-ray</td><td style="padding: 12px 0; border-bottom: 1px solid #EDF1F5">Seaview Multispeciality</td><td style="padding: 12px 0; border-bottom: 1px solid #EDF1F5">18 Sep</td><td style="padding: 12px 0; border-bottom: 1px solid #EDF1F5; color: #2B6A12; font-weight: 600">Normal</td><td style="padding: 12px 0; border-bottom: 1px solid #EDF1F5; text-align: right"><a href="#dl3">Download</a></td></tr>
+            <tr><td style="padding: 12px 0; font-weight: 600">Cholesterol</td><td style="padding: 12px 0">Urban PHC, Gajuwaka</td><td style="padding: 12px 0">10 Sep</td><td style="padding: 12px 0; color: #8A4A0B; font-weight: 600">Borderline</td><td style="padding: 12px 0; text-align: right"><a href="#dl4">Download</a></td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section style="display: flex; flex-direction: column; gap: 12px; padding: 22px; border-radius: 20px; background: #FFFFFF; border: 1px solid #D9DFE7">
+        <div style="display: flex; justify-content: space-between; align-items: baseline"><h2 style="margin: 0; font-size: 20px">Today’s medicines</h2><span style="font-size: 14px; color: #566273">2 left</span></div>
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #EDF1F5"><span style="display: flex; flex-direction: column"><span style="font-weight: 600">Metformin 500 mg</span><span style="font-size: 13px; color: #566273">8:00 AM · after breakfast</span></span><span style="padding: 6px 10px; border-radius: 8px; background: #EBF6E4; color: #2B6A12; font-size: 13px; font-weight: 700">✓ Taken</span></div>
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid #EDF1F5"><span style="display: flex; flex-direction: column"><span style="font-weight: 600">Amlodipine 5 mg</span><span style="font-size: 13px; color: #566273">9:00 AM · once a day</span></span><button type="button" style="height: 36px; padding: 0 12px; border-radius: 8px; border: 1px solid #C5CED9; background: #FFFFFF; font-size: 13px; font-weight: 600; cursor: pointer">Mark taken</button></div>
+        <div style="display: flex; align-items: center; justify-content: space-between; padding: 10px 0"><span style="display: flex; flex-direction: column"><span style="font-weight: 600">Metformin 500 mg</span><span style="font-size: 13px; color: #566273">8:00 PM · after dinner</span></span><button type="button" style="height: 36px; padding: 0 12px; border-radius: 8px; border: 1px solid #C5CED9; background: #FFFFFF; font-size: 13px; font-weight: 600; cursor: pointer">Mark taken</button></div>
+      </section>
+
+      <section style="display: flex; flex-direction: column; gap: 12px; padding: 22px; border-radius: 20px; background: #FFFFFF; border: 1px solid #D9DFE7">
+        <h2 style="margin: 0; font-size: 20px">Health conditions</h2>
+        <div style="display: flex; flex-wrap: wrap; gap: 8px">
+          <span style="padding: 8px 12px; border-radius: 999px; border: 1px solid #D9DFE7; font-size: 14px">Hypertension · ongoing</span>
+          <span style="padding: 8px 12px; border-radius: 999px; border: 1px solid #D9DFE7; font-size: 14px">Type 2 diabetes · ongoing</span>
+          <span style="padding: 8px 12px; border-radius: 999px; background: #FEECEB; color: #912018; font-size: 14px; font-weight: 600">Allergy: Penicillin</span>
+        </div>
+      </section>
+
+      <section style="display: flex; flex-direction: column; gap: 12px; padding: 22px; border-radius: 20px; background: #FFFFFF; border: 1px solid #D9DFE7">
+        <h2 style="margin: 0; font-size: 20px">Family on this account</h2>
+        <span style="font-size: 14px; line-height: 1.5; color: #566273">One phone can manage the whole family’s health.</span>
+        <div style="display: flex; gap: 10px">
+          <span style="padding: 8px 12px; border-radius: 999px; background: #EDF1F5; font-size: 14px; font-weight: 600">Ravi (son)</span>
+          <span style="padding: 8px 12px; border-radius: 999px; background: #EDF1F5; font-size: 14px; font-weight: 600">Anjali (granddaughter)</span>
+        </div>
+      </section>
+
+      <section style="display: flex; flex-direction: column; gap: 10px; padding: 22px; border-radius: 20px; background: #E7F0F8">
+        <h2 style="margin: 0; font-size: 20px; color: #083A61">Works offline</h2>
+        <span style="font-size: 14px; line-height: 1.5; color: #083A61">Records, appointments and emergency help are saved on this device and sync when you reconnect.</span>
+      </section>
+    </div>
+  </main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
