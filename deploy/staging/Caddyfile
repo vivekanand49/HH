@@ -1,0 +1,5 @@
+# Free HTTPS certificate from Let's Encrypt for the sslip.io name.
+{$DOMAIN} {
+	encode gzip
+	reverse_proxy app:4000
+}

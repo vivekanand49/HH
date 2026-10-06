@@ -23,6 +23,7 @@ r.get('/config', (_req, res) => {
     ambulance: '108',
     emergency: '112',
     codes: EMERGENCY_CODES.map((c) => ({ code: c, label: SYMPTOMS[c].label })),
+    staging: config.staging,
   });
 });
 

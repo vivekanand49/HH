@@ -14,7 +14,7 @@ import { audit } from '../services/audit.js';
 
 const r = Router();
 const useRazorpay = () => Boolean(config.razorpayKeyId && config.razorpayKeySecret);
-const mockAllowed = () => !useRazorpay() && !config.isProd;
+const mockAllowed = () => !useRazorpay() && (!config.isProd || config.staging);
 
 async function razorpay(path, body) {
   const auth = Buffer.from(`${config.razorpayKeyId}:${config.razorpayKeySecret}`).toString('base64');

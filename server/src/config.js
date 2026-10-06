@@ -2,6 +2,9 @@ import crypto from 'node:crypto';
 
 const env = process.env;
 const isProd = env.NODE_ENV === 'production';
+// A shared test server: production build, but demo data, OTP shown on screen and
+// demo payments, so the team can try it without SMS or Razorpay. Never for real patients.
+const staging = env.STAGING === 'true';
 
 function secret(name) {
   if (env[name]) return env[name];
@@ -20,6 +23,7 @@ function json(name) {
 
 export const config = {
   isProd,
+  staging,
   port: Number(env.PORT || 4000),
   // How many proxies (load balancer, nginx) sit in front of the app. Rate limits
   // use the client IP from X-Forwarded-For, so this must match the real setup:
@@ -31,7 +35,7 @@ export const config = {
   jwtSecret: secret('JWT_SECRET'),
   idHashSecret: secret('ID_HASH_SECRET'),
   gatewaySecret: secret('GATEWAY_SECRET'),
-  otpDevEcho: !isProd && env.OTP_DEV_ECHO !== 'false',
+  otpDevEcho: (!isProd || staging) && env.OTP_DEV_ECHO !== 'false',
   smsProvider: env.SMS_PROVIDER || 'console',
   // India DLT: the entity ID and a JSON map of template name → DLT template ID.
   smsSenderId: env.SMS_SENDER_ID || '',

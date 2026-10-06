@@ -14,8 +14,8 @@ checkSmsConfig();
 
 await migrate();
 // First run on an empty database: load the demo data (never in production,
-// where the district admin is created with `npm run create-admin`).
-if ((!config.isProd || process.env.SEED_DEMO === 'true') && !(await one(`SELECT 1 FROM hospitals LIMIT 1`))) await seed();
+// where the district admin is created with `npm run create-admin`; staging uses demo data).
+if ((!config.isProd || config.staging || process.env.SEED_DEMO === 'true') && !(await one(`SELECT 1 FROM hospitals LIMIT 1`))) await seed();
 
 const server = http.createServer(createApp());
 const io = new Server(server, { cors: { origin: config.corsOrigins } });

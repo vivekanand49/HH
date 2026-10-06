@@ -99,6 +99,20 @@ SELECT created_at, phone, template, status FROM sms_log WHERE status = 'failed' 
 - [ ] Staff trained on the emergency desk and admin portal. Staff screens are in English, Telugu, Hindi and Marathi.
 - [ ] Clinicians have signed off the triage rules and first-aid text; native speakers have checked the translations.
 
+## Free staging server (team testing)
+
+A test copy for the team on one AWS Free Tier server (t3.micro, Mumbai), with
+free HTTPS at `https://<ip-with-dashes>.sslip.io`. It runs with `STAGING=true`:
+demo hospitals and logins, the login code shown on screen, demo payments, and a
+"Test server" banner on every page. **Never put real patient data on it.**
+
+- Launch an Amazon Linux 2023 t3.micro with `deploy/staging/setup.sh` as user data,
+  a 30 GB gp3 disk, and a security group open only on ports 80 and 443.
+  It installs Docker, clones the team repo and starts everything (about 15 minutes on first boot).
+- Update after a push: in Session Manager, `cd /opt/swasthya && sudo git pull && sudo bash deploy/staging/start.sh`.
+- Setup log: `/var/log/swasthya-setup.log`. App logs: `sudo docker compose logs -f app`.
+- Keep an AWS Budget alert at $1 so you hear about any charge.
+
 ## Updating
 
 ```sh

@@ -16,7 +16,7 @@ import Records from './pages/Records';
 import Emergency from './pages/Emergency';
 import Assistant from './pages/Assistant';
 import Profile from './pages/Profile';
-import { Loading } from './components/ui';
+import { Loading, StagingBanner } from './components/ui';
 
 // Staff, doctor and video pages load only when opened, keeping the first load small on 2G.
 const Console = lazy(() => import('./pages/Console'));
@@ -42,6 +42,7 @@ export default function App() {
 
   return (
     <Suspense fallback={<Loading />}>
+    <StagingBanner />
     <Routes>
       <Route path="/welcome" element={<Language />} />
       <Route path="/login" element={<Login />} />

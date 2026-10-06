@@ -571,5 +571,6 @@
   "Wed": "बुध",
   "Thu": "गुरु",
   "Fri": "शुक्र",
-  "Sat": "शनि"
+  "Sat": "शनि",
+  "Test server: demo data only. Do not enter real patient details.": "परीक्षण सर्वर: केवल डेमो डेटा। असली मरीज़ की जानकारी न डालें।"
 }

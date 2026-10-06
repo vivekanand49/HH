@@ -1,0 +1,31 @@
+# Staging add-on for ../../docker-compose.yml: demo mode + Caddy for free HTTPS.
+#   docker compose -f docker-compose.yml -f deploy/staging/docker-compose.staging.yml up -d --build
+# DOMAIN is set by start.sh (e.g. 13-233-10-20.sslip.io).
+services:
+  app:
+    environment:
+      STAGING: "true"
+      CORS_ORIGINS: https://${DOMAIN:?set DOMAIN}
+      TRUST_PROXY: "1"
+    # 1 GB server: keep Node's memory in check.
+    mem_limit: 450m
+
+  db:
+    mem_limit: 250m
+
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    environment:
+      DOMAIN: ${DOMAIN}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./deploy/staging/Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+    depends_on:
+      - app
+
+volumes:
+  caddy_data:

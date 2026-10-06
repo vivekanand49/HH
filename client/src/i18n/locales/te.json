@@ -571,5 +571,6 @@
   "Wed": "బుధ",
   "Thu": "గురు",
   "Fri": "శుక్ర",
-  "Sat": "శని"
+  "Sat": "శని",
+  "Test server: demo data only. Do not enter real patient details.": "పరీక్ష సర్వర్: డెమో డేటా మాత్రమే. నిజమైన రోగి వివరాలు నమోదు చేయవద్దు."
 }

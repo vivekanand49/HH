@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useSelector } from 'react-redux';
 import Icon from './Icon';
 import { LANGUAGES as LANGUAGE_OPTIONS, formatDateTime, setLanguage } from '../i18n';
-import { api } from '../lib/api';
+import { api, useCachedApi } from '../lib/api';
 
 // The logo mark with the name. size = height of the mark in px; tagline adds the
 // line under the name (used where there is room: sidebar, login, welcome).
@@ -133,6 +133,18 @@ export function PageTitle({ title, subtitle, back, action, image, imagePosition 
         {subtitle && <p className="mt-1 text-[15px] text-muted">{subtitle}</p>}
       </div>
       {action}
+    </div>
+  );
+}
+
+// Shown on the shared staging server so nobody enters real patient details there.
+export function StagingBanner() {
+  const { t } = useTranslation();
+  const { data } = useCachedApi('/emergency/config');
+  if (!data?.staging) return null;
+  return (
+    <div role="note" className="bg-warn-soft px-4 py-1.5 text-center text-[13px] font-semibold text-warn">
+      {t('Test server: demo data only. Do not enter real patient details.')}
     </div>
   );
 }

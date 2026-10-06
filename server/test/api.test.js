@@ -790,3 +790,17 @@ test('security basics: headers, no staff numbers in public data, no stack traces
   assert.equal(bad.status, 400);
   assert.doesNotMatch(await bad.text(), /at .*\.js:\d+/, 'no stack trace in errors');
 });
+
+test('staging: production build with demo login codes and demo payments; real production has neither', async () => {
+  const { execFileSync } = await import('node:child_process');
+  const read = (extra) =>
+    JSON.parse(
+      execFileSync(process.execPath, ['--input-type=module', '-e', `const { config } = await import('./src/config.js'); console.log(JSON.stringify({ echo: config.otpDevEcho, staging: config.staging }))`], {
+        env: { ...process.env, NODE_ENV: 'production', JWT_SECRET: 'x', ID_HASH_SECRET: 'y', GATEWAY_SECRET: 'z', OTP_DEV_ECHO: '', ...extra },
+      }),
+    );
+  assert.deepEqual(read({ STAGING: 'true' }), { echo: true, staging: true });
+  assert.deepEqual(read({ STAGING: '' }), { echo: false, staging: false });
+  const cfg = await api('/emergency/config');
+  assert.equal(cfg.body.staging, false);
+});
