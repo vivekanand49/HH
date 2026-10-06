@@ -50,3 +50,6 @@ WantedBy=multi-user.target
 UNIT
 systemctl daemon-reload
 systemctl enable --now swasthya.service
+
+# Update automatically when new code is pushed to GitHub.
+bash /opt/swasthya/deploy/staging/install-auto-update.sh

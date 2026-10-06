@@ -109,7 +109,7 @@ demo hospitals and logins, the login code shown on screen, demo payments, and a
 - Launch an Amazon Linux 2023 t3.micro with `deploy/staging/setup.sh` as user data,
   a 30 GB gp3 disk, and a security group open only on ports 80 and 443.
   It installs Docker, clones the team repo and starts everything (about 15 minutes on first boot).
-- Update after a push: in Session Manager, `cd /opt/swasthya && sudo git pull && sudo bash deploy/staging/start.sh`.
+- Updates are automatic: every 5 minutes the server checks the team repo and rebuilds when `main` changed (a rebuild takes a few minutes). Log: `journalctl -u swasthya-update`.
 - Setup log: `/var/log/swasthya-setup.log`. App logs: `sudo docker compose logs -f app`.
 - Keep an AWS Budget alert at $1 so you hear about any charge.
 
