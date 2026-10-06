@@ -74,6 +74,40 @@ test('login with mobile, Aadhaar and ABHA reaches the same demo patient', async 
   assert.equal(b.user.aadhaar_last4, '0123');
 });
 
+test('Twilio Verify: Twilio sends and checks the login code, which is never shown on screen', async () => {
+  const http = await import('node:http');
+  const { config } = await import('../src/config.js');
+  const sent = [];
+  const twilio = http
+    .createServer((req, res) => {
+      let body = '';
+      req.on('data', (c) => (body += c));
+      req.on('end', () => {
+        const form = new URLSearchParams(body);
+        res.setHeader('content-type', 'application/json');
+        if (req.url === '/Services/VAtest/Verifications') sent.push(form.get('To'));
+        res.end(JSON.stringify({ status: form.get('Code') === '424242' ? 'approved' : 'pending' }));
+      });
+    })
+    .listen(0);
+  const saved = { ...config };
+  Object.assign(config, { twilioVerifyService: 'VAtest', twilioSid: 'ACtest', twilioToken: 'secret', twilioVerifyUrl: `http://127.0.0.1:${twilio.address().port}` });
+  try {
+    const req = await api('/auth/otp/request', { method: 'POST', body: { method: 'mobile', value: '91234 56780' } });
+    assert.equal(req.status, 200);
+    assert.equal(req.body.devCode, undefined);
+    assert.deepEqual(sent, ['+919123456780']);
+    const wrong = await api('/auth/otp/verify', { method: 'POST', body: { requestId: req.body.requestId, code: '111111' } });
+    assert.equal(wrong.status, 400);
+    const right = await api('/auth/otp/verify', { method: 'POST', body: { requestId: req.body.requestId, code: '424242' } });
+    assert.equal(right.status, 200);
+    assert.ok(right.body.token);
+  } finally {
+    Object.assign(config, saved);
+    twilio.close();
+  }
+});
+
 test('invalid Aadhaar is rejected and the OTP cannot be reused', async () => {
   assert.equal((await api('/auth/otp/request', { method: 'POST', body: { method: 'aadhaar', value: '123412341234' } })).status, 400);
   const req = await api('/auth/otp/request', { method: 'POST', body: { method: 'mobile', value: '9876543210' } });

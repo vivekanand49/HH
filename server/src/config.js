@@ -48,6 +48,9 @@ export const config = {
   twilioToken: env.TWILIO_AUTH_TOKEN || '',
   twilioFrom: env.TWILIO_FROM || '',
   twilioMessagingService: env.TWILIO_MESSAGING_SERVICE_SID || '',
+  // Login codes through Twilio Verify (works on a Twilio trial); see services/verify.js.
+  twilioVerifyService: env.TWILIO_VERIFY_SERVICE_SID || '',
+  twilioVerifyUrl: env.TWILIO_VERIFY_URL || 'https://verify.twilio.com/v2',
   smsGatewayNumber: env.SMS_GATEWAY_NUMBER || '+910000000000',
   missedCallNumber: env.MISSED_CALL_NUMBER || '+910000000001',
   anthropicKey: env.ANTHROPIC_API_KEY || '',

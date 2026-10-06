@@ -114,7 +114,8 @@ demo hospitals and logins, the login code shown on screen, demo payments, and a
 - Keep an AWS Budget alert at $1 so you hear about any charge.
 - Real login SMS: run `sudo bash /opt/swasthya/deploy/staging/set-sms.sh` on the server and paste Twilio keys
   (a free Twilio trial sends only to phone numbers you verify in Twilio). From then on the code goes to the phone
-  and is no longer shown on screen.
+  and is no longer shown on screen. A Twilio trial may only send Twilio's own texts, so also create a
+  Verify service (Twilio → Verify → Services) and give its `VA…` ID: Twilio Verify then sends and checks the login code.
 
 ## Updating
 

@@ -7,6 +7,7 @@ import { parse } from '../validate.js';
 import { digits, idHash, maskPhone, normalizePhone, otpCode, safeEqual } from '../services/ids.js';
 import { createUser } from '../services/users.js';
 import { sendTemplate } from '../services/sms.js';
+import { checkVerification, startVerification, VERIFY_MARK, verifyEnabled } from '../services/verify.js';
 import { audit } from '../services/audit.js';
 import { publicUser, requireAuth, signToken } from '../middleware/auth.js';
 
@@ -63,18 +64,28 @@ r.post('/otp/request', async (req, res) => {
   const recent = await one(`SELECT count(*)::int AS n FROM otp_requests WHERE user_id = $1 AND created_at > now() - interval '1 hour'`, [user.id]);
   if (recent.n >= MAX_OTP_PER_HOUR) return res.status(429).json({ error: 'Too many codes requested. Please try again in an hour.' });
 
-  const code = otpCode();
+  // With Twilio Verify, Twilio makes and checks the code; otherwise we do and send it ourselves.
+  const viaVerify = verifyEnabled() && Boolean(user.phone);
+  const code = viaVerify ? null : otpCode();
+  if (viaVerify) {
+    try {
+      await startVerification(user.phone);
+    } catch (err) {
+      console.error('Login code not sent', err.message);
+      return res.status(502).json({ error: 'Could not send the code. Please try again in a minute.' });
+    }
+  }
   const otp = await one(`INSERT INTO otp_requests (user_id, code_hash, expires_at) VALUES ($1, $2, now() + interval '${OTP_TTL_MIN} minutes') RETURNING id`, [
     user.id,
-    idHash(`otp:${code}`),
+    viaVerify ? VERIFY_MARK : idHash(`otp:${code}`),
   ]);
-  if (user.phone) await sendTemplate(user.phone, 'otp', user.language, code);
+  if (user.phone && !viaVerify) await sendTemplate(user.phone, 'otp', user.language, code);
 
   res.json({
     requestId: otp.id,
     sentTo: maskPhone(user.phone),
     expiresInSec: OTP_TTL_MIN * 60,
-    ...(config.otpDevEcho ? { devCode: code } : {}),
+    ...(config.otpDevEcho && code ? { devCode: code } : {}),
   });
 });
 
@@ -88,7 +99,19 @@ r.post('/otp/verify', async (req, res) => {
   if (new Date(otp.expires_at) < new Date()) return res.status(400).json({ error: 'The code has expired. Request a new one.' });
   if (otp.attempts >= MAX_ATTEMPTS) return res.status(429).json({ error: 'Too many wrong tries. Request a new code.' });
 
-  if (!safeEqual(otp.code_hash, idHash(`otp:${code}`))) {
+  let right;
+  if (otp.code_hash === VERIFY_MARK) {
+    const { phone } = await one(`SELECT phone FROM users WHERE id = $1`, [otp.user_id]);
+    try {
+      right = await checkVerification(phone, code);
+    } catch (err) {
+      console.error('Login code check failed', err.message);
+      return res.status(502).json({ error: 'Could not check the code. Please try again in a minute.' });
+    }
+  } else {
+    right = safeEqual(otp.code_hash, idHash(`otp:${code}`));
+  }
+  if (!right) {
     await query(`UPDATE otp_requests SET attempts = attempts + 1 WHERE id = $1`, [requestId]);
     const left = MAX_ATTEMPTS - otp.attempts - 1;
     return res.status(400).json({ error: `Wrong code. ${left} ${left === 1 ? 'try' : 'tries'} left.`, attemptsLeft: left });
