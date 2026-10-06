@@ -3,7 +3,7 @@ import { z } from 'zod';
 import { DEFAULT_LOCATION } from '@swasthya/shared/geo';
 import { one, query } from '../db/index.js';
 import { parse } from '../validate.js';
-import { nearestHospitals } from '../services/alerts.js';
+import { DIST, nearestHospitals } from '../services/alerts.js';
 
 const r = Router();
 
@@ -30,6 +30,38 @@ r.get('/hospitals', async (req, res) => {
     rows = rows.filter((h) => `${h.name} ${h.area ?? ''} ${h.address}`.toLowerCase().includes(q));
   }
   res.json({ hospitals: rows.map(publicHospital) });
+});
+
+// "Book fastest slot" and voice booking: the earliest free times in a department,
+// at most one per hospital, nearby hospitals first (within 25 km when there are any).
+const fastestSchema = z.object({
+  department: z.string().max(80).default('general'),
+  type: z.enum(['government', 'private']).optional(),
+  day: z.enum(['today', 'tomorrow']).optional(),
+  lat: z.coerce.number().min(-90).max(90).optional(),
+  lng: z.coerce.number().min(-180).max(180).optional(),
+});
+
+r.get('/fastest', async (req, res) => {
+  const f = parse(fastestSchema, req.query);
+  const params = [f.lat ?? DEFAULT_LOCATION.lat, f.lng ?? DEFAULT_LOCATION.lng, f.department];
+  const where = [`NOT s.is_booked`, `s.starts_at > now() + interval '15 minutes'`, `d.is_active`, `h.is_active`, `d.department = $3`];
+  if (f.type) where.push(`h.type = $${params.push(f.type)}`);
+  if (f.day) {
+    where.push(`(s.starts_at AT TIME ZONE 'Asia/Kolkata')::date = (now() AT TIME ZONE 'Asia/Kolkata')::date + ${f.day === 'tomorrow' ? 1 : 0}`);
+  }
+  const { rows } = await query(
+    `SELECT DISTINCT ON (h.id) s.id AS slot_id, s.starts_at, d.id AS doctor_id, d.full_name AS doctor_name, d.department, d.photo_url, d.rating,
+            CASE WHEN h.type = 'government' THEN 0 ELSE d.fee_inr END AS fee_inr, h.id AS hospital_id, h.name AS hospital_name, h.area, h.type AS hospital_type,
+            round(${DIST('$1', '$2', 'h.')}::numeric, 1)::float AS distance_km
+       FROM doctor_slots s JOIN doctors d ON d.id = s.doctor_id JOIN hospitals h ON h.id = d.hospital_id
+      WHERE ${where.join(' AND ')}
+      ORDER BY h.id, s.starts_at`,
+    params,
+  );
+  const near = rows.filter((o) => o.distance_km <= 25);
+  const options = (near.length ? near : rows).sort((a, b) => new Date(a.starts_at) - new Date(b.starts_at) || a.distance_km - b.distance_km).slice(0, 3);
+  res.json({ options });
 });
 
 r.get('/hospitals/:id', async (req, res) => {

@@ -2,6 +2,7 @@
 // call, and urgent symptoms get the emergency answer immediately.
 import Anthropic from '@anthropic-ai/sdk';
 import { triage, offlineAdvice, isUrgent } from '@swasthya/shared/triage';
+import { chatReply } from '@swasthya/shared/chat';
 import { config } from '../config.js';
 
 const LANGUAGE_NAMES = { en: 'English', te: 'Telugu', hi: 'Hindi', mr: 'Marathi' };
@@ -23,6 +24,7 @@ function systemPrompt(lang, context) {
     'If anything suggests an emergency (chest pain, trouble breathing, unconsciousness, stroke signs, heavy bleeding, poisoning, snake bite, seizures, pregnancy bleeding, suicidal thoughts), tell them to call 108 or open the Emergency button now, before anything else.',
     'You may suggest common over-the-counter care with standard adult doses (for example paracetamol), but never prescription medicines or dose changes; tell them to ask their doctor. Respect the allergies listed below.',
     'Ask at most two short follow-up questions when you need them. End with one clear next step.',
+    'When they should see a doctor, tell them to tap the "Book fastest slot" button below your answer: it books the earliest free doctor near them.',
     context ? `Patient record (shared with consent): ${context}` : 'No patient record available.',
   ].join('\n');
 }
@@ -63,20 +65,24 @@ export async function translate(text, from, to) {
 }
 
 /**
- * @returns {{ reply: string, severity: string|null, codes: string[], source: 'triage'|'claude'|'fallback' }}
+ * Without an AI key (or when the AI is down) the free rule-based chat answers,
+ * so the assistant still asks questions and offers booking.
+ * @returns {{ reply: string, severity: string|null, codes: string[], department: string|null, quickReplies: string[], book: boolean, source: 'triage'|'claude'|'fallback' }}
  */
 export async function assistantReply({ messages, lang = 'en', context = '' }) {
   const history = sanitize(messages);
   const last = history.at(-1);
   if (!last || last.role !== 'user') throw Object.assign(new Error('The last message must be from the user'), { status: 400 });
 
+  const local = chatReply(history, lang);
+  const fallback = { ...local, source: 'fallback' };
   const { codes, severity } = triage(last.content);
   if (isUrgent(severity)) {
-    return { reply: offlineAdvice(severity, lang), severity, codes, source: 'triage' };
+    return { ...local, reply: offlineAdvice(severity, lang), severity, codes, source: 'triage' };
   }
 
   const ai = getClient();
-  if (!ai) return { reply: offlineAdvice(severity, lang), severity, codes, source: 'fallback' };
+  if (!ai) return fallback;
 
   try {
     const response = await ai.beta.messages.create({
@@ -88,20 +94,21 @@ export async function assistantReply({ messages, lang = 'en', context = '' }) {
       system: systemPrompt(lang, context),
       messages: history,
     });
-    if (response.stop_reason === 'refusal') {
-      return { reply: offlineAdvice(severity, lang), severity, codes, source: 'fallback' };
-    }
+    if (response.stop_reason === 'refusal') return fallback;
     const reply = response.content
       .filter((b) => b.type === 'text')
       .map((b) => b.text)
       .join('')
       .trim();
-    return { reply: reply || offlineAdvice(severity, lang), severity, codes, source: 'claude' };
+    if (!reply) return fallback;
+    // Claude writes the answer; the booking button still uses the local department guess.
+    const book = local.book || severity === 'medium';
+    return { reply, severity, codes, department: book ? (local.department ?? 'general') : null, quickReplies: [], book, source: 'claude' };
   } catch (err) {
     if (err instanceof Anthropic.RateLimitError) console.warn('Assistant rate limited');
     else if (err instanceof Anthropic.APIConnectionError) console.warn('Assistant: cannot reach the Claude API');
     else if (err instanceof Anthropic.APIError) console.error('Assistant API error', err.status, err.message);
     else throw err;
-    return { reply: offlineAdvice(severity, lang), severity, codes, source: 'fallback' };
+    return fallback;
   }
 }

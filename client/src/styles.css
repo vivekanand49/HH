@@ -61,10 +61,10 @@ h3 {
 }
 
 @utility btn {
-  @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-2xl px-5 text-base font-semibold transition-colors disabled:cursor-not-allowed disabled:opacity-50;
+  @apply inline-flex min-h-12 cursor-pointer items-center justify-center gap-2 rounded-2xl px-5 text-base font-semibold transition-[background-color,color,transform,box-shadow] duration-200 select-none active:scale-[0.97] disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100;
 }
 @utility btn-primary {
-  @apply btn bg-brand text-white hover:bg-brand-dark;
+  @apply btn bg-brand text-white shadow-[0_4px_14px_rgb(21_101_216/0.25)] hover:bg-brand-dark;
 }
 @utility btn-outline {
   @apply btn border border-line bg-surface text-ink hover:bg-bg;
@@ -76,10 +76,10 @@ h3 {
   @apply rounded-3xl border border-line bg-surface shadow-card;
 }
 @utility chip {
-  @apply inline-flex min-h-11 items-center rounded-full border border-line bg-surface px-4 text-sm font-semibold;
+  @apply inline-flex min-h-11 cursor-pointer items-center rounded-full border border-line bg-surface px-4 text-sm font-semibold transition-colors duration-200 hover:border-brand/50 disabled:cursor-not-allowed disabled:opacity-50;
 }
 @utility input {
-  @apply min-h-14 w-full rounded-2xl border-2 border-line bg-surface px-4 text-lg outline-none focus:border-brand;
+  @apply min-h-14 w-full rounded-2xl border-2 border-line bg-surface px-4 text-lg transition-[border-color,box-shadow] duration-200 outline-none focus:border-brand focus:shadow-[0_0_0_4px_rgb(21_101_216/0.12)];
 }
 @utility label {
   @apply text-[15px] font-semibold;
@@ -89,4 +89,107 @@ h3 {
 @utility hero {
   background: linear-gradient(135deg, #0d4fb0 0%, #1565d8 55%, #3b8ff0 100%);
   @apply text-white;
+}
+
+/* Cards and tiles that lift a little on hover and press in on tap. */
+@utility lift {
+  @apply cursor-pointer transition-[transform,box-shadow,border-color] duration-200 hover:-translate-y-0.5 hover:shadow-[0_6px_22px_rgb(21_101_216/0.12)] active:translate-y-0 active:scale-[0.99];
+}
+
+/* Small coloured dot for "online", "listening" and similar states. */
+@utility status-dot {
+  @apply inline-block size-2.5 shrink-0 rounded-full;
+}
+
+/* Loading placeholder with a soft shimmer. */
+@utility skeleton {
+  background: linear-gradient(90deg, var(--color-line-soft) 25%, var(--color-surface) 50%, var(--color-line-soft) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+/* Chat bubbles and result cards slide in. */
+@utility bubble-in {
+  animation: rise 220ms ease-out both;
+}
+@utility fade-up {
+  animation: rise 260ms ease-out both;
+}
+
+/* "Thinking…" dots in the chat. */
+@utility typing {
+  @apply inline-flex items-center gap-1 rounded-full bg-line-soft px-3 py-2;
+  & > span {
+    @apply size-1.5 rounded-full bg-muted;
+    animation: blink 1.2s infinite ease-in-out;
+  }
+  & > span:nth-child(2) {
+    animation-delay: 0.15s;
+  }
+  & > span:nth-child(3) {
+    animation-delay: 0.3s;
+  }
+}
+
+/* Big round microphone on Book by voice; pulses while listening. */
+@utility mic-button {
+  @apply relative grid size-28 cursor-pointer place-items-center rounded-full bg-brand text-white shadow-[0_10px_30px_rgb(21_101_216/0.35)] transition-[transform,background-color] duration-200 hover:bg-brand-dark active:scale-95 disabled:opacity-60;
+  &.is-listening {
+    @apply bg-sos;
+    animation: pulse-ring 1.5s ease-out infinite;
+  }
+}
+@utility mic-live {
+  animation: pulse-ring 1.5s ease-out infinite;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes blink {
+  0%,
+  80%,
+  100% {
+    opacity: 0.3;
+    transform: translateY(0);
+  }
+  40% {
+    opacity: 1;
+    transform: translateY(-3px);
+  }
+}
+@keyframes shimmer {
+  from {
+    background-position: 200% 0;
+  }
+  to {
+    background-position: -200% 0;
+  }
+}
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 rgb(180 35 24 / 0.45);
+  }
+  100% {
+    box-shadow: 0 0 0 22px rgb(180 35 24 / 0);
+  }
+}
+
+/* People who turn off motion in their phone settings get none here either. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

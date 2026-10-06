@@ -35,7 +35,9 @@ export const config = {
   jwtSecret: secret('JWT_SECRET'),
   idHashSecret: secret('ID_HASH_SECRET'),
   gatewaySecret: secret('GATEWAY_SECRET'),
-  otpDevEcho: (!isProd || staging) && env.OTP_DEV_ECHO !== 'false',
+  // Show the login code on screen only when no real SMS is sent (development, or
+  // staging before an SMS company is set up). With real SMS the code goes to the phone only.
+  otpDevEcho: (!isProd || (staging && (env.SMS_PROVIDER || 'console') === 'console')) && env.OTP_DEV_ECHO !== 'false',
   smsProvider: env.SMS_PROVIDER || 'console',
   // India DLT: the entity ID and a JSON map of template name → DLT template ID.
   smsSenderId: env.SMS_SENDER_ID || '',

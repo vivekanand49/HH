@@ -83,7 +83,7 @@ export default function Home() {
       <FamilySwitcher label={t('Whose health?')} />
 
       <div className="grid gap-4 lg:grid-cols-3">
-        <Link to="/emergency" className="flex items-center gap-4 rounded-3xl bg-sos p-5 text-white hover:bg-sos-dark lg:col-span-3">
+        <Link to="/emergency" className="lift flex items-center gap-4 rounded-3xl bg-sos p-5 text-white hover:bg-sos-dark lg:col-span-3">
           <span className="grid size-14 shrink-0 place-items-center rounded-full bg-white text-sos">
             <Icon name="phone" size={28} />
           </span>
@@ -94,7 +94,18 @@ export default function Home() {
           <Icon name="right" size={24} strokeWidth={2.5} />
         </Link>
 
-        <Link to="/book?visit=video" className="hero relative flex min-h-40 overflow-hidden rounded-3xl lg:col-span-3">
+        <Link to="/quick-book" className="card lift flex items-center gap-4 p-5 lg:col-span-3">
+          <span className="grid size-14 shrink-0 place-items-center rounded-full bg-brand text-white ring-4 ring-brand-soft">
+            <Icon name="mic" size={26} />
+          </span>
+          <span className="min-w-0 flex-1">
+            <span className="block text-xl font-bold">{t('Book by voice')}</span>
+            <span className="text-[15px] text-muted">{t('Say your problem. We book the earliest doctor near you.')}</span>
+          </span>
+          <Icon name="right" size={24} className="text-brand" />
+        </Link>
+
+        <Link to="/book?visit=video" className="hero lift relative flex min-h-40 overflow-hidden rounded-3xl lg:col-span-3">
           <span className="relative z-10 flex max-w-[62%] flex-col justify-center gap-1.5 p-5 md:max-w-md md:p-7">
             <span className="text-[22px] leading-tight font-bold md:text-3xl">{t('Talk to a doctor from home')}</span>
             <span className="text-[15px] text-white/90">{t('Video consult in your language, with live captions.')}</span>
@@ -114,7 +125,7 @@ export default function Home() {
 
         <div className="grid grid-cols-2 gap-3 md:grid-cols-4 lg:col-span-3">
           {actions.map((a) => (
-            <Link key={a.to} to={a.to} className="card flex min-h-28 flex-col gap-3 p-4 hover:border-muted/40">
+            <Link key={a.to} to={a.to} className="card lift flex min-h-28 flex-col gap-3 p-4">
               <span className={`grid size-11 place-items-center rounded-xl ${a.tone}`}>
                 <Icon name={a.icon} />
               </span>

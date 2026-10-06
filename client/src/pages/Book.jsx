@@ -134,6 +134,14 @@ export default function Book() {
             </span>
             <span className="mt-2 block text-[15px] text-muted">{t('Consultation fee applies. Shorter waiting time.')}</span>
           </ChoiceCard>
+          {!forPatient && (
+            <Link
+              to={visitType === 'video' ? '/quick-book?visit=video' : '/quick-book'}
+              className="lift flex items-center gap-3 rounded-2xl bg-brand-soft p-4 text-[15px] font-semibold text-brand-dark md:col-span-2"
+            >
+              <Icon name="mic" /> {t('In a hurry? Book by voice: say your problem and get the earliest doctor.')}
+            </Link>
+          )}
           <Link to="/assistant" className="flex items-center gap-3 rounded-2xl bg-accent-soft p-4 text-[15px] text-accent-dark md:col-span-2">
             <Icon name="chat" /> {t('Not sure where to go? Describe your problem to the health assistant.')}
           </Link>

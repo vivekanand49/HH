@@ -15,6 +15,7 @@ import Appointment from './pages/Appointment';
 import Records from './pages/Records';
 import Emergency from './pages/Emergency';
 import Assistant from './pages/Assistant';
+import QuickBook from './pages/QuickBook';
 import Profile from './pages/Profile';
 import { Loading, StagingBanner } from './components/ui';
 
@@ -65,6 +66,7 @@ export default function App() {
       >
         <Route index element={<Home />} />
         <Route path="book" element={<Book />} />
+        <Route path="quick-book" element={<QuickBook />} />
         <Route path="appointments/:id" element={<Appointment />} />
         <Route path="records" element={<Records />} />
         <Route path="assistant" element={<Assistant />} />

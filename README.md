@@ -62,7 +62,9 @@ The alert appears live on the emergency desk.
 
 GPS works without internet. A web app cannot send SMS or place calls by itself — the user always taps once.
 
-The health assistant runs a rule-based triage on the phone first (works offline, all 4 languages). Urgent symptoms go straight to emergency advice; everything else goes to Claude (`claude-opus-5`) when online, with the offline checker as fallback.
+The health assistant runs a rule-based triage on the phone first (works offline, all 4 languages). Urgent symptoms go straight to emergency advice; everything else goes to Claude (`claude-opus-5`) when online. Without an AI key, or offline, a free built-in chat (`shared/chat.js`) answers instead: it asks since when and how bad, with tap answers, gives safe home-care tips and offers **Book fastest slot**. Tap the mic for talk mode: answers are read aloud and the mic opens again.
+
+**Book by voice** (`/quick-book`, Home screen): say "fever for 3 days, doctor tomorrow", hear the earliest free doctor nearby (`GET /api/fastest`), and say "yes" to book or "no" for the next one. Typing works the same way.
 
 ## Step 3 features
 

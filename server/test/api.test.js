@@ -184,6 +184,26 @@ test('assistant sends urgent symptoms straight to emergency advice', async () =>
   assert.match(res.body.reply, /108/);
 });
 
+test('assistant chats without an AI key, then the fastest free slot can be booked', async () => {
+  const { token } = await login('mobile', '9876543210');
+  const chat = (messages) => api('/ai/chat', { method: 'POST', token, body: { language: 'en', messages } });
+  const first = await chat([{ role: 'user', content: 'I have fever' }]);
+  assert.equal(first.body.source, 'fallback');
+  assert.equal(first.body.quickReplies.length, 3, 'asks a follow-up question with tap answers');
+  const booked = await chat([{ role: 'user', content: 'book a doctor for fever' }]);
+  assert.equal(booked.body.book, true);
+  assert.equal(booked.body.department, 'general');
+
+  const fast = await api('/fastest?department=general');
+  assert.equal(fast.status, 200);
+  assert.ok(fast.body.options.length > 0 && fast.body.options.length <= 3);
+  const times = fast.body.options.map((o) => new Date(o.starts_at).getTime());
+  assert.deepEqual(times, [...times].sort((a, b) => a - b), 'earliest first');
+  assert.equal(new Set(fast.body.options.map((o) => o.hospital_id)).size, fast.body.options.length, 'one per hospital');
+  const res = await api('/appointments', { method: 'POST', token, body: { slotId: fast.body.options[0].slot_id } });
+  assert.equal(res.status, 201);
+});
+
 // ---------------- Step 3 ----------------
 
 async function upload(path, token, bytes, type) {
@@ -796,10 +816,12 @@ test('staging: production build with demo login codes and demo payments; real pr
   const read = (extra) =>
     JSON.parse(
       execFileSync(process.execPath, ['--input-type=module', '-e', `const { config } = await import('./src/config.js'); console.log(JSON.stringify({ echo: config.otpDevEcho, staging: config.staging }))`], {
-        env: { ...process.env, NODE_ENV: 'production', JWT_SECRET: 'x', ID_HASH_SECRET: 'y', GATEWAY_SECRET: 'z', OTP_DEV_ECHO: '', ...extra },
+        env: { ...process.env, NODE_ENV: 'production', JWT_SECRET: 'x', ID_HASH_SECRET: 'y', GATEWAY_SECRET: 'z', OTP_DEV_ECHO: '', SMS_PROVIDER: '', ...extra },
       }),
     );
   assert.deepEqual(read({ STAGING: 'true' }), { echo: true, staging: true });
+  // Staging with real SMS: the code goes to the phone, never on screen.
+  assert.deepEqual(read({ STAGING: 'true', SMS_PROVIDER: 'twilio' }), { echo: false, staging: true });
   assert.deepEqual(read({ STAGING: '' }), { echo: false, staging: false });
   const cfg = await api('/emergency/config');
   assert.equal(cfg.body.staging, false);

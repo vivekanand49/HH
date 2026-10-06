@@ -7,7 +7,8 @@
     "./triage": "./triage.js",
     "./sms": "./sms.js",
     "./geo": "./geo.js",
-    "./vitals": "./vitals.js"
+    "./vitals": "./vitals.js",
+    "./chat": "./chat.js"
   },
   "scripts": {
     "test": "node --test"

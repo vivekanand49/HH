@@ -6,9 +6,10 @@ import { emit } from './realtime.js';
 import { sendSms, sendTemplate } from './sms.js';
 import { audit } from './audit.js';
 
-const DIST = (latParam, lngParam) => `(6371 * 2 * asin(sqrt(
-  power(sin(radians(lat - ${latParam}) / 2), 2) +
-  cos(radians(${latParam})) * cos(radians(lat)) * power(sin(radians(lng - ${lngParam}) / 2), 2)
+// Distance in km; `t` is an optional table prefix like 'h.'.
+export const DIST = (latParam, lngParam, t = '') => `(6371 * 2 * asin(sqrt(
+  power(sin(radians(${t}lat - ${latParam}) / 2), 2) +
+  cos(radians(${latParam})) * cos(radians(${t}lat)) * power(sin(radians(${t}lng - ${lngParam}) / 2), 2)
 )))`;
 
 export async function nearestHospitals(lat, lng, { emergencyOnly = false, type = null, limit = 20 } = {}) {
