@@ -58,10 +58,25 @@ function browserListen(locale) {
           'language-not-supported': 'unsupported',
         }[e.error] ?? 'failed';
     };
-    rec.onend = () => {
+    // Some browsers never end on their own (no network to the speech service, a
+    // muted mic): stop after 12 s, and give up entirely after 20 s.
+    const soft = setTimeout(() => rec.stop(), 12000);
+    const hard = setTimeout(() => {
+      error ??= 'network';
+      rec.abort();
+      finish();
+    }, 20000);
+    let done = false;
+    function finish() {
+      if (done) return;
+      done = true;
+      clearTimeout(soft);
+      clearTimeout(hard);
       if (current?.rec === rec) current = null;
       resolve({ text, error: text ? null : (error ?? 'silent') });
-    };
+    }
+    rec.onspeechend = () => rec.stop();
+    rec.onend = finish;
     current = { rec, abort: () => rec.abort() };
     try {
       rec.start();
