@@ -4,6 +4,12 @@ Offline-first healthcare PWA for Visakhapatnam and surrounding villages: Aadhaar
 
 Languages: English, తెలుగు, हिन्दी, मराठी. Works on phones (Android, iPhone), tablets, laptops and PCs from one codebase.
 
+## Try it (test server)
+
+**https://43-204-211-180.sslip.io** (demo data only, never real patients).
+
+Sign in with **Mobile**: the login code comes by SMS (Twilio Verify). On the free Twilio trial only numbers verified in the Twilio account get the code. Updates itself from this repo about 5 minutes after every push to `main`. Setup: [docs/DEPLOY.md](docs/DEPLOY.md#free-staging-server-team-testing).
+
 ## Run it
 
 Needs Node.js 20+. No database install — development uses PGlite (real PostgreSQL inside Node).
