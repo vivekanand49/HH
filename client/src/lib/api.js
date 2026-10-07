@@ -99,6 +99,31 @@ export async function apiUpload(path, blob, { timeout = 120000 } = {}) {
   }
 }
 
+// POST JSON and get a file back (e.g. spoken audio).
+export async function apiBlob(path, body, { timeout = 30000 } = {}) {
+  const ctrl = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), timeout);
+  try {
+    const res = await fetch(`/api${path}`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', ...authHeaders() },
+      body: JSON.stringify(body),
+      signal: ctrl.signal,
+    });
+    if (!res.ok) {
+      const data = await res.json().catch(() => ({}));
+      checkAuth(res, data);
+      throw new ApiError(data.error || `Request failed (${res.status})`, res.status, data);
+    }
+    return await res.blob();
+  } catch (err) {
+    if (err instanceof ApiError) throw err;
+    throw new ApiError(err.name === 'AbortError' ? 'The network is too slow right now.' : 'No internet connection.', 0);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 // Files need the sign-in token, so <img src> can't load them directly.
 // Returns a URL the page can open: a local blob URL, or a short-lived S3 link.
 export async function fileUrl(fileId) {

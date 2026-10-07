@@ -47,3 +47,13 @@ test('chat asks follow-up questions, then offers booking in the right department
   assert.equal(departmentFromText('a person with a reason'), null);
   assert.equal(dayFromText('doctor tomorrow please'), 'tomorrow');
 });
+
+test('chat answers greetings, medicine questions and emergency words in every language', () => {
+  const one = (text, lang) => chatReply([{ role: 'user', content: text }], lang);
+  assert.equal(one('hello', 'en').quickReplies.length, 4);
+  assert.match(one('నమస్తే', 'te').reply, /నమస్తే/);
+  assert.match(one('दवा कैसे लूँ?', 'hi').reply, /डॉक्टर/);
+  assert.equal(one('ambulance please', 'mr').severity, 'critical');
+  assert.equal(one('डॉक्टर बुक करें', 'hi').book, true);
+  assert.equal(one('fever and I took a tablet', 'en').codes[0], 'FEVER'); // symptoms win over the medicine answer
+});

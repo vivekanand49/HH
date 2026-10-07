@@ -27,6 +27,10 @@ const MINOR = {
   mr: ['खोकला', 'सर्दी', 'पोट', 'दुख', 'खाज', 'अशक्त', 'घसा'],
 };
 
+const GREET = /^\s*(hi|hello|hey|hii+|namaste|namaskar|good (morning|afternoon|evening))\b|నమస్తే|నమస్కారం|హలో|नमस्ते|नमस्कार|हेलो|हॅलो/i;
+const HELP = /\b(what can you do|help me|who are you)\b|ఏం చేయగలవు|మీరు ఎవరు|क्या कर सकते|तुम कौन|आप कौन|काय करू शकता|तुम्ही कोण/i;
+const MEDICINE = /\b(medicine|medicines|tablet|tablets|pill|pills|dose|dosage)\b|మందు|మాత్ర|दवा|दवाई|गोली|औषध|गोळी/i;
+const EMERGENCY_WORD = /\b(emergency|ambulance|108|112)\b|అత్యవసర|అంబులెన్స్|ఆంబులెన్స్|आपातकाल|एम्बुलेंस|एंबुलेंस|आणीबाणी|रुग्णवाहिका/i;
 const BOOK_INTENT = /\b(book|appointment|doctor|slot)|బుక్|అపాయింట్|డాక్టర్|बुक|अपॉइंट|डॉक्टर/i;
 const THANKS = /\b(thank|thanks|thx|bye)|ధన్యవాద|థాంక్స్|धन्यवाद|शुक्रिया|आभार/i;
 const LONG = /\b(week|month|[4-9]\s*days?|\d{2,}\s*days?)|వారం|నెల|हफ़्त|हफ्त|सप्ताह|महीन|आठवड|महिन/i;
@@ -81,6 +85,12 @@ const Q = {
 };
 
 const QUICK = {
+  hello: {
+    en: ['I feel unwell', 'Book a doctor', 'Medicine help', 'Emergency'],
+    te: ['నాకు బాగోలేదు', 'డాక్టర్‌ను బుక్ చేయండి', 'మందుల సహాయం', 'అత్యవసరం'],
+    hi: ['मेरी तबीयत ठीक नहीं', 'डॉक्टर बुक करें', 'दवा में मदद', 'आपातकाल'],
+    mr: ['मला बरं वाटत नाही', 'डॉक्टर बुक करा', 'औषधांची मदत', 'आणीबाणी'],
+  },
   what: {
     en: ['Fever', 'Cough and cold', 'Stomach pain', 'Sugar / BP check'],
     te: ['జ్వరం', 'దగ్గు, జలుబు', 'కడుపు నొప్పి', 'షుగర్ / బీపీ చెకప్'],
@@ -147,6 +157,18 @@ const LINES = {
     hi: 'नीचे “जल्दी बुक करें” दबाएँ, मैं आपके पास सबसे पहले खाली डॉक्टर ढूँढ दूँगा।',
     mr: 'खाली “लवकर बुक करा” दाबा, मी तुमच्या जवळचा सर्वात लवकर मोकळा डॉक्टर शोधतो.',
   },
+  hello: {
+    en: 'Namaste! I am your health assistant. I can check how you feel, book the earliest doctor near you, help with your medicines, and get emergency help. How are you feeling today?',
+    te: 'నమస్తే! నేను మీ ఆరోగ్య సహాయకుడిని. మీ లక్షణాలు చూడగలను, దగ్గరలో త్వరగా దొరికే డాక్టర్‌ను బుక్ చేయగలను, మందుల గురించి చెప్పగలను, అత్యవసర సహాయం అందించగలను. ఈరోజు మీకు ఎలా ఉంది?',
+    hi: 'नमस्ते! मैं आपका स्वास्थ्य सहायक हूँ। मैं आपके लक्षण समझ सकता हूँ, पास में सबसे जल्दी मिलने वाला डॉक्टर बुक कर सकता हूँ, दवाइयों में मदद कर सकता हूँ और आपातकालीन मदद दिला सकता हूँ। आज आप कैसा महसूस कर रहे हैं?',
+    mr: 'नमस्कार! मी तुमचा आरोग्य सहाय्यक आहे. मी तुमची लक्षणे समजू शकतो, जवळचे सर्वात लवकरचे डॉक्टर बुक करू शकतो, औषधांबद्दल मदत करू शकतो आणि आपत्कालीन मदत मिळवून देऊ शकतो. आज तुम्हाला कसं वाटतंय?',
+  },
+  medicine: {
+    en: 'Take medicines exactly as your doctor wrote: at the same time every day, with water. Do not stop or change the dose without asking the doctor. Your medicine times are on the Home screen under “Today’s medicines”, and the app reminds you. If you get a rash, swelling or trouble breathing after a medicine, get emergency help at once.',
+    te: 'డాక్టర్ రాసినట్లే మందులు వేసుకోండి: ప్రతిరోజూ అదే సమయానికి, నీళ్ళతో. డాక్టర్‌ను అడగకుండా ఆపకండి, మోతాదు మార్చకండి. మీ మందుల సమయాలు హోమ్ స్క్రీన్‌లో “ఈరోజు మందులు” కింద ఉన్నాయి, యాప్ గుర్తు చేస్తుంది. మందు తర్వాత దద్దుర్లు, వాపు లేదా ఊపిరి ఇబ్బంది వస్తే వెంటనే అత్యవసర సహాయం తీసుకోండి.',
+    hi: 'दवाइयाँ ठीक वैसे ही लें जैसे डॉक्टर ने लिखा है: हर दिन एक ही समय पर, पानी के साथ। डॉक्टर से पूछे बिना दवा बंद न करें और खुराक न बदलें। आपकी दवा का समय होम स्क्रीन पर “आज की दवाइयाँ” में है, और ऐप याद दिलाता है। दवा के बाद दाने, सूजन या साँस में तकलीफ़ हो तो तुरंत आपातकालीन मदद लें।',
+    mr: 'डॉक्टरांनी लिहिल्याप्रमाणेच औषधे घ्या: रोज त्याच वेळी, पाण्यासोबत. डॉक्टरांना विचारल्याशिवाय औषध बंद करू नका किंवा डोस बदलू नका. तुमच्या औषधांच्या वेळा होम स्क्रीनवर “आजची औषधे” मध्ये आहेत, आणि ॲप आठवण करून देते. औषधानंतर पुरळ, सूज किंवा श्वास घेण्यास त्रास झाल्यास लगेच आपत्कालीन मदत घ्या.',
+  },
   thanks: {
     en: 'You are welcome. Take care. I am here any time. In an emergency press SOS or call 108.',
     te: 'సంతోషం. జాగ్రత్తగా ఉండండి. ఎప్పుడైనా అడగండి. అత్యవసరమైతే SOS నొక్కండి లేదా 108కి కాల్ చేయండి.',
@@ -193,6 +215,11 @@ export function chatReply(messages, lang = 'en') {
   if (isUrgent(severity)) return out(offlineAdvice(severity, lang), { severity, codes });
   const department = departmentFromText(said);
 
+  if (EMERGENCY_WORD.test(last)) return out(offlineAdvice('critical', lang), { severity: 'critical', codes });
+  if (!department && !codes.length && (GREET.test(last) || HELP.test(last))) {
+    return out(say(LINES.hello, lang), { quickReplies: say(QUICK.hello, lang) });
+  }
+  if (MEDICINE.test(last) && !codes.length && !BOOK_INTENT.test(last)) return out(say(LINES.medicine, lang));
   if (THANKS.test(last) && !department) return out(say(LINES.thanks, lang));
 
   // 2. "Book a doctor for my sugar": go straight to booking.

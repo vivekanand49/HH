@@ -6,10 +6,10 @@ import { triage, isUrgent } from '@swasthya/shared/triage';
 import { departmentFromText, dayFromText } from '@swasthya/shared/chat';
 import Icon from '../components/Icon';
 import { ErrorNote, PageTitle } from '../components/ui';
-import { api } from '../lib/api';
 import { deptLabel, DEPARTMENTS } from '../lib/labels';
 import { getLocation } from '../lib/location';
-import { canListen, listenOnce, speak, stopListening, stopSpeaking, yesNo } from '../lib/speech';
+import { findFastest, bookOption } from '../lib/booking';
+import { canListen, listenOnce, speak, stopListening, stopSpeaking, VOICE_ERRORS, yesNo } from '../lib/speech';
 import { formatDateTime, LANGUAGES } from '../i18n';
 
 // Book by voice: say the problem ("fever since 3 days, doctor tomorrow"), hear the
@@ -29,6 +29,7 @@ export default function QuickBook() {
   const [options, setOptions] = useState(null);
   const [urgent, setUrgent] = useState(false);
   const [error, setError] = useState(null);
+  const [voiceError, setVoiceError] = useState(null);
   const loc = useRef(user?.lat != null ? { lat: user.lat, lng: user.lng } : null);
   const alive = useRef(true);
 
@@ -48,29 +49,22 @@ export default function QuickBook() {
     setState('searching');
     setError(null);
     try {
-      const q = new URLSearchParams({ department });
-      if (day) q.set('day', day);
-      if (hospitalType) q.set('type', hospitalType);
-      if (loc.current) {
-        q.set('lat', loc.current.lat);
-        q.set('lng', loc.current.lng);
-      }
-      let { options: found } = await api(`/fastest?${q}`);
-      // Nothing that day: show the earliest on any day instead.
-      if (!found.length && day) {
-        q.delete('day');
-        ({ options: found } = await api(`/fastest?${q}`));
-      }
+      const found = await findFastest({ department, day, type: hospitalType, loc: loc.current });
       if (!alive.current) return;
       setOptions(found);
       setState('results');
       if (byVoice && found.length) confirmByVoice(found, 0);
-      else if (byVoice) speak(t('Sorry, no free doctor found. Try another hospital type.'), lang.speech);
+      else if (byVoice) say(t('Sorry, no free doctor found. Try another hospital type.'));
     } catch (err) {
       if (!alive.current) return;
       setError(err);
       setState('idle');
     }
+  }
+
+  async function say(text) {
+    const out = await speak(text, lang.speech);
+    if (!out.ok && alive.current) setVoiceError(out.error);
   }
 
   function understand(said, byVoice) {
@@ -81,7 +75,7 @@ export default function QuickBook() {
       setUrgent(true);
       setOptions(null);
       setState('idle');
-      if (byVoice) speak(t('This sounds serious. Open Emergency now or call 108.'), lang.speech);
+      if (byVoice) say(t('This sounds serious. Open Emergency now or call 108.'));
       return;
     }
     setUrgent(false);
@@ -92,14 +86,16 @@ export default function QuickBook() {
 
   async function startVoice() {
     stopSpeaking();
+    setVoiceError(null);
     setState('listening');
-    const said = await listenOnce(lang.speech);
+    const heard = await listenOnce(lang.speech);
     if (!alive.current) return;
-    if (!said) {
+    if (!heard.text) {
+      setVoiceError(heard.error);
       setState(options ? 'results' : 'idle');
       return;
     }
-    understand(said, true);
+    understand(heard.text, true);
   }
 
   // Reads the option aloud and listens for yes / no ("no" moves to the next one).
@@ -107,16 +103,15 @@ export default function QuickBook() {
     const o = list[i];
     if (!o) return;
     setState('confirming');
-    await speak(
+    await say(
       t('{{doctor}} at {{hospital}}, {{time}}. Say yes to book, or no for the next one.', {
         doctor: o.doctor_name,
         hospital: o.hospital_name,
         time: formatDateTime(o.starts_at, { weekday: 'long', hour: 'numeric', minute: '2-digit' }),
       }),
-      lang.speech,
     );
     if (!alive.current) return;
-    const answer = yesNo(await listenOnce(lang.speech));
+    const answer = yesNo((await listenOnce(lang.speech)).text);
     if (!alive.current) return;
     if (answer === 'yes') return book(o);
     setState('results');
@@ -129,8 +124,8 @@ export default function QuickBook() {
     setState('booking');
     setError(null);
     try {
-      const res = await api('/appointments', { method: 'POST', body: { slotId: o.slot_id, visitType, complaint: text.trim() || undefined } });
-      navigate(`/appointments/${res.appointment.id}`, { replace: true, state: { justBooked: true } });
+      const appointment = await bookOption(o, { visitType, complaint: text });
+      navigate(`/appointments/${appointment.id}`, { replace: true, state: { justBooked: true } });
     } catch (err) {
       if (!alive.current) return;
       setError(err);
@@ -220,6 +215,11 @@ export default function QuickBook() {
       </section>
 
       <ErrorNote error={error} />
+      {voiceError && (
+        <p className="mt-3 rounded-2xl bg-warn-soft px-4 py-3 text-[15px] text-warn" role="status">
+          {t(VOICE_ERRORS[voiceError])}
+        </p>
+      )}
 
       {urgent && (
         <div className="mt-4 flex flex-col gap-3 rounded-3xl border-2 border-sos bg-sos-bg p-5" role="alert">

@@ -172,6 +172,38 @@ test('Traccar SMS Gateway: the login code goes out from the phone with the cloud
   }
 });
 
+test('assistant voice: Bhashini reads answers aloud; speech routes need sign-in and setup', async () => {
+  const { config } = await import('../src/config.js');
+  const { synthesize } = await import('../src/services/speech.js');
+  const saved = { ...config };
+  Object.assign(config, { bhashiniUserId: 'u', bhashiniApiKey: 'k', bhashiniPipelineId: 'p' });
+  const calls = [];
+  const fakeFetch = async (url, init) => {
+    calls.push({ url, body: JSON.parse(init.body) });
+    const json = url.includes('getModelsPipeline')
+      ? {
+          pipelineResponseConfig: [{ config: [{ serviceId: 'tts-mr' }] }],
+          pipelineInferenceAPIEndPoint: { callbackUrl: 'https://compute.example/pipeline', inferenceApiKey: { name: 'Authorization', value: 'secret' } },
+        }
+      : { pipelineResponse: [{ taskType: 'tts', audio: [{ audioContent: Buffer.from('RIFFfakewav').toString('base64') }] }] };
+    return { ok: true, status: 200, json: async () => json };
+  };
+  try {
+    const wav = await synthesize('विश्रांती घ्या', 'mr', { fetchImpl: fakeFetch });
+    assert.equal(wav.toString(), 'RIFFfakewav');
+    assert.equal(calls[0].body.pipelineTasks[0].taskType, 'tts');
+    assert.equal(calls[1].body.pipelineTasks[0].config.serviceId, 'tts-mr');
+    assert.equal(calls[1].body.inputData.input[0].source, 'विश्रांती घ्या');
+    assert.equal((await api('/speech/config')).body.tts, true);
+  } finally {
+    Object.assign(config, saved);
+  }
+  const { token } = await login('mobile', '9876543210');
+  assert.equal((await api('/speech/tts', { method: 'POST', body: { text: 'hi', lang: 'en' } })).status, 401);
+  assert.equal((await api('/speech/config')).body.tts, false);
+  assert.equal((await api('/speech/tts', { method: 'POST', token, body: { text: 'hi', lang: 'en' } })).status, 501);
+});
+
 test('invalid Aadhaar is rejected and the OTP cannot be reused', async () => {
   assert.equal((await api('/auth/otp/request', { method: 'POST', body: { method: 'aadhaar', value: '123412341234' } })).status, 400);
   const req = await api('/auth/otp/request', { method: 'POST', body: { method: 'mobile', value: '9876543210' } });

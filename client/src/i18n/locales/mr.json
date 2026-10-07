@@ -602,5 +602,16 @@
   "This sounds serious. Open Emergency now or call 108.": "हे गंभीर वाटते. आत्ताच आणीबाणी उघडा किंवा 108 वर कॉल करा.",
   "Voice is not available in this browser. Type your problem below.": "या ब्राउझरमध्ये आवाजाची सोय नाही. तुमचा त्रास खाली लिहा.",
   "Your problem": "तुमचा त्रास",
-  "{{doctor}} at {{hospital}}, {{time}}. Say yes to book, or no for the next one.": "{{hospital}} मध्ये {{doctor}}, {{time}}. बुक करण्यासाठी हो म्हणा, पुढच्यासाठी नाही म्हणा."
+  "{{doctor}} at {{hospital}}, {{time}}. Say yes to book, or no for the next one.": "{{hospital}} मध्ये {{doctor}}, {{time}}. बुक करण्यासाठी हो म्हणा, पुढच्यासाठी नाही म्हणा.",
+  "That time was just taken. Please pick another.": "ती वेळ आत्ताच दुसऱ्याने घेतली. कृपया दुसरी वेळ निवडा.",
+  "Speak answers: on": "उत्तरे बोलून सांगा: चालू",
+  "Speak answers: off": "उत्तरे बोलून सांगा: बंद",
+  "Turn on “Speak answers” to hear my replies. Tap the mic to talk hands-free.": "माझी उत्तरे ऐकण्यासाठी “उत्तरे बोलून सांगा” चालू करा. हात न लावता बोलण्यासाठी माइक दाबा.",
+  "Speaking…": "बोलतोय…",
+  "The microphone is blocked. Allow the microphone for this site in your browser settings.": "मायक्रोफोन बंद आहे. ब्राउझर सेटिंगमध्ये या साइटला मायक्रोफोनची परवानगी द्या.",
+  "I did not hear anything. Tap the mic and speak again.": "मला काहीच ऐकू आलं नाही. माइक दाबा आणि पुन्हा बोला.",
+  "Voice needs internet. Please check your connection, or type instead.": "आवाजासाठी इंटरनेट लागतं. कनेक्शन तपासा, किंवा लिहून पाठवा.",
+  "Voice typing does not work in this browser. Please type, or open the app in Chrome.": "या ब्राउझरमध्ये बोलून लिहिणं चालत नाही. लिहा, किंवा ॲप Chrome मध्ये उघडा.",
+  "Voice did not work this time. Please try again or type.": "या वेळी आवाज चालला नाही. पुन्हा प्रयत्न करा किंवा लिहा.",
+  "This phone has no voice for this language. Install “Speech Services by Google” and its voice for your language, or read the answer.": "या फोनमध्ये या भाषेचा आवाज नाही. “Speech Services by Google” आणि तुमच्या भाषेचा आवाज इंस्टॉल करा, किंवा उत्तर वाचा."
 }

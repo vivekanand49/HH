@@ -602,5 +602,16 @@
   "This sounds serious. Open Emergency now or call 108.": "ఇది తీవ్రంగా అనిపిస్తోంది. ఇప్పుడే అత్యవసరం తెరవండి లేదా 108కి కాల్ చేయండి.",
   "Voice is not available in this browser. Type your problem below.": "ఈ బ్రౌజర్‌లో మాట సౌకర్యం లేదు. మీ సమస్యను కింద టైప్ చేయండి.",
   "Your problem": "మీ సమస్య",
-  "{{doctor}} at {{hospital}}, {{time}}. Say yes to book, or no for the next one.": "{{hospital}}లో {{doctor}}, {{time}}. బుక్ చేయడానికి అవును అనండి, తర్వాతి దాని కోసం వద్దు అనండి."
+  "{{doctor}} at {{hospital}}, {{time}}. Say yes to book, or no for the next one.": "{{hospital}}లో {{doctor}}, {{time}}. బుక్ చేయడానికి అవును అనండి, తర్వాతి దాని కోసం వద్దు అనండి.",
+  "That time was just taken. Please pick another.": "ఆ సమయం ఇప్పుడే వేరేవాళ్ళు తీసుకున్నారు. దయచేసి వేరే సమయం ఎంచుకోండి.",
+  "Speak answers: on": "జవాబులు వినిపించు: ఆన్",
+  "Speak answers: off": "జవాబులు వినిపించు: ఆఫ్",
+  "Turn on “Speak answers” to hear my replies. Tap the mic to talk hands-free.": "నా జవాబులు వినడానికి “జవాబులు వినిపించు” ఆన్ చేయండి. చేతులు వాడకుండా మాట్లాడటానికి మైక్ నొక్కండి.",
+  "Speaking…": "మాట్లాడుతున్నాను…",
+  "The microphone is blocked. Allow the microphone for this site in your browser settings.": "మైక్రోఫోన్ బ్లాక్ అయింది. బ్రౌజర్ సెట్టింగ్స్‌లో ఈ సైట్‌కు మైక్రోఫోన్ అనుమతి ఇవ్వండి.",
+  "I did not hear anything. Tap the mic and speak again.": "నాకు ఏమీ వినిపించలేదు. మైక్ నొక్కి మళ్ళీ మాట్లాడండి.",
+  "Voice needs internet. Please check your connection, or type instead.": "మాటకు ఇంటర్నెట్ కావాలి. కనెక్షన్ చూడండి, లేదా టైప్ చేయండి.",
+  "Voice typing does not work in this browser. Please type, or open the app in Chrome.": "ఈ బ్రౌజర్‌లో మాటతో టైప్ పనిచేయదు. టైప్ చేయండి, లేదా Chromeలో యాప్ తెరవండి.",
+  "Voice did not work this time. Please try again or type.": "ఈసారి మాట పనిచేయలేదు. మళ్ళీ ప్రయత్నించండి లేదా టైప్ చేయండి.",
+  "This phone has no voice for this language. Install “Speech Services by Google” and its voice for your language, or read the answer.": "ఈ ఫోన్‌లో ఈ భాషకు వాయిస్ లేదు. “Speech Services by Google” ఇన్‌స్టాల్ చేసి మీ భాష వాయిస్ డౌన్‌లోడ్ చేయండి, లేదా జవాబు చదవండి."
 }

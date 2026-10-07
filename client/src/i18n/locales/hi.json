@@ -602,5 +602,16 @@
   "This sounds serious. Open Emergency now or call 108.": "यह गंभीर लगता है। अभी आपातकाल खोलें या 108 पर कॉल करें।",
   "Voice is not available in this browser. Type your problem below.": "इस ब्राउज़र में आवाज़ की सुविधा नहीं है। अपनी समस्या नीचे लिखें।",
   "Your problem": "आपकी समस्या",
-  "{{doctor}} at {{hospital}}, {{time}}. Say yes to book, or no for the next one.": "{{hospital}} में {{doctor}}, {{time}}। बुक करने के लिए हाँ बोलें, अगले के लिए नहीं बोलें।"
+  "{{doctor}} at {{hospital}}, {{time}}. Say yes to book, or no for the next one.": "{{hospital}} में {{doctor}}, {{time}}। बुक करने के लिए हाँ बोलें, अगले के लिए नहीं बोलें।",
+  "That time was just taken. Please pick another.": "वह समय अभी-अभी किसी ने ले लिया। कृपया दूसरा समय चुनें।",
+  "Speak answers: on": "जवाब बोलकर सुनाएँ: चालू",
+  "Speak answers: off": "जवाब बोलकर सुनाएँ: बंद",
+  "Turn on “Speak answers” to hear my replies. Tap the mic to talk hands-free.": "मेरे जवाब सुनने के लिए “जवाब बोलकर सुनाएँ” चालू करें। बिना हाथ लगाए बात करने के लिए माइक दबाएँ।",
+  "Speaking…": "बोल रहा हूँ…",
+  "The microphone is blocked. Allow the microphone for this site in your browser settings.": "माइक्रोफ़ोन बंद है। ब्राउज़र सेटिंग में इस साइट को माइक्रोफ़ोन की अनुमति दें।",
+  "I did not hear anything. Tap the mic and speak again.": "मुझे कुछ सुनाई नहीं दिया। माइक दबाकर फिर से बोलें।",
+  "Voice needs internet. Please check your connection, or type instead.": "आवाज़ के लिए इंटरनेट चाहिए। कनेक्शन जाँचें, या लिखकर भेजें।",
+  "Voice typing does not work in this browser. Please type, or open the app in Chrome.": "इस ब्राउज़र में बोलकर लिखना काम नहीं करता। लिखें, या ऐप Chrome में खोलें।",
+  "Voice did not work this time. Please try again or type.": "इस बार आवाज़ काम नहीं की। फिर से कोशिश करें या लिखें।",
+  "This phone has no voice for this language. Install “Speech Services by Google” and its voice for your language, or read the answer.": "इस फ़ोन में इस भाषा की आवाज़ नहीं है। “Speech Services by Google” और अपनी भाषा की आवाज़ इंस्टॉल करें, या जवाब पढ़ें।"
 }

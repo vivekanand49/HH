@@ -1,8 +1,10 @@
-// Speech-to-text for SOS voice messages with Bhashini, the Government of
-// India's language platform (Telugu, Hindi, Marathi, English and more).
+// Speech-to-text (SOS voice messages, the assistant's mic) and text-to-speech
+// (the assistant reading answers aloud on phones without a Telugu or Marathi
+// voice) with Bhashini, the Government of India's free language platform.
 // Two calls, per the Bhashini API docs:
 //   1. config call (userID + ulcaApiKey) → serviceId, compute URL, compute key
-//   2. compute call with base64 audio → pipelineResponse[0].output[0].source
+//   2. compute call: ASR with base64 audio → pipelineResponse[0].output[0].source
+//                    TTS with text → pipelineResponse[0].audio[0].audioContent (base64 WAV)
 // Phones record WebM/Opus or MP4/AAC; Bhashini takes WAV/FLAC/MP3, so the
 // audio is converted to 16 kHz mono WAV with ffmpeg first.
 import { spawn } from 'node:child_process';
@@ -34,17 +36,18 @@ export async function toWav16k(buffer) {
   });
 }
 
-// The compute URL and key change rarely; cache them per language for an hour.
+// The compute URL and key change rarely; cache them per task and language for an hour.
 const pipelines = new Map();
 
-async function pipelineFor(lang, fetchImpl) {
-  const hit = pipelines.get(lang);
+async function pipelineFor(task, lang, fetchImpl) {
+  const cacheKey = `${task}:${lang}`;
+  const hit = pipelines.get(cacheKey);
   if (hit && hit.until > Date.now()) return hit;
   const res = await fetchImpl(CONFIG_URL, {
     method: 'POST',
     headers: { 'content-type': 'application/json', userID: config.bhashiniUserId, ulcaApiKey: config.bhashiniApiKey },
     body: JSON.stringify({
-      pipelineTasks: [{ taskType: 'asr', config: { language: { sourceLanguage: lang } } }],
+      pipelineTasks: [{ taskType: task, config: { language: { sourceLanguage: lang } } }],
       pipelineRequestConfig: { pipelineId: config.bhashiniPipelineId },
     }),
   });
@@ -58,7 +61,7 @@ async function pipelineFor(lang, fetchImpl) {
     until: Date.now() + 60 * 60 * 1000,
   };
   if (!entry.serviceId || !entry.url || !entry.keyName) throw new Error('Bhashini config response missing fields');
-  pipelines.set(lang, entry);
+  pipelines.set(cacheKey, entry);
   return entry;
 }
 
@@ -66,7 +69,7 @@ async function pipelineFor(lang, fetchImpl) {
 export async function transcribe(audioBuffer, lang, { fetchImpl = fetch } = {}) {
   if (!speechEnabled()) return null;
   const wav = await toWav16k(audioBuffer);
-  const p = await pipelineFor(lang, fetchImpl);
+  const p = await pipelineFor('asr', lang, fetchImpl);
   const res = await fetchImpl(p.url, {
     method: 'POST',
     headers: { 'content-type': 'application/json', [p.keyName]: p.keyValue },
@@ -76,9 +79,30 @@ export async function transcribe(audioBuffer, lang, { fetchImpl = fetch } = {}) 
     }),
   });
   if (!res.ok) {
-    if (res.status === 401 || res.status === 403) pipelines.delete(lang);
+    if (res.status === 401 || res.status === 403) pipelines.delete(`asr:${lang}`);
     throw new Error(`Bhashini compute call failed (${res.status})`);
   }
   const data = await res.json();
   return data.pipelineResponse?.[0]?.output?.[0]?.source?.trim() || null;
+}
+
+/** Speaks the text: a WAV buffer, or null if text-to-speech is not configured. */
+export async function synthesize(text, lang, { fetchImpl = fetch } = {}) {
+  if (!speechEnabled()) return null;
+  const p = await pipelineFor('tts', lang, fetchImpl);
+  const res = await fetchImpl(p.url, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json', [p.keyName]: p.keyValue },
+    body: JSON.stringify({
+      pipelineTasks: [{ taskType: 'tts', config: { language: { sourceLanguage: lang }, serviceId: p.serviceId, gender: 'female', samplingRate: 8000 } }],
+      inputData: { input: [{ source: text }] },
+    }),
+  });
+  if (!res.ok) {
+    if (res.status === 401 || res.status === 403) pipelines.delete(`tts:${lang}`);
+    throw new Error(`Bhashini TTS call failed (${res.status})`);
+  }
+  const data = await res.json();
+  const audio = data.pipelineResponse?.[0]?.audio?.[0]?.audioContent;
+  return audio ? Buffer.from(audio, 'base64') : null;
 }

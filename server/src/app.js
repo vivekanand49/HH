@@ -13,6 +13,7 @@ import appointmentRoutes from './routes/appointments.js';
 import emergencyRoutes from './routes/emergency.js';
 import gatewayRoutes from './routes/gateway.js';
 import aiRoutes from './routes/ai.js';
+import speechRoutes from './routes/speech.js';
 import paymentRoutes from './routes/payments.js';
 import doctorRoutes from './routes/doctor.js';
 import fileRoutes from './routes/files.js';
@@ -78,6 +79,7 @@ export function createApp() {
   app.use('/api/emergency', emergencyRoutes);
   app.use('/api/gateway', gatewayRoutes);
   app.use('/api/ai', aiRoutes);
+  app.use('/api/speech', speechRoutes);
   app.use('/api/payments', paymentRoutes);
   app.use('/api/doctor', doctorRoutes);
   app.use('/api/files', fileRoutes);
