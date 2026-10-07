@@ -8,6 +8,7 @@ import { query } from '../db/index.js';
 //  - twilio:  Twilio Messaging (also needs DLT registration for Indian numbers)
 //  - android: an Android phone running "SMS Gateway for Android" sends from its own SIM
 //             (free within the SIM plan; for tests and small pilots, not mass SMS)
+//  - traccar: the same idea with the free "Traccar SMS Gateway" app (cloud token)
 // In India every SMS must match a DLT-registered template. Map our template
 // names to DLT template IDs in SMS_DLT_TEMPLATES (see .env.example).
 let sns = null;
@@ -69,6 +70,17 @@ const providers = {
     if (!res.ok) throw new Error(`SMS gateway ${res.status}: ${out.message || 'error'}`);
     return { status: 'sent', providerId: out.id ?? null };
   },
+
+  async traccar(to, body) {
+    const res = await fetch(config.traccarSmsUrl, {
+      method: 'POST',
+      headers: { authorization: config.traccarSmsToken, 'content-type': 'application/json' },
+      body: JSON.stringify({ to, message: body }),
+      signal: AbortSignal.timeout(10_000),
+    });
+    if (!res.ok) throw new Error(`Traccar SMS ${res.status}: ${(await res.text().catch(() => '')).slice(0, 200) || 'error'}`);
+    return { status: 'sent' };
+  },
 };
 
 export function checkSmsConfig() {
@@ -78,6 +90,9 @@ export function checkSmsConfig() {
   }
   if (config.smsProvider === 'android' && !(config.androidSmsUser && config.androidSmsPass)) {
     throw new Error('SMS_PROVIDER=android needs ANDROID_SMS_USER and ANDROID_SMS_PASS (from the SMS Gateway app)');
+  }
+  if (config.smsProvider === 'traccar' && !config.traccarSmsToken) {
+    throw new Error('SMS_PROVIDER=traccar needs TRACCAR_SMS_TOKEN (from the Traccar SMS Gateway app)');
   }
   if (config.isProd && config.smsProvider === 'console') console.warn('SMS_PROVIDER=console: SMS are only printed, not sent');
 }

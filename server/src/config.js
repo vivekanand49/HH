@@ -53,6 +53,9 @@ export const config = {
   androidSmsUrl: env.ANDROID_SMS_URL || 'https://api.sms-gate.app/3rdparty/v1/messages',
   androidSmsUser: env.ANDROID_SMS_USER || '',
   androidSmsPass: env.ANDROID_SMS_PASS || '',
+  // Or the free "Traccar SMS Gateway" app (cloud mode): it shows a token to paste here.
+  traccarSmsUrl: env.TRACCAR_SMS_URL || 'https://www.traccar.org/sms/',
+  traccarSmsToken: env.TRACCAR_SMS_TOKEN || '',
   // Login codes through Twilio Verify (works on a Twilio trial); see services/verify.js.
   twilioVerifyService: env.TWILIO_VERIFY_SERVICE_SID || '',
   twilioVerifyUrl: env.TWILIO_VERIFY_URL || 'https://verify.twilio.com/v2',

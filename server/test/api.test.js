@@ -140,6 +140,38 @@ test('Android SMS gateway: the login code goes out as a normal SMS from the phon
   }
 });
 
+test('Traccar SMS Gateway: the login code goes out from the phone with the cloud token', async () => {
+  const http = await import('node:http');
+  const { config } = await import('../src/config.js');
+  const got = [];
+  const cloud = http
+    .createServer((req, res) => {
+      let body = '';
+      req.on('data', (c) => (body += c));
+      req.on('end', () => {
+        got.push({ auth: req.headers.authorization, ...JSON.parse(body) });
+        res.end();
+      });
+    })
+    .listen(0);
+  const saved = { ...config };
+  Object.assign(config, { smsProvider: 'traccar', traccarSmsToken: 'tok123', traccarSmsUrl: `http://127.0.0.1:${cloud.address().port}/sms/` });
+  try {
+    const req = await api('/auth/otp/request', { method: 'POST', body: { method: 'mobile', value: '91234 56782' } });
+    assert.equal(req.status, 200);
+    await flushSms();
+    assert.equal(got.length, 1);
+    assert.equal(got[0].to, '+919123456782');
+    assert.equal(got[0].auth, 'tok123');
+    const code = got[0].message.match(/\d{6}/)[0];
+    const ok = await api('/auth/otp/verify', { method: 'POST', body: { requestId: req.body.requestId, code } });
+    assert.equal(ok.status, 200);
+  } finally {
+    Object.assign(config, saved);
+    cloud.close();
+  }
+});
+
 test('invalid Aadhaar is rejected and the OTP cannot be reused', async () => {
   assert.equal((await api('/auth/otp/request', { method: 'POST', body: { method: 'aadhaar', value: '123412341234' } })).status, 400);
   const req = await api('/auth/otp/request', { method: 'POST', body: { method: 'mobile', value: '9876543210' } });

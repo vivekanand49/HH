@@ -1,6 +1,8 @@
 #!/bin/bash
-# Free SMS for staging: an Android phone with the "SMS Gateway for Android" app
-# (sms-gate.app, Cloud server mode) sends login codes from its own SIM. Run on the server:
+# Free SMS for staging: an Android phone sends login codes from its own SIM, using
+#   1) "Traccar SMS Gateway" (Play Store, by Anton Tananaev): cloud token, or
+#   2) "SMS Gateway for Android" (sms-gate.app): Cloud server username + password.
+# Run on the server:
 #   sudo bash /opt/swasthya/deploy/staging/set-android-sms.sh
 # Undo: set SMS_PROVIDER=console in /opt/swasthya/.env.production, then run start.sh.
 set -euo pipefail
@@ -16,15 +18,20 @@ ask() { # ask <prompt> [secret]
   REPLY=$answer
 }
 
-ask "Username from the app (Cloud server section): "; USER_NAME=$REPLY
-ask "Password from the app (paste it; it stays hidden): " secret; PASS=$REPLY
+APP=''
+while [[ $APP != 1 && $APP != 2 ]]; do
+  ask "Which app? 1 = Traccar SMS Gateway, 2 = SMS Gateway for Android (sms-gate.app): "; APP=$REPLY
+done
 
-sed -i '/^SMS_PROVIDER=/d;/^ANDROID_SMS_/d' "$ENV_FILE"
-cat >> "$ENV_FILE" <<ENV
-SMS_PROVIDER=android
-ANDROID_SMS_USER=$USER_NAME
-ANDROID_SMS_PASS=$PASS
-ENV
+sed -i '/^SMS_PROVIDER=/d;/^ANDROID_SMS_/d;/^TRACCAR_SMS_/d' "$ENV_FILE"
+if [[ $APP == 1 ]]; then
+  ask "Token from the Traccar app (paste it; it stays hidden): " secret
+  printf 'SMS_PROVIDER=traccar\nTRACCAR_SMS_TOKEN=%s\n' "$REPLY" >> "$ENV_FILE"
+else
+  ask "Username from the app (Cloud server section): "; USER_NAME=$REPLY
+  ask "Password from the app (paste it; it stays hidden): " secret
+  printf 'SMS_PROVIDER=android\nANDROID_SMS_USER=%s\nANDROID_SMS_PASS=%s\n' "$USER_NAME" "$REPLY" >> "$ENV_FILE"
+fi
 chmod 600 "$ENV_FILE"
 
 echo "Saved. Restarting the app (a few minutes)…"
