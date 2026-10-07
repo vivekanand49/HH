@@ -91,7 +91,7 @@ test('Twilio Verify: Twilio sends and checks the login code, which is never show
     })
     .listen(0);
   const saved = { ...config };
-  Object.assign(config, { twilioVerifyService: 'VAtest', twilioSid: 'ACtest', twilioToken: 'secret', twilioVerifyUrl: `http://127.0.0.1:${twilio.address().port}` });
+  Object.assign(config, { smsProvider: 'twilio', twilioVerifyService: 'VAtest', twilioSid: 'ACtest', twilioToken: 'secret', twilioVerifyUrl: `http://127.0.0.1:${twilio.address().port}` });
   try {
     const req = await api('/auth/otp/request', { method: 'POST', body: { method: 'mobile', value: '91234 56780' } });
     assert.equal(req.status, 200);

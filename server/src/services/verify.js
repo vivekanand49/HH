@@ -6,7 +6,7 @@ import { config } from '../config.js';
 export const VERIFY_MARK = 'twilio-verify'; // stored instead of our own code hash
 
 export function verifyEnabled() {
-  return Boolean(config.twilioVerifyService && config.twilioSid && config.twilioToken);
+  return config.smsProvider === 'twilio' && Boolean(config.twilioVerifyService && config.twilioSid && config.twilioToken);
 }
 
 async function call(path, form) {
