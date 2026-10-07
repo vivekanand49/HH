@@ -6,6 +6,8 @@ import { query } from '../db/index.js';
 //  - console: prints the SMS instead of sending it (development, tests)
 //  - sns:     AWS SNS, with the DLT entity and template IDs Indian operators require
 //  - twilio:  Twilio Messaging (also needs DLT registration for Indian numbers)
+//  - android: an Android phone running "SMS Gateway for Android" sends from its own SIM
+//             (free within the SIM plan; for tests and small pilots, not mass SMS)
 // In India every SMS must match a DLT-registered template. Map our template
 // names to DLT template IDs in SMS_DLT_TEMPLATES (see .env.example).
 let sns = null;
@@ -52,12 +54,30 @@ const providers = {
     if (!res.ok) throw new Error(`Twilio ${res.status}: ${out.message || 'error'}`);
     return { status: 'sent', providerId: out.sid };
   },
+
+  async android(to, body) {
+    const res = await fetch(config.androidSmsUrl, {
+      method: 'POST',
+      headers: {
+        authorization: `Basic ${Buffer.from(`${config.androidSmsUser}:${config.androidSmsPass}`).toString('base64')}`,
+        'content-type': 'application/json',
+      },
+      body: JSON.stringify({ textMessage: { text: body }, phoneNumbers: [to] }),
+      signal: AbortSignal.timeout(10_000),
+    });
+    const out = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(`SMS gateway ${res.status}: ${out.message || 'error'}`);
+    return { status: 'sent', providerId: out.id ?? null };
+  },
 };
 
 export function checkSmsConfig() {
   if (!providers[config.smsProvider]) throw new Error(`Unknown SMS_PROVIDER "${config.smsProvider}"`);
   if (config.smsProvider === 'twilio' && !(config.twilioSid && config.twilioToken && (config.twilioFrom || config.twilioMessagingService))) {
     throw new Error('SMS_PROVIDER=twilio needs TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN and TWILIO_FROM or TWILIO_MESSAGING_SERVICE_SID');
+  }
+  if (config.smsProvider === 'android' && !(config.androidSmsUser && config.androidSmsPass)) {
+    throw new Error('SMS_PROVIDER=android needs ANDROID_SMS_USER and ANDROID_SMS_PASS (from the SMS Gateway app)');
   }
   if (config.isProd && config.smsProvider === 'console') console.warn('SMS_PROVIDER=console: SMS are only printed, not sent');
 }

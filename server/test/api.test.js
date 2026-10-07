@@ -108,6 +108,38 @@ test('Twilio Verify: Twilio sends and checks the login code, which is never show
   }
 });
 
+test('Android SMS gateway: the login code goes out as a normal SMS from the phone', async () => {
+  const http = await import('node:http');
+  const { config } = await import('../src/config.js');
+  const got = [];
+  const phone = http
+    .createServer((req, res) => {
+      let body = '';
+      req.on('data', (c) => (body += c));
+      req.on('end', () => {
+        got.push({ auth: req.headers.authorization, ...JSON.parse(body) });
+        res.writeHead(202, { 'content-type': 'application/json' }).end(JSON.stringify({ id: 'msg1', state: 'Pending' }));
+      });
+    })
+    .listen(0);
+  const saved = { ...config };
+  Object.assign(config, { smsProvider: 'android', androidSmsUser: 'user', androidSmsPass: 'pass', androidSmsUrl: `http://127.0.0.1:${phone.address().port}` });
+  try {
+    const req = await api('/auth/otp/request', { method: 'POST', body: { method: 'mobile', value: '91234 56781' } });
+    assert.equal(req.status, 200);
+    await flushSms();
+    assert.equal(got.length, 1);
+    assert.deepEqual(got[0].phoneNumbers, ['+919123456781']);
+    assert.equal(got[0].auth, `Basic ${Buffer.from('user:pass').toString('base64')}`);
+    const code = got[0].textMessage.text.match(/\d{6}/)[0];
+    const ok = await api('/auth/otp/verify', { method: 'POST', body: { requestId: req.body.requestId, code } });
+    assert.equal(ok.status, 200);
+  } finally {
+    Object.assign(config, saved);
+    phone.close();
+  }
+});
+
 test('invalid Aadhaar is rejected and the OTP cannot be reused', async () => {
   assert.equal((await api('/auth/otp/request', { method: 'POST', body: { method: 'aadhaar', value: '123412341234' } })).status, 400);
   const req = await api('/auth/otp/request', { method: 'POST', body: { method: 'mobile', value: '9876543210' } });

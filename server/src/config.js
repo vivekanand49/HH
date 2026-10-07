@@ -48,6 +48,11 @@ export const config = {
   twilioToken: env.TWILIO_AUTH_TOKEN || '',
   twilioFrom: env.TWILIO_FROM || '',
   twilioMessagingService: env.TWILIO_MESSAGING_SERVICE_SID || '',
+  // A normal Android phone with the free "SMS Gateway for Android" app (sms-gate.app)
+  // sends the SMS from its own SIM: free within the SIM plan's daily SMS limit.
+  androidSmsUrl: env.ANDROID_SMS_URL || 'https://api.sms-gate.app/3rdparty/v1/messages',
+  androidSmsUser: env.ANDROID_SMS_USER || '',
+  androidSmsPass: env.ANDROID_SMS_PASS || '',
   // Login codes through Twilio Verify (works on a Twilio trial); see services/verify.js.
   twilioVerifyService: env.TWILIO_VERIFY_SERVICE_SID || '',
   twilioVerifyUrl: env.TWILIO_VERIFY_URL || 'https://verify.twilio.com/v2',

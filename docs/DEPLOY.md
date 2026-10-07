@@ -116,6 +116,10 @@ demo hospitals and logins, the login code shown on screen, demo payments, and a
   (a free Twilio trial sends only to phone numbers you verify in Twilio). From then on the code goes to the phone
   and is no longer shown on screen. A Twilio trial may only send Twilio's own texts, so also create a
   Verify service (Twilio → Verify → Services) and give its `VA…` ID: Twilio Verify then sends and checks the login code.
+- Free SMS to any number: install "SMS Gateway for Android" (sms-gate.app) on an Android phone with a SIM, turn on
+  Cloud server mode, then run `sudo bash /opt/swasthya/deploy/staging/set-android-sms.sh` with the app's username and
+  password. Codes go out from that SIM (most Indian plans include 100 free SMS a day). The text passes through the
+  sms-gate.app cloud, so use it for testing, not real patients.
 
 ## Updating
 
