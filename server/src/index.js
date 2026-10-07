@@ -3,7 +3,7 @@ import { Server } from 'socket.io';
 import { config } from './config.js';
 import { createApp } from './app.js';
 import { closeDb, migrate, one, query } from './db/index.js';
-import { seed } from './db/seed.js';
+import { seed, topUpDemoSlots } from './db/seed.js';
 import { setIo } from './services/realtime.js';
 import { userFromToken, STAFF_ROLES } from './middleware/auth.js';
 import { registerConsult } from './services/consult.js';
@@ -15,7 +15,14 @@ checkSmsConfig();
 await migrate();
 // First run on an empty database: load the demo data (never in production,
 // where the district admin is created with `npm run create-admin`; staging uses demo data).
-if ((!config.isProd || config.staging || process.env.SEED_DEMO === 'true') && !(await one(`SELECT 1 FROM hospitals LIMIT 1`))) await seed();
+const demo = !config.isProd || config.staging || process.env.SEED_DEMO === 'true';
+if (demo && !(await one(`SELECT 1 FROM hospitals LIMIT 1`))) await seed();
+// Demo data only: keep a week of free OPD slots ahead, so booking never runs dry.
+if (demo) {
+  const topUp = () => topUpDemoSlots().catch((err) => console.error('Demo slot top-up failed', err));
+  await topUp();
+  setInterval(topUp, 6 * 60 * 60 * 1000).unref();
+}
 
 const server = http.createServer(createApp());
 const io = new Server(server, { cors: { origin: config.corsOrigins } });

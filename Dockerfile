@@ -17,7 +17,7 @@ RUN npm run build
 # ---- run ----
 FROM node:24-slim
 # ffmpeg converts SOS voice messages for speech-to-text.
-RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg ca-certificates && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg espeak-ng ca-certificates && rm -rf /var/lib/apt/lists/*
 ENV NODE_ENV=production FFMPEG_PATH=/usr/bin/ffmpeg PORT=4000
 WORKDIR /app
 COPY package.json package-lock.json ./

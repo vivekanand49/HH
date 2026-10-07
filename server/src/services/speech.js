@@ -7,12 +7,41 @@
 //                    TTS with text → pipelineResponse[0].audio[0].audioContent (base64 WAV)
 // Phones record WebM/Opus or MP4/AAC; Bhashini takes WAV/FLAC/MP3, so the
 // audio is converted to 16 kHz mono WAV with ffmpeg first.
-import { spawn } from 'node:child_process';
+import { spawn, spawnSync } from 'node:child_process';
 import { config } from '../config.js';
 
 const CONFIG_URL = 'https://meity-auth.ulcacontrib.org/ulca/apis/v0/model/getModelsPipeline';
 
 export const speechEnabled = () => Boolean(config.bhashiniUserId && config.bhashiniApiKey && config.bhashiniPipelineId);
+
+// eSpeak NG speaks all four languages with a robotic but clear voice, for free.
+const ESPEAK_VOICES = { en: 'en-us', te: 'te', hi: 'hi', mr: 'mr' };
+const espeakChecked = new Map(); // path -> available?
+export function espeakAvailable() {
+  const path = config.espeakPath;
+  if (!path || path === 'off') return false;
+  if (!espeakChecked.has(path)) espeakChecked.set(path, spawnSync(path, ['--version'], { timeout: 5000 }).status === 0);
+  return espeakChecked.get(path);
+}
+
+/** Text-to-speech is possible with Bhashini or eSpeak. */
+export const ttsEnabled = () => speechEnabled() || espeakAvailable();
+
+/** A WAV buffer from eSpeak NG. */
+export function espeak(text, lang) {
+  return new Promise((resolve, reject) => {
+    const p = spawn(config.espeakPath, ['-v', ESPEAK_VOICES[lang] ?? 'en-us', '-s', '135', '--stdout', '--', text]);
+    const out = [];
+    const timer = setTimeout(() => p.kill('SIGKILL'), 15000);
+    p.stdout.on('data', (d) => out.push(d));
+    p.on('error', reject);
+    p.on('close', (code) => {
+      clearTimeout(timer);
+      if (code === 0 && out.length) resolve(Buffer.concat(out));
+      else reject(new Error(`espeak-ng failed (${code})`));
+    });
+  });
+}
 
 export async function toWav16k(buffer) {
   // FFMPEG_PATH: the system ffmpeg (the Docker image installs it); otherwise the bundled one.

@@ -83,6 +83,9 @@ export const config = {
   bhashiniUserId: env.BHASHINI_USER_ID || '',
   bhashiniApiKey: env.BHASHINI_API_KEY || '',
   bhashiniPipelineId: env.BHASHINI_PIPELINE_ID || '',
+  // eSpeak NG: a free, offline robot voice for text-to-speech when Bhashini isn't set up
+  // (the Docker image installs it). "off" turns it off.
+  espeakPath: env.ESPEAK_PATH || 'espeak-ng',
 
   // Sessions: patients stay signed in for 30 days; staff sessions are short.
   patientSessionDays: 30,

@@ -200,8 +200,42 @@ test('assistant voice: Bhashini reads answers aloud; speech routes need sign-in 
   }
   const { token } = await login('mobile', '9876543210');
   assert.equal((await api('/speech/tts', { method: 'POST', body: { text: 'hi', lang: 'en' } })).status, 401);
+  config.espeakPath = 'off';
   assert.equal((await api('/speech/config')).body.tts, false);
   assert.equal((await api('/speech/tts', { method: 'POST', token, body: { text: 'hi', lang: 'en' } })).status, 501);
+
+  // Without Bhashini, eSpeak speaks (a stand-in program here that prints its arguments as the "audio").
+  const fs = await import('node:fs');
+  const os = await import('node:os');
+  const fake = `${os.tmpdir()}/fake-espeak-${process.pid}.sh`;
+  fs.writeFileSync(fake, '#!/bin/sh\nprintf "RIFF %s" "$*"\n', { mode: 0o755 });
+  config.espeakPath = fake;
+  try {
+    assert.equal((await api('/speech/config')).body.tts, true);
+    assert.equal((await api('/speech/config')).body.stt, false);
+    const res = await fetch(`${base}/speech/tts`, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json', authorization: `Bearer ${token}` },
+      body: JSON.stringify({ text: 'జ్వరం', lang: 'te' }),
+    });
+    assert.equal(res.status, 200);
+    assert.equal(res.headers.get('content-type'), 'audio/wav');
+    assert.match(await res.text(), /^RIFF -v te .*-- జ్వరం$/);
+  } finally {
+    config.espeakPath = saved.espeakPath;
+    fs.rmSync(fake);
+  }
+});
+
+test('demo slots top up: a week ahead, without touching existing ones', async () => {
+  const { topUpDemoSlots } = await import('../src/db/seed.js');
+  const before = await one(`SELECT count(*)::int AS n, count(*) FILTER (WHERE is_booked)::int AS booked FROM doctor_slots`);
+  assert.equal(await topUpDemoSlots(), 0, 'nothing missing right after seeding');
+  await one(`DELETE FROM doctor_slots WHERE id = (SELECT id FROM doctor_slots WHERE NOT is_booked AND starts_at > now() + interval '2 days' ORDER BY starts_at LIMIT 1) RETURNING id`);
+  assert.equal(await topUpDemoSlots(), 1, 'refills the missing slot');
+  const after = await one(`SELECT count(*)::int AS n, count(*) FILTER (WHERE is_booked)::int AS booked FROM doctor_slots`);
+  assert.equal(after.n, before.n);
+  assert.ok(after.booked >= before.booked - 1);
 });
 
 test('invalid Aadhaar is rejected and the OTP cannot be reused', async () => {

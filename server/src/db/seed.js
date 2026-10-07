@@ -71,15 +71,7 @@ export async function seed() {
     );
   }
 
-  // Slots for the next 7 days (Sunday OPD closed), India time. ~20% pre-booked.
-  await query(`
-    INSERT INTO doctor_slots (doctor_id, starts_at, duration_min, is_booked)
-    SELECT d.id, (day::date + t) AT TIME ZONE 'Asia/Kolkata', 30, random() < 0.2
-      FROM doctors d,
-           generate_series((now() AT TIME ZONE 'Asia/Kolkata')::date, (now() AT TIME ZONE 'Asia/Kolkata')::date + 7, interval '1 day') AS day,
-           unnest(ARRAY['09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','14:00','14:30','15:00','15:30','16:00','16:30']::time[]) AS t
-     WHERE extract(dow FROM day) <> 0
-       AND (day::date + t) AT TIME ZONE 'Asia/Kolkata' > now()`);
+  await topUpDemoSlots();
 
   for (const [reg, driver, phone, lat, lng] of AMBULANCES) {
     await query(`INSERT INTO ambulances (registration, driver_name, driver_phone, lat, lng) VALUES ($1,$2,$3,$4,$5)`, [reg, driver, phone, lat, lng]);
@@ -200,4 +192,23 @@ export async function seed() {
 
   const { rows: [{ slots }] } = await query(`SELECT count(*)::int AS slots FROM doctor_slots`);
   return { hospitals: HOSPITALS.length, doctors: DOCTORS.length, slots, ambulances: AMBULANCES.length };
+}
+
+/**
+ * Demo OPD slots for the next 7 days (Sunday closed), India time, ~20% pre-booked.
+ * Runs at seed time and daily on demo/staging servers so booking never runs dry;
+ * existing slots are left alone. Never used in production.
+ */
+export async function topUpDemoSlots() {
+  const { rowCount } = await query(`
+    INSERT INTO doctor_slots (doctor_id, starts_at, duration_min, is_booked)
+    SELECT d.id, (day::date + t) AT TIME ZONE 'Asia/Kolkata', 30, random() < 0.2
+      FROM doctors d,
+           generate_series((now() AT TIME ZONE 'Asia/Kolkata')::date, (now() AT TIME ZONE 'Asia/Kolkata')::date + 7, interval '1 day') AS day,
+           unnest(ARRAY['09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','14:00','14:30','15:00','15:30','16:00','16:30']::time[]) AS t
+     WHERE d.is_active
+       AND extract(dow FROM day) <> 0
+       AND (day::date + t) AT TIME ZONE 'Asia/Kolkata' > now()
+    ON CONFLICT (doctor_id, starts_at) DO NOTHING`);
+  return rowCount;
 }

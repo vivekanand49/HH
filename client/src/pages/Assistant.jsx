@@ -52,7 +52,11 @@ export default function Assistant() {
   const endRef = useRef(null);
   const lang = LANGUAGES.find((l) => l.code === i18n.language) ?? LANGUAGES[0];
 
-  useEffect(() => endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' }), [messages, busy]);
+  // Braces matter: newer Chrome returns a Promise from scrollIntoView, and an
+  // effect must return nothing or a cleanup function (else the page goes blank).
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ behavior: 'smooth', block: 'end' });
+  }, [messages, busy]);
   useEffect(() => {
     alive.current = true;
     getLocation({ timeout: 8000 }).then((l) => l && (loc.current = l));
