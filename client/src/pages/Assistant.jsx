@@ -106,7 +106,7 @@ export default function Assistant() {
     const out = await speak(text, lang.speech);
     if (!alive.current) return false;
     setVoice('idle');
-    if (!out.ok) setVoiceError(out.error);
+    if (!out.ok) setVoiceError({ code: out.error });
     return out.ok;
   }
 
@@ -158,7 +158,7 @@ export default function Assistant() {
     const answer = yesNo(heard.text);
     if (answer === 'yes') return book(o, complaint);
     if (answer === 'no' && options[i + 1]) return confirmByVoice(options, i + 1, complaint);
-    if (!heard.text) setVoiceError(heard.error);
+    if (!heard.text) setVoiceError({ code: heard.error, detail: heard.detail });
   }
 
   async function book(o, complaint) {
@@ -178,13 +178,13 @@ export default function Assistant() {
     stopSpeaking();
     setVoiceError(null);
     setVoice('listening');
-    const heard = await listenOnce(lang.speech);
+    const heard = await listenOnce(lang.speech, { onPartial: setInput });
     if (!alive.current) return;
     setVoice('idle');
     if (heard.text) ask(heard.text, { spoken: true });
     else {
       handsFree.current = false;
-      if (heard.error !== 'silent' || messagesRef.current.length === 0) setVoiceError(heard.error);
+      if (heard.error !== 'silent' || messagesRef.current.length === 0) setVoiceError({ code: heard.error, detail: heard.detail });
     }
   }
 
@@ -335,7 +335,10 @@ export default function Assistant() {
 
       {voiceError && (
         <p className="mt-3 flex items-start justify-between gap-3 rounded-2xl bg-warn-soft px-4 py-2.5 text-[15px] text-warn" role="status">
-          <span>{t(VOICE_ERRORS[voiceError])}</span>
+          <span>
+            {t(VOICE_ERRORS[voiceError.code])}
+            {voiceError.detail && <span className="ml-1 text-xs opacity-70">({voiceError.detail})</span>}
+          </span>
           <button type="button" className="shrink-0 font-semibold" onClick={() => setVoiceError(null)} aria-label={t('Close')}>
             <Icon name="close" size={18} />
           </button>

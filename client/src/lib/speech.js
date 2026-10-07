@@ -22,31 +22,36 @@ const code = (locale) => locale.slice(0, 2);
 let current = null; // { abort() } for whatever is listening or speaking now
 
 /**
- * Listens for one sentence.
- * @returns {Promise<{ text: string|null, error: null|'denied'|'silent'|'network'|'unsupported'|'failed' }>}
+ * Listens for one sentence. onPartial(text) shows the words while the person speaks.
+ * @returns {Promise<{ text: string|null, error: null|'denied'|'mic-quiet'|'silent'|'network'|'unsupported'|'failed', detail?: string }>}
  */
-export async function listenOnce(locale) {
+export async function listenOnce(locale, { onPartial } = {}) {
   stopListening();
   if (Recognition) {
-    const out = await browserListen(locale);
+    const out = await browserListen(locale, onPartial);
     if (out.text || !['network', 'unsupported', 'failed'].includes(out.error)) return out;
   }
   if (canRecord && (await serverVoice()).stt) return serverListen(locale);
-  return { text: null, error: Recognition ? 'network' : 'unsupported' };
+  return { text: null, error: Recognition ? 'network' : 'unsupported', detail: Recognition ? 'browser-failed' : 'no-speech-api' };
 }
 
-function browserListen(locale) {
+function browserListen(locale, onPartial) {
   return new Promise((resolve) => {
     const rec = new Recognition();
     rec.lang = locale;
-    rec.interimResults = false;
+    rec.interimResults = true; // words appear while speaking, and survive a cut-off ending
     rec.maxAlternatives = 1;
     let text = null;
     let error = null;
+    let detail = null;
+    let sound = false; // did the microphone pick up any sound at all?
+    rec.onsoundstart = () => (sound = true);
     rec.onresult = (e) => {
-      text = e.results[0]?.[0]?.transcript?.trim() || null;
+      text = [...e.results].map((r) => r[0]?.transcript ?? '').join(' ').replace(/\s+/g, ' ').trim() || null;
+      if (text) onPartial?.(text);
     };
     rec.onerror = (e) => {
+      detail = e.error;
       error =
         {
           'not-allowed': 'denied',
@@ -63,6 +68,7 @@ function browserListen(locale) {
     const soft = setTimeout(() => rec.stop(), 12000);
     const hard = setTimeout(() => {
       error ??= 'network';
+      detail ??= 'timeout';
       rec.abort();
       finish();
     }, 20000);
@@ -73,16 +79,20 @@ function browserListen(locale) {
       clearTimeout(soft);
       clearTimeout(hard);
       if (current?.rec === rec) current = null;
-      resolve({ text, error: text ? null : (error ?? 'silent') });
+      if (text) return resolve({ text, error: null });
+      // Silence from a mic that never picked up any sound usually means the
+      // computer or phone isn't letting the browser use the microphone.
+      if ((error ?? 'silent') === 'silent' && !sound && detail !== 'aborted') return resolve({ text: null, error: 'mic-quiet', detail: detail ?? 'no-sound' });
+      resolve({ text: null, error: error ?? 'silent', detail: detail ?? 'no-result' });
     }
     rec.onspeechend = () => rec.stop();
     rec.onend = finish;
     current = { rec, abort: () => rec.abort() };
     try {
       rec.start();
-    } catch {
+    } catch (err) {
       current = null;
-      resolve({ text: null, error: 'failed' });
+      resolve({ text: null, error: 'failed', detail: err?.name ?? 'start-failed' });
     }
   });
 }
@@ -268,6 +278,8 @@ export function yesNo(text) {
 export const VOICE_ERRORS = {
   denied: 'The microphone is blocked. Allow the microphone for this site in your browser settings.',
   silent: 'I did not hear anything. Tap the mic and speak again.',
+  'mic-quiet':
+    'The microphone gave no sound. Check that Chrome may use the microphone (on a Mac: System Settings → Privacy & Security → Microphone) and that it is not muted, then try again.',
   network: 'Voice needs internet. Please check your connection, or type instead.',
   unsupported: 'Voice typing does not work in this browser. Please type, or open the app in Chrome.',
   failed: 'Voice did not work this time. Please try again or type.',

@@ -613,5 +613,6 @@
   "Voice needs internet. Please check your connection, or type instead.": "आवाजासाठी इंटरनेट लागतं. कनेक्शन तपासा, किंवा लिहून पाठवा.",
   "Voice typing does not work in this browser. Please type, or open the app in Chrome.": "या ब्राउझरमध्ये बोलून लिहिणं चालत नाही. लिहा, किंवा ॲप Chrome मध्ये उघडा.",
   "Voice did not work this time. Please try again or type.": "या वेळी आवाज चालला नाही. पुन्हा प्रयत्न करा किंवा लिहा.",
-  "This phone has no voice for this language. Install “Speech Services by Google” and its voice for your language, or read the answer.": "या फोनमध्ये या भाषेचा आवाज नाही. “Speech Services by Google” आणि तुमच्या भाषेचा आवाज इंस्टॉल करा, किंवा उत्तर वाचा."
+  "This phone has no voice for this language. Install “Speech Services by Google” and its voice for your language, or read the answer.": "या फोनमध्ये या भाषेचा आवाज नाही. “Speech Services by Google” आणि तुमच्या भाषेचा आवाज इंस्टॉल करा, किंवा उत्तर वाचा.",
+  "The microphone gave no sound. Check that Chrome may use the microphone (on a Mac: System Settings → Privacy & Security → Microphone) and that it is not muted, then try again.": "मायक्रोफोनमधून आवाज आला नाही. Chrome ला मायक्रोफोन वापरण्याची परवानगी आहे का (Mac वर: System Settings → Privacy & Security → Microphone) आणि माइक म्यूट नाही ना हे पाहा, मग पुन्हा प्रयत्न करा."
 }

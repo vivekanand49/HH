@@ -64,7 +64,7 @@ export default function QuickBook() {
 
   async function say(text) {
     const out = await speak(text, lang.speech);
-    if (!out.ok && alive.current) setVoiceError(out.error);
+    if (!out.ok && alive.current) setVoiceError({ code: out.error });
   }
 
   function understand(said, byVoice) {
@@ -88,10 +88,10 @@ export default function QuickBook() {
     stopSpeaking();
     setVoiceError(null);
     setState('listening');
-    const heard = await listenOnce(lang.speech);
+    const heard = await listenOnce(lang.speech, { onPartial: setText });
     if (!alive.current) return;
     if (!heard.text) {
-      setVoiceError(heard.error);
+      setVoiceError({ code: heard.error, detail: heard.detail });
       setState(options ? 'results' : 'idle');
       return;
     }
@@ -217,7 +217,8 @@ export default function QuickBook() {
       <ErrorNote error={error} />
       {voiceError && (
         <p className="mt-3 rounded-2xl bg-warn-soft px-4 py-3 text-[15px] text-warn" role="status">
-          {t(VOICE_ERRORS[voiceError])}
+          {t(VOICE_ERRORS[voiceError.code])}
+          {voiceError.detail && <span className="ml-1 text-xs opacity-70">({voiceError.detail})</span>}
         </p>
       )}
 
